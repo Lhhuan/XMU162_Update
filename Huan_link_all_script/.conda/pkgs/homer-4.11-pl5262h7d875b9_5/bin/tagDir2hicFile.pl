@@ -1,0 +1,1 @@
+../share/homer/bin/tagDir2hicFile.pl

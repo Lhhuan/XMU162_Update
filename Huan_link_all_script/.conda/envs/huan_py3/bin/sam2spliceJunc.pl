@@ -1,0 +1,1 @@
+../share/homer/bin/sam2spliceJunc.pl

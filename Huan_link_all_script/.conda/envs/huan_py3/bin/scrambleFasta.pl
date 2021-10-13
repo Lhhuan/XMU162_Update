@@ -1,0 +1,1 @@
+../share/homer/bin/scrambleFasta.pl

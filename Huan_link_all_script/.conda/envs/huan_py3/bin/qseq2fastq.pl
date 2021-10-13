@@ -1,0 +1,1 @@
+../share/homer/bin/qseq2fastq.pl

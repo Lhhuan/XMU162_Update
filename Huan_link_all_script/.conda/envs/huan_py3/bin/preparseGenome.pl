@@ -1,0 +1,1 @@
+../share/homer/bin/preparseGenome.pl

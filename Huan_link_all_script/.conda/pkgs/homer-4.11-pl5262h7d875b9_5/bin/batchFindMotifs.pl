@@ -1,0 +1,1 @@
+../share/homer/bin/batchFindMotifs.pl
