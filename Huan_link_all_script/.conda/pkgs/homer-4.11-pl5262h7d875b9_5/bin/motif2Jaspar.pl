@@ -1,1 +1,0 @@
-../share/homer/bin/motif2Jaspar.pl

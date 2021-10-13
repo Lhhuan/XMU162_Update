@@ -1,1 +1,0 @@
-../share/homer/bin/cons2fasta.pl

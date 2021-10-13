@@ -1,1 +1,0 @@
-../share/homer/bin/gff2pos.pl

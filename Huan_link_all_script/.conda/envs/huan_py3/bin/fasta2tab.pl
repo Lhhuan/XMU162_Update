@@ -1,1 +1,0 @@
-../share/homer/bin/fasta2tab.pl
