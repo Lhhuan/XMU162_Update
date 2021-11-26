@@ -1,0 +1,8 @@
+#!/bin/bash
+#PBS -N 66bwa
+#PBS -l nodes=2:compute-0-3,compute-0-4:ppn=10
+##PBS -l nodes=2:ppn=10
+#PBS -j oe
+#PBS -l walltime=10000:00:00
+
+python /share/apps/bio/bwa.2.1.py -r /share/data0/reference/GATK_Resources/b37/human_g1k_v37.fasta -i 362.txt -o /state/partition1/qinwei/66panels/ -t 10

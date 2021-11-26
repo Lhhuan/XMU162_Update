@@ -1,0 +1,1 @@
+zless ~/ref_data/dbSNP/01_extract_b152_vcf.txt.gz | cut -f3|sort |uniq -d 

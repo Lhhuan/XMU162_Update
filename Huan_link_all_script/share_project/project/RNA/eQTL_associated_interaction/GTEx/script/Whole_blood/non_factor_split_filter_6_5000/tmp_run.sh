@@ -1,0 +1,8 @@
+perl 07_annotation_non_factor_split_interval_18_different_cutoff.pl
+echo -e "07_annotation_non_factor_split_interval_18_different_cutoff\n"
+perl 08_count_factor_and_non_factor_annotation_interval18_different_cutoff.pl
+echo -e "08_count_factor_and_non_factor_annotation_interval18_different_cutoff\n"
+Rscript 10_plot_point_factor_non_factor.R
+echo -e "10_plot_point_factor_non_factor\n"
+Rscript 10_fisher_exact_test_factor_and_non_factor.R
+echo -e "10_fisher_exact_test_factor_and_non_factor\n"

@@ -12,10 +12,10 @@ my @tissues =  ("Adipose_Subcutaneous","Adipose_Visceral_Omentum","Adrenal_Gland
 
 my $out_dir ="/share/data0/GTEx/data/GTEx_v8_hg19_eQTL_egene";
 
-my $all_tissue_h = "/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge.bed.gz";
+my $all_tissue_h = "/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz";
 # system "zless /home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176.bed.gz |sort -k1,1 -k2,2n |gzip > $all_tissue_h";
 
-my $fo1 = "/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/06_merge_all_tissue_cis_sig_eQTL_hotspot_egene.txt.gz";
+my $fo1 = "/home/huanhuan/project/GTEx/script/Tissue_merge/Cis_eQTL/06_merge_all_tissue_cis_sig_eQTL_hotspot_egene.txt.gz";
 # open my $O1, '>', $fo1 or die "$0 : failed to open output file '$fo1' : $!\n";
 open my $O1, "| gzip >$fo1" or die $!;
 print $O1 "Chr\tStart\tEnd\tegene\thotspot\ttissue\n";

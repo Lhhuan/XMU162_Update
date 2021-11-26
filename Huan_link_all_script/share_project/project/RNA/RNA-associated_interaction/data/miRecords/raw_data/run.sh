@@ -1,0 +1,1 @@
+#The current release (April 27, 2013) of the Validated Target dataset can be downloaded here.

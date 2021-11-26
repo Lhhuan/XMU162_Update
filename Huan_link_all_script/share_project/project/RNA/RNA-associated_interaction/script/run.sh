@@ -1,0 +1,1 @@
+perl 01_merge_all_RNA_association_interaction.pl ##将../data/* 下面normalizeda好的文件合在一起

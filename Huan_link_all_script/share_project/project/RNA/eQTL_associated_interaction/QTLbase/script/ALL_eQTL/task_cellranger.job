@@ -1,0 +1,12 @@
+#!/bin/bash
+#PBS -N EMF
+#PBS -l nodes=1:compute-0-3:ppn=45
+#PBS -j oe
+#PBS -l walltime=10000:00:00
+
+cd /share/swap/renjun/emf
+
+for i in `ls /share/data2/SingleCellSeq/E_MTAB_6701/FCA74740*_S1_L001_R1_001.fastq.gz`;do
+	fname=$(basename ${i} _S1_L001_R1_001.fastq.gz);
+	/home/renjun/project/early_maternal_fetal/script/Cellranger.sh $fname /share/data2/SingleCellSeq/E_MTAB_6701/ $fname 45
+done

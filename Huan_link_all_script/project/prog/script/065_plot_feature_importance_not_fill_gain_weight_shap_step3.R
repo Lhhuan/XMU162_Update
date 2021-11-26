@@ -42,7 +42,7 @@ print(p1)
 dev.off()
 
 #---------------------shap
-dat <- read.csv("064_step3_weight_fill_feature_importance_shap_class.txt",na.strings = "",sep="\t")
+dat <- read.csv("064_step3_weight_not_fill_feature_importance_shap_class.txt",na.strings = "",sep="\t")
 dat <-abs(dat)
 col_mean = apply(dat,2,mean)%>%as.data.frame()
 col_mean$Feature <-rownames(col_mean)

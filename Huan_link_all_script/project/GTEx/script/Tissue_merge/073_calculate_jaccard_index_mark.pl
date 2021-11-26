@@ -14,7 +14,7 @@ my $group = "hotspot";
 my $tissue = "Tissue_merge";
 
 
-my $input_dir = "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/annotation/";
+my $input_dir = "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/annotation/original";
 
 # my @markers = ("H3K27ac","H3K27me3","H3K36me3","H3K4me1","H3K4me3","H3K9ac","H3K9me3");
 my @markers = ("H3K27ac","H3K27me3","H3K36me3","H3K4me1","H3K4me3","H3K9ac","H3K9me3","CHROMATIN_Accessibility","TFBS","CTCF");
@@ -30,7 +30,7 @@ print $O1 "Marker\tjaacard_index\n";
 
 foreach my $mark (@markers){
     my %hash1;
-    my $input_file_base_name = "${mark}_Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge.bed.gz";
+    my $input_file_base_name = "${mark}_Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz";
     my $input_file = "$input_dir/$input_file_base_name";
     my $f2 = $input_file;
     open( my $I2 ,"gzip -dc $f2|") or die ("can not open input file '$f2' \n"); #读压缩文件
@@ -79,7 +79,7 @@ foreach my $mark (@markers){
         my $jaccard_index = $all_overlap/$denominator;
         print $O1 "$mark\t$jaccard_index\n";
     }
-    my $f3 = "/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge.bed.gz";
+    my $f3 = "/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz";
     open( my $I3 ,"gzip -dc $f3|") or die ("can not open input file '$f3' \n"); #读压缩文件
 
     while(<$I3>)

@@ -1,0 +1,7 @@
+#!/bin/bash
+#PBS -N zq
+#PBS -l nodes=compute-0-1:ppn=4+compute-0-3:ppn=4+compute-0-4:ppn=4 
+#PBS -l select=ncpus=2:mem=400mb
+#PBS -l walltime=10000:00:00
+#跨节点脚本
+perl /home/qinwei/test/02_filter_emplambda_in_and_out_QTLbase_for_wugong.pl

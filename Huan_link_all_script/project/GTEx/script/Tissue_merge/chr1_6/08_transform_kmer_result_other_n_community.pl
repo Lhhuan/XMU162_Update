@@ -11,7 +11,7 @@ use Parallel::ForkManager;
 
 # my $i
 
-my @aa = (6..10);
+my @aa = (3..6);
 foreach my $i(@aa){
     my $f1 = "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/communities_${i}.csv";
     open my $I1, '<', $f1 or die "$0 : failed to open input file '$f1' : $!\n"; 
@@ -45,8 +45,8 @@ foreach my $i(@aa){
 
 
     my @factors = ("TFBS","CHROMATIN_Accessibility","CTCF","H3K27ac","H3K27me3","H3K36me3","H3K4me1","H3K4me3","H3K9ac","H3K9me3");
-    my $file_name = "Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge.bed.gz";
-    my $factor_dir = "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/annotation";
+    my $file_name = "Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz";
+    my $factor_dir = "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/annotation/original/";
 
 
     foreach my $factor(@factors){

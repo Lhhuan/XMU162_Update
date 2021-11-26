@@ -1,0 +1,1 @@
+wget -c https://data.broadinstitute.org/ccle_legacy_data/cell_line_annotations/CCLE_sample_info_file_2012-10-18.txt

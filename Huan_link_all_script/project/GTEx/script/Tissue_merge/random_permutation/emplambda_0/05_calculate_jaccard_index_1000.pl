@@ -11,7 +11,7 @@ use Parallel::ForkManager;
 
 my $cutoff = 0.176;
 my $group = "hotspot";
-my $tissue = "Whole_Blood";
+# my $tissue = "Whole_Blood";
 my $cutoff2 = "0";
 
 

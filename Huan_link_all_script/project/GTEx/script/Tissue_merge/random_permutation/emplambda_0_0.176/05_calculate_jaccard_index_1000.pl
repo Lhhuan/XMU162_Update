@@ -11,7 +11,7 @@ use Parallel::ForkManager;
 
 my $cutoff = 0.176;
 my $group = "hotspot";
-my $tissue = "Whole_Blood";
+# my $tissue = "Whole_Blood";
 my $cutoff2 = "0_0.176";
 
 
@@ -40,7 +40,7 @@ print $O1 "Random_number\tMarker\tjaacard_index\n";
 for (my $i=1;$i<1001;$i++){
     foreach my $mark (@markers){
         my %hash1;
-        my $input_file_base_name = "${mark}_${i}_resemble_resemble_Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz";
+        my $input_file_base_name = "${mark}_${i}_resemble_Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz";
         my $input_file = "$input_dir/$input_file_base_name";
         my $f2 = $input_file;
         # print "$f2\n";
@@ -91,7 +91,7 @@ for (my $i=1;$i<1001;$i++){
             print $O1 "$i\t$mark\t$jaccard_index\n";
         }
         my $resemble_dir= $input_dir;
-        my $f3 = "${resemble_dir}/${i}_resemble_resemble_Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz";
+        my $f3 = "${resemble_dir}/${i}_resemble_Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz";
         open( my $I3 ,"gzip -dc $f3|") or die ("can not open input file '$f3' \n"); #读压缩文件
 
         while(<$I3>)

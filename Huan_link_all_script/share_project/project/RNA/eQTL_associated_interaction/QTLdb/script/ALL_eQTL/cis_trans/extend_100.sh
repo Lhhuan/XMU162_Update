@@ -1,0 +1,4 @@
+Rscript 05_merge_trans_cis_eQTL_hotspot_annotation_extend_100bp_interval18.R
+echo -e "interval18\n"
+Rscript 05_merge_trans_cis_eQTL_hotspot_annotation_extend_100bp_interval15.R
+echo -e "interval15\n"

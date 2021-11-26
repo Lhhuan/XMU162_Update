@@ -362,8 +362,8 @@ dat$SPD_c[dat$SPD_c <=20]=0
 dat$SPD_c[dat$SPD_c >20]=1
 
 dat$Ki.67_c <-dat$Ki.67
-dat$Ki.67_c[dat$Ki.67_c <=20.00]=0
-dat$Ki.67_c[dat$Ki.67_c >20.00 ]=1
+dat$Ki.67_c[dat$Ki.67_c <=70.00]=0
+dat$Ki.67_c[dat$Ki.67_c >70.00 ]=1
 
 dat$HGB_c <-dat$HGB
 dat$HGB_c[dat$HGB_c <=120]=1
@@ -544,12 +544,12 @@ print(p1)
 dev.off()
 
 #------------------------------------------------------------------------------------------------------------------------------------------------------------3class features
-dat$B2mg_c_f <- dat$B2mg_c*3
-dat$LN_num_c_f <-dat$LN_num_c *3
-dat$LDH_c_f <- dat$LDH_c * 3
-dat$age_raw_c_f <- dat$age_raw_c*3
-dat$Lym_Mono_c_f <-dat$Lym_Mono_c*2
-dat$HGB_c_f<- dat$HGB_c *2
+dat$B2mg_c_f <- dat$B2mg_c*4
+dat$LN_num_c_f <-dat$LN_num_c *4
+dat$LDH_c_f <- dat$LDH_c * 4
+dat$age_raw_c_f <- dat$age_raw_c*4
+dat$Lym_Mono_c_f <-dat$Lym_Mono_c*3
+dat$HGB_c_f<- dat$HGB_c *3
 dat$Ki.67_c_f<- dat$Ki.67_c *2
 dat$SPD_c_f<- dat$SPD_c *2
 dat$SUVmax_c_f<- dat$SUVmax_c *2
@@ -585,11 +585,12 @@ print(p1)
 dev.off()
 #------------------------------------------------------------------------------------------------------------------------------------------------------y cutoff12
 dat1 <-dat[order(dat$Predict_Pod_total_f),]
-dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f<12 ]=0
-dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f>=12 ]=1
+dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f<15 ]=0
+# dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f>=10 &dat1$Predict_Pod_total_f<20 ]=3
 
+dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f>=15 ]=1
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=dat1)
-pdf("./figure/066_pre_survival_3a_pod_total_new_sum_pfs_adjust3_new_cutoff_Y_cutoff12.pdf")
+pdf("./figure/066_pre_survival_3a_pod_total_new_sum_pfs_adjust3_new_cutoff_Y_cutoff15.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -599,7 +600,7 @@ print(p1)
 dev.off()
 #------------------------------
 fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=dat1)
-pdf("./figure/066_pre_survival_3a_pod_total_new_sum_Os_adjust3_new_cutoff_Y_cutoff12.pdf")
+pdf("./figure/066_pre_survival_3a_pod_total_new_sum_Os_adjust3_new_cutoff_Y_cutoff15.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",

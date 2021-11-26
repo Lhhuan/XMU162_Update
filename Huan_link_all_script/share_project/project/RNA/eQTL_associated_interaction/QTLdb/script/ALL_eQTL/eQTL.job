@@ -1,0 +1,9 @@
+#!/bin/bash
+#PBS -N eQTL
+#PBS -l nodes=1:compute-0-7:ppn=10
+#PBS -j oe
+#PBS -l walltime=10000:00:00
+
+cd /home/huanhuan/project/RNA/eQTL_associated_interaction/QTLbase/script/ALL_eQTL
+
+Rscript huan_NHPoisson_all_eQTLbase2.R

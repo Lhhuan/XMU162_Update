@@ -6,15 +6,15 @@ use utf8;
 use File::Basename;
 use List::Util qw/max min/;
 use Env qw(PATH);
-use Parallel::ForkManager;
+# use Parallel::ForkManager;
 
 # my %hash1;
-my @cj =(6..10);
-my $pm = Parallel::ForkManager->new(10); 
+my @cj =(3..6);
+# my $pm = Parallel::ForkManager->new(10); 
 foreach my $j(@cj){
-    my $pid = $pm->start and next; #开始多线程
+    # my $pid = $pm->start and next; #开始多线程
     print "$j";
-    for(my $i=0;$i<$j+1;$i++){
+    for(my $i=1;$i<$j+1;$i++){
         # print "$i\n";
         my $f1 = "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/communities_${j}.bed.gz";
         # open my $I1, '<', $f1 or die "$0 : failed to open input file '$f1' : $!\n"; 
@@ -55,10 +55,10 @@ foreach my $j(@cj){
             system "mkdir -p $output_dir";
         }
 
-        system "findMotifsGenome.pl $fo1 /home/huanhuan/ref_data/gencode/GRCh37.primary_assembly.genome.fa $output_dir -size 200";
+        system "findMotifsGenome.pl $fo1 hg19 $output_dir -size given";
         print "$j\t$i finish\n";
     }
-    $pm->finish;  #多线程结束
+    # $pm->finish;  #多线程结束
 }
 
 # findMotifsGenome.pl /share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/kmer/6/chr1_and_22/homer/communities_0.bed ~/ref_data/gencode/GRCh37.primary_assembly.genome.fa /share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/kmer/6/chr1_and_22/homer/0/ -size 200

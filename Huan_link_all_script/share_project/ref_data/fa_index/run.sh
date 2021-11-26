@@ -1,0 +1,1 @@
+samtools faidx /home/zhangquan/Reference/fasta/hg19.fa

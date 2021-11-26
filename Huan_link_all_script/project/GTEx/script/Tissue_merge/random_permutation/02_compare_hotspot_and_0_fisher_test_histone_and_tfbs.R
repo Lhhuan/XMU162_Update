@@ -8,7 +8,7 @@ library(gridExtra)
 library(data.table)
 library(Seurat)
 
-setwd("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/enrichment/")
+setwd("/home/huanhuan/project/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/enrichment")
 hotspot<-read.table("hotspot_cutoff_0.176_marker_jaccard_index.txt.gz",header = T,sep = "\t") %>% as.data.frame()
 # random<-fread("0_0.176_jaccard_index_histone_marker_1000.txt.gz",header = T,sep = "\t")
 random<-read.table("0_jaccard_index_marker_1000.txt.gz",header = T,sep = "\t") %>% as.data.frame()

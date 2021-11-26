@@ -1,0 +1,3 @@
+perl 01_normalized.pl #normalized ../raw_data/The_experimental_validated_${type}_Human.txt，得../normalized/01_The_experimental_validated_${type}_Human_normalized.txt
+cat ../normalized/01_The_experimental_validated_ceRNA_interactions_of_other_RNA_types_Human_normalized.txt | cut -f6,15 | sort -u | wc -l #324 -1
+cat ../normalized/01_The_experimental_validated_lncRNA-associated_ceRNA_interactions_Human_normalized.txt | cut -f6,15|sort -u | wc -l #1091 -1

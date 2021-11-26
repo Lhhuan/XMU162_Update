@@ -33,6 +33,15 @@ python 064_XGBClassifier_not_fill_na_feature_selection_weight.py
 Rscript 065_plot_feature_importance_not_fill_gain_weight_shap_step3.R
 Rscript 065_plot_feature_importance_not_fill_gain_weight_shap_step2.R
 Rscript 066_plot_feature_distrbution.R
+Rscript 066_plot_feature_distrbution_new_Pod_total.R
+Rscript 066_plot_feature_distrbution_new_Pod_total_refine.R
+#--------------------------------
+python 067_XGBClassifier_not_fill_gain_weight_shap.py
+Rscript 068_plot_feature_importance_not_fill_gain_weight_shap.R
+Rscript 069_plot_feature_distrbution_new_Pod_total.R
+#
+
+
 
 Rscript 07_surv_plot_fill_3a_CV.R
 Rscript 07_surv_plot_na_3a.R

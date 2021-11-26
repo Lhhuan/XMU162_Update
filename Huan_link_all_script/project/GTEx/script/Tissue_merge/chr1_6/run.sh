@@ -2,26 +2,33 @@ perl 07_filter_chr1_11.pl #过滤"/home/huanhuan/project/RNA/eQTL_associated_int
 
 bash 6kmer.sh 
 perl 08_transform_kmer_result.pl
+perl 08_transform_kmer_result_other_n_community.pl
 Rscript 09_pie.R
 
+source activate huan_py3
 perl 11_split_cluster_and_homer.pl
 perl 11_split_cluster_and_homer_other_n_community.pl
 
-cp -r /share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/homer/ /share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/5_community/homer
-Rscript 12_heatmap_feature.R 
-Rscript 12_heatmap_feature_other_n_community.R
+perl 12_community_motif_overlap.pl
+perl 12_community_motif_specific.pl
 
-source activate  /home/huanhuan/miniconda3
-Rscript 13_tf_enrichment.R 
-Rscript 14_tf_enrichment_Plot.R 
-perl extract_
+14_cheack.R 
 
-#test
-findMotifsGenome.pl "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/6_community/homer/communities_1.bed" /home/huanhuan/ref_data/gencode/GRCh37.primary_assembly.genome.fa /home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Tissue_merge/chr1_6/6kmer/test/ -size 200 -mset  vertebrates
+# cp -r /share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/homer/ /share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/5_community/homer
+# Rscript 12_heatmap_feature.R 
+# Rscript 12_heatmap_feature_other_n_community.R
+
+# source activate  /home/huanhuan/miniconda3
+# Rscript 13_tf_enrichment.R 
+# Rscript 14_tf_enrichment_Plot.R 
+# perl extract_
+
+# #test
+# findMotifsGenome.pl "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/6_community/homer/communities_1.bed" /home/huanhuan/ref_data/gencode/GRCh37.primary_assembly.genome.fa /home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Tissue_merge/chr1_6/6kmer/test/ -size 200 -mset  vertebrates
 
 
-/share/apps/Homer/bin/findMotifsGenome.pl "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/6_community/homer/communities_1.bed" hg19 /home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Tissue_merge/chr1_6/6kmer/test2/ -size 200  -preparse -preparsedDir /home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Tissue_merge/chr1_6/6kmer/test3/
+# /share/apps/Homer/bin/findMotifsGenome.pl "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/6_community/homer/communities_1.bed" hg19 /home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Tissue_merge/chr1_6/6kmer/test2/ -size 200  -preparse -preparsedDir /home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Tissue_merge/chr1_6/6kmer/test3/
 
 
 
-findMotifsGenome.pl "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/6_community/homer/communities_1.bed" /home/huanhuan/ref_data/gencode/GRCh37.primary_assembly.genome.fa /home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Tissue_merge/chr1_6/6kmer/test/ -size 200 -mset  vertebrates
+# findMotifsGenome.pl "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/6_community/homer/communities_1.bed" /home/huanhuan/ref_data/gencode/GRCh37.primary_assembly.genome.fa /home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Tissue_merge/chr1_6/6kmer/test/ -size 200 -mset  vertebrates

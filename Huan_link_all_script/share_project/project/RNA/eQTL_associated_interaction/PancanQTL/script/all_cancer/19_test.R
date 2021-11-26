@@ -1,0 +1,15 @@
+library(ggplot2)
+library(dplyr)
+library(Rcpp)
+library(readxl)
+library(stringr)
+library(gcookbook)
+library(gridExtra)
+library(ggpubr)
+library(patchwork)
+# library(clusterProfiler)
+# library(org.Hs.eg.db)
+#-------------------------------------------------------
+setwd("/home/huanhuan/project/RNA/eQTL_associated_interaction/PancanQTL/output/cancer_total/share/total/")
+
+org <- read.table("18_all_tissue_cancer_hotspot_total_contain.bed.gz",header = T,sep = "\t") %>% as.data.frame()

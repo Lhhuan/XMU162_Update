@@ -8,7 +8,7 @@ library(gridExtra)
 library(data.table)
 library(Seurat)
 
-setwd("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/enrichment/figure/0_0.176/")
+setwd("/home/huanhuan/project/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/enrichment/figure/0_0.176/")
 org<-read.table("compare_0_0.176_jaacard_index_fisher_test_histone_tfbs_two_side.txt",header = T,sep = "\t") %>% as.data.frame()
 org$marker<-str_replace(org$marker,"CHROMATIN_Accessibility","CA")
 org <-org%>%arrange(OR) #order to plot
@@ -20,7 +20,7 @@ p_theme<-theme(panel.grid =element_blank())+theme(panel.grid.major = element_bla
 credplot.gg_main <- function(d){
   # org$marker<-str_replace(org$marker,"_"," ")
 p1<-ggplot(data=org, aes(x=marker,y=log(OR), ymin=log(conf_int_bottom) , ymax=log(conf_int_up)))
-  p1<-p1+geom_pointrange(size = 0.001) 
+  p1<-p1+geom_pointrange(size = 0.001)  +scale_y_continuous(limits=c(-0.15,1.2))
   p1<-p1+coord_flip()# +  # flip coordinates (puts labels on y axis)
   p1<-p1+ylab("Odds ratio (log scale)")+xlab("Markers") 
   p1 <-p1+p_theme+theme(axis.text.x = element_text(color = "black"),axis.text.y = element_text(color = "black"))

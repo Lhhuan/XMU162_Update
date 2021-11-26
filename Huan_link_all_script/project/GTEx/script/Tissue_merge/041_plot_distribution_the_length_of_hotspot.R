@@ -147,3 +147,18 @@ write.table(stat,"041_distribution_of_hotspot_length.txt",row.names = F, col.nam
 setwd("/home/huanhuan/project/GTEx/output/Tissue_merge/")
 len1 <-filter(org,hotspot_length <2)
 write.table(len1,"/home/huanhuan/project/GTEx/output/Tissue_merge/hotspot_len1.txt",row.names=F,col.names=F,quote=F,sep="\t")
+
+
+#------------------------------------------------
+org$chr= as.numeric(str_replace(org$CHR,"chr",""))
+
+a <- filter(org,hotspot_length >=6 & Log10_len <3.0948203803548)
+
+a_chr1_6 <-filter(a,chr<= 6)
+a_chr1_6<-a_chr1_6 %>% select(CHR,start,end)
+write.table(a_chr1_6,"/home/huanhuan/project/GTEx/output/Tissue_merge/hotspot_chr1_6/041_filter_length_6_1243_hotspot_chr1_6.bed",row.names=F,col.names=F,quote=F,sep="\t")
+a_chr1_11 <-filter(a,chr<= 11)
+a_chr1_11<-a_chr1_11 %>% select(CHR,start,end)
+write.table(a_chr1_11,"/home/huanhuan/project/GTEx/output/Tissue_merge/hotspot_chr1_11/041_filter_length_6_1243_hotspot_chr1_11.bed",row.names=F,col.names=F,quote=F,sep="\t")
+a<-a %>% select(CHR,start,end)
+write.table(a,"/home/huanhuan/project/GTEx/output/Tissue_merge/041_filter_length_6_1243_hotspot.bed",row.names=F,col.names=F,quote=F,sep="\t")

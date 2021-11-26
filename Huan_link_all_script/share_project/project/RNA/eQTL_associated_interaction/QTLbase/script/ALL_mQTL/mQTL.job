@@ -1,0 +1,9 @@
+#!/bin/bash
+#PBS -N mQTL
+#PBS -l nodes=1:compute-0-4:ppn=10
+#PBS -j oe
+#PBS -l walltime=10000:00:00
+
+cd /home/huanhuan/project/RNA/eQTL_associated_interaction/QTLbase/script/ALL_mQTL
+
+Rscript huan_NHPoisson_all_mQTL.R

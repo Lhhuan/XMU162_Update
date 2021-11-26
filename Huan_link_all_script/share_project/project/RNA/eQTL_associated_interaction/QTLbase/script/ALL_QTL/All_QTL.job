@@ -1,0 +1,10 @@
+#!/bin/bash
+#PBS -N ALL_QTL
+#PBS -l nodes=1:compute-0-8:ppn=10
+#PBS -j oe
+#PBS -l walltime=10000:00:00
+#PBS -l mem=250gb
+
+cd /home/huanhuan/project/RNA/eQTL_associated_interaction/QTLbase/script/ALL_QTL/
+
+Rscript huan_NHPoisson_all_QTL.R

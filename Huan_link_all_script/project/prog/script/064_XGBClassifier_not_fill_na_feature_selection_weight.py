@@ -149,7 +149,7 @@ model.fit(X_train,y_train)
 predictions = model.predict(X_test)
 accuracy = accuracy_score(y_test, predictions)
 print("Accuracy: %.2f%%" % (accuracy * 100.0))
-#75.66%
+#76.97%
 booster = model.get_booster()
 importance_weight = booster.get_score(importance_type="weight")
 im_weight_df = pd.DataFrame([importance_weight]).T
@@ -193,4 +193,4 @@ shap_values = explainer(X)
 
 feature_shap =pd.DataFrame(shap_values.values)
 feature_shap.columns =X.columns
-feature_shap.to_csv("../output/064_step3_weight_fill_feature_importance_shap_class.txt",sep="\t",index=None)
+feature_shap.to_csv("../output/064_step3_weight_not_fill_feature_importance_shap_class.txt",sep="\t",index=None)

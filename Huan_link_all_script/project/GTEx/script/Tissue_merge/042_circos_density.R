@@ -13,16 +13,16 @@ library(reshape2)
 library(Seurat)
 library(circlize)
 
-setwd("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Tissue_merge/")
+setwd("/home/huanhuan/project/GTEx/script/Tissue_merge/")
 
 
-tissue_merge <- read.table("../../output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge.bed.gz",header = F,sep = "\t") %>% as.data.frame()
+tissue_merge <- read.table("/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz",header = F,sep = "\t") %>% as.data.frame()
 #-----
 
 
 #--------------------------
 circos.clear()
-pdf("./figure/042_circos_hotspot_density_all_tissue_extend_10kb.pdf")
+pdf("./figure/042_circos_hotspot_density_all_tissue_0.2.pdf")
 par(mar = c(2, 2, 2, 2))
 circos.par(start.degree = 90)
 circos.initializeWithIdeogram(species= "hg19",chromosome.index = paste0("chr", 1:22))
@@ -34,7 +34,7 @@ print("finish")
 
 #----------------------------
 circos.clear()
-pdf("./figure/042_circos_hotspot_density_all_tissue_extend_10kb_0.3.pdf")
+pdf("./figure/042_circos_hotspot_density_all_tissue_0.3.pdf")
 par(mar = c(2, 2, 2, 2))
 circos.par(start.degree = 90)
 circos.initializeWithIdeogram(species= "hg19",chromosome.index = paste0("chr", 1:22))
@@ -45,7 +45,7 @@ dev.off()
 print("finish")
 
 circos.clear()
-pdf("./figure/042_circos_hotspot_density_all_tissue_extend_10kb_0.4.pdf")
+pdf("./figure/042_circos_hotspot_density_all_tissue_0.4.pdf")
 par(mar = c(2, 2, 2, 2))
 circos.par(start.degree = 90)
 circos.initializeWithIdeogram(species= "hg19",chromosome.index = paste0("chr", 1:22))

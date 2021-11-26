@@ -6,11 +6,11 @@ use utf8;
 use File::Basename;
 use List::Util qw/max min/;
 use Env qw(PATH);
-use Parallel::ForkManager;
+# use Parallel::ForkManager;
 
 # my %hash1;
 
-for(my $i=0;$i<6;$i++){
+for(my $i=1;$i<6;$i++){
     # print "$i\n";
     my $f1 = "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/hotspot/interval_18/chr1_6/kmer/6/communities.bed.gz";
     # open my $I1, '<', $f1 or die "$0 : failed to open input file '$f1' : $!\n"; 
@@ -42,7 +42,7 @@ for(my $i=0;$i<6;$i++){
         system "mkdir -p $output_dir";
     }
 
-    system "findMotifsGenome.pl $fo1 /home/huanhuan/ref_data/gencode/GRCh37.primary_assembly.genome.fa $output_dir -size 200";
+    system "findMotifsGenome.pl $fo1 hg19 $output_dir -size given";
     print "$i finish\n";
 }
 

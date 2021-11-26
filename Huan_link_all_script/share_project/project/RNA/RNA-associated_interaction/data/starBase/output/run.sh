@@ -1,0 +1,2 @@
+head -1  ../normalized/06_ENCORI_hg19_CLIP-seq_all_miRNA_target_normalized.txt > miRNA_circRNA.txt
+grep circRNA  ../normalized/06_ENCORI_hg19_CLIP-seq_all_miRNA_target_normalized.txt >>miRNA_circRNA.txt

@@ -1,0 +1,3 @@
+perl 01_filter_significant_eQTL_in_lung_and_whole_blood.pl ##过滤"../../data/GTEx_Analysis_v8_eQTL_hg19/${tissue}${suffix}"中显著的eQTL，得"/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/${tissue}/Cis_eQTL/significant_eQTL.txt.gz"
+perl 02_annotation_non_factor_split_interval_18_different_cutoff.pl ##对"/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/${tissue}/Cis_eQTL/significant_eQTL.txt.gz"进行anno得../../output/${tissue}/Cis_eQTL/eQTL_annotation/
+perl 03_count_eQTL_hit_factor.pl 

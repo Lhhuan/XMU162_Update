@@ -1,0 +1,23 @@
+library(ggplot2)
+library(dplyr)
+library(Rcpp)
+library(readxl)
+library(stringr)
+library(gcookbook)
+library(gridExtra)
+library(ggpubr)
+library(tibble)
+library(qqman)
+
+setwd("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Whole_blood/")
+
+org<-read.table("/share/data0/GTEx/data/GTEx_Analysis_v8_eQTL_hg19/Whole_Blood.v8.signif_variant_gene_pairs.txt.gz",header = T,sep = "\t") %>% as.data.frame()
+        # org_pg <- group_by(org_p, SNP_pos)
+org1<-org%>%dplyr::select(Chr,Pos,pval_nominal)%>%group_by(Chr,Pos)%>%summarise(min_p = min(pval_nominal))%>%as.data.frame()
+org1<-add_column(org1, SNP = paste(org1$Chr,org1$Pos,sep="_"), .before = 1)
+colnames(org1)<-c("SNP","CHR","BP","P")
+number <-c(1:22)
+org1$CHR <-as.character(org1$CHR)
+org2 <- org1[org1$CHR%in%number,]
+org2$CHR <-as.numeric(org2$CHR)
+manhattan(org2)

@@ -14,7 +14,7 @@ my $tissue = "Tissue_merge";
 
 
 
-my $input_dir = "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/annotation/";
+my $input_dir = "/share/data0/QTLbase/huan/GTEx/Tissue_merge/Cis_eQTL/annotation/original";
 
 # my @markers = ("H3K27ac","H3K27me3","H3K36me3","H3K4me1","H3K4me3","H3K9ac","H3K9me3");
 my @markers = ("H3K27ac","H3K27me3","H3K36me3","H3K4me1","H3K4me3","H3K9ac","H3K9me3","CHROMATIN_Accessibility","TFBS","CTCF");
@@ -29,7 +29,7 @@ open my $O1, '>', $fo1 or die "$0 : failed to open output file '$fo1' : $!\n";
 print $O1 "Marker\tcount\n";
 
 foreach my $mark (@markers){
-    my $input_file_base_name = "${mark}_Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge.bed.gz";
+    my $input_file_base_name = "${mark}_Tissue_merge_segment_hotspot_cutoff_0.176_sorted.bed.gz";
     my $input_file = "$input_dir/$input_file_base_name";
     #----------------------------
     my @arg1s = stat ($input_file);
