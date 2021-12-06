@@ -6,39 +6,22 @@ library(Seurat)
 library(cowplot)
 library(ggpubr)
 library(Hmisc)
+library("survival")
+library("survminer")
+
 setwd("/home/huanhuan/project/prog/output/")
 dat <- read.csv("01_add_age_raw_pfs_os_filter_grade_mergrPod_3A.txt",sep="\t")
 load("shap_weight_overlap_feature.Rdata")
 
 pod_total0=which(dat$new_pod_total==0)
 set.seed(111)
-test_number0 <-sample(x=pod_total0, round(length(pod_total0)*1/3),replace = F)
+test_number0 <-sample(x=pod_total0, round(length(pod_total0)*1/2),replace = F)
 pod_total1=which(dat$new_pod_total!=0)
 set.seed(111)
-test_number1 <-sample(x=pod_total1, round(length(pod_total1)*1/3),replace = F)
+test_number1 <-sample(x=pod_total1, round(length(pod_total1)*1/2),replace = F)
 
 test_set_number = c(test_number0,test_number1)
 train_set_number =setdiff(1:nrow(dat),test_set_number)
-
-
-dat$pod_total3 <-dat$pod_total
-dat$pod_total3[grep("1|2",dat$pod_total3)] <- 0
-p_theme<-theme(panel.grid =element_blank())+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
-                                                  panel.background = element_blank(), 
-                                                  axis.title.y = element_text(size = 10),
-                                                  axis.title.x = element_text(size = 10),
-                                                  axis.line = element_line(colour = "black"),legend.position ="none",plot.title = element_text(hjust = 0.5))
-
-a <-table(dat$pod_total)%>%as.data.frame()
-pod_total_new  <-table(dat$new_pod_total)%>%as.data.frame()
-colnames(pod_total_new) <-c("new_pod_total","number")
-pod_total_new$ratio <-pod_total_new$number/sum(pod_total_new$number)
-
-
-#----------------------------------------------------------
-pod_total3<-table(dat$pod_total3)%>%as.data.frame()
-colnames(pod_total3) <-c("pod_total3","number")
-pod_total3$ratio <-pod_total3$number/sum(pod_total3$number)
 
 #-------------
 
@@ -76,7 +59,7 @@ plist[[11]] <-ggplot(data = a, mapping = aes(x=Var1,y=Freq)) + geom_bar(stat = '
   theme(axis.text.y = element_text(color="black",size=8),
     axis.text.x = element_text(color="black",size=8))
 
-pdf("./figure/066_density_plot_of_features.pdf",width=12, height=9)
+pdf("./figure/test/066_density_plot_of_features.pdf",width=12, height=9)
 # CombinePlots(plist,ncol=3,nrow=2)
 p2<-gridExtra::marrangeGrob(plist,nrow=3,ncol=4,top="Distribution of features")
 print(p2)
@@ -91,7 +74,7 @@ weight_a$Ratio <- weight_a$Feature_importance/sum(weight_a$Feature_importance)
 weight_a$Ratio_adjust1 <- round(weight_a$Ratio *100,2)
 weight_a$Ratio_adjust2 <- round(weight_a$Feature_importance /5)
 # weight_a$Ratio_adjust2[weight_a$Feature_importance==25] <-3
-write.table(weight_a,"069_feature_ratio.txt",col.names=T,row.names=F,quote=F,sep="\t")
+write.table(weight_a,"./figure/test/069_feature_ratio.txt",col.names=T,row.names=F,quote=F,sep="\t")
 
 c_cutoff <-function(i){
   data <-dat[,overlap_fe[i]]%>%as.data.frame()
@@ -119,7 +102,7 @@ ff1 <-lapply(6,c_cutoff_d)
 cutoff <-bind_rows(cutoff,ff1)
 cutoff <-bind_rows(cutoff, data.frame(feature="Bsym",cutoff1=0))
 cutoff <-bind_rows(cutoff, data.frame(feature="BM",cutoff1=0))
-write.table(cutoff,"066_cutoff_new_podtotal.txt",col.names=T,row.names=F,quote=F,sep="\t")
+write.table(cutoff,"./figure/test/066_cutoff_new_podtotal.txt",col.names=T,row.names=F,quote=F,sep="\t")
 #------------------------------------------------------------------new_cutoff
 dat$B2mg_c <-dat$B2mg
 dat$B2mg_c[dat$B2mg_c <=3.4]=0
@@ -183,13 +166,13 @@ dat1 <-dat[order(dat$Predict_Pod_total_f),]
 dat1[1:round(nrow(dat)*0.80434783),"Predict_Pod_total_f"]=0
 a=round(nrow(dat)*0.80434783) +1
 dat1[a:nrow(dat),"Predict_Pod_total_f"]=1
-save(dat,file="069_count_predict_pod_total_new.Rdata")
+save(dat,file="./figure/test/069_count_predict_pod_total_new.Rdata")
 
 library("survival")
 library("survminer")
 
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=dat1)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_pfs_new_cutoff.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_new_cutoff.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -199,7 +182,7 @@ print(p1)
 dev.off()
 #------------------------------
 fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=dat1)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_Os_new_cutoff.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_new_cutoff.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -213,12 +196,16 @@ test=dat[test_set_number,]
 test$FLIPI1_re <- test$FLIPI1
 test$FLIPI2_re <-test$FLIPI2
 #--------------------------------------------------------------------------------1
+# test$FLIPI1_re[grep("1",test$FLIPI1)] <- 0
+# # test$FLIPI1_re[grep("2",test$FLIPI1)] <- 1
+# test$FLIPI1_re[grep("2|3|4|5",test$FLIPI1)] <- 1
+
 test$FLIPI1_re[grep("1",test$FLIPI1)] <- 0
 test$FLIPI1_re[grep("2",test$FLIPI1)] <- 1
 test$FLIPI1_re[grep("3|4|5",test$FLIPI1)] <- 2
 
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ FLIPI1_re, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_pfs_FLIPI1.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_FLIPI1.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -229,7 +216,7 @@ print(p1)
 dev.off()
 
 fit <- survfit(Surv(os_month_new, dead) ~ FLIPI1_re, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_os_FLIPI1.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_os_FLIPI1.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -239,12 +226,16 @@ p1 <- ggsurvplot(fit,
 print(p1) 
 dev.off()
 #--------------------------------------------------------------------------------2
+# test$FLIPI2_re[grep("1",test$FLIPI2)] <- 0
+# # test$FLIPI2_re[grep("2",test$FLIPI2)] <- 1
+# test$FLIPI2_re[grep("2|3|4|5",test$FLIPI2)] <- 1
+
 test$FLIPI2_re[grep("1",test$FLIPI2)] <- 0
 test$FLIPI2_re[grep("2",test$FLIPI2)] <- 1
 test$FLIPI2_re[grep("3|4|5",test$FLIPI2)] <- 2
 
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ FLIPI2_re, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_pfs_FLIPI2.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_FLIPI2.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -255,7 +246,7 @@ print(p1)
 dev.off()
 
 fit <- survfit(Surv(os_month_new, dead) ~ FLIPI2_re, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_os_FLIPI2.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_os_FLIPI2.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -288,17 +279,18 @@ train_new_pod$ratio <-train_new_pod$number/sum(train_new_pod$number)
 
 
 train <-train[order(train$predict_Podtotal_new),]
-cutoff_y = round(train[271,"Predict_Pod_total_f"])
-
-test$Predict_Pod_total_f[test$Predict_Pod_total_f<cutoff_y ]=0
-test$Predict_Pod_total_f[test$Predict_Pod_total_f>=cutoff_y]=1
+# cutoff_y = round(train[271,"Predict_Pod_total_f"])
+# cutoff_y = round(train[136,"Predict_Pod_total_f"])
+cutoff_y = round(train[203,"Predict_Pod_total_f"])
+test$Predict_Pod_total_f[test$Predict_Pod_total_f<=cutoff_y ]=0
+test$Predict_Pod_total_f[test$Predict_Pod_total_f>cutoff_y]=1
 
 
 library("survival")
 library("survminer")
 
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_pfs_adjust1_new_cutoff_y_32.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust1_new_cutoff_y_32.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -309,7 +301,7 @@ print(p1)
 dev.off()
 #------------------------------
 fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_Os_adjust1_new_cutoff_y_32.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust1_new_cutoff_y_32.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -343,13 +335,15 @@ train_new_pod$ratio <-train_new_pod$number/sum(train_new_pod$number)
 
 
 train <-train[order(train$predict_Podtotal_new),]
-cutoff_y = round(train[271,"Predict_Pod_total_f"])
+# cutoff_y = round(train[271,"Predict_Pod_total_f"])
+# cutoff_y = round(train[136,"Predict_Pod_total_f"])
+cutoff_y = round(train[203,"Predict_Pod_total_f"])
+test$Predict_Pod_total_f[test$Predict_Pod_total_f<=cutoff_y ]=0
+test$Predict_Pod_total_f[test$Predict_Pod_total_f>cutoff_y]=1
 
-test$Predict_Pod_total_f[test$Predict_Pod_total_f<cutoff_y ]=0
-test$Predict_Pod_total_f[test$Predict_Pod_total_f>=cutoff_y]=1
 
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_pfs_adjust2_new_cutoff_y14.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust2_new_cutoff_y14.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -360,7 +354,7 @@ print(p1)
 dev.off()
 #------------------------------
 fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_Os_adjust2_new_cutoff_y14.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust2_new_cutoff_y14.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -395,15 +389,19 @@ train_new_pod$ratio <-train_new_pod$number/sum(train_new_pod$number)
 
 
 train <-train[order(train$predict_Podtotal_new),]
-cutoff_y = round(train[271,"Predict_Pod_total_f"])
+# cutoff_y = round(train[271,"Predict_Pod_total_f"])
+# cutoff_y = round(train[305,"Predict_Pod_total_f"])
+# cutoff_y = round(train[136,"Predict_Pod_total_f"])
+cutoff_y = round(train[203,"Predict_Pod_total_f"])
 
-test$Predict_Pod_total_f[test$Predict_Pod_total_f<cutoff_y ]=0
-test$Predict_Pod_total_f[test$Predict_Pod_total_f>=cutoff_y]=1
+
+test$Predict_Pod_total_f[test$Predict_Pod_total_f<=cutoff_y ]=0
+test$Predict_Pod_total_f[test$Predict_Pod_total_f>cutoff_y]=1
 
 
 
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_pfs_adjust3_new_cutoff_y7.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust3_new_cutoff_y7.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -414,7 +412,7 @@ print(p1)
 dev.off()
 #------------------------------
 fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_Os_adjust3_new_cutoff_y7.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust3_new_cutoff_y7.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -448,12 +446,13 @@ train_new_pod$ratio <-train_new_pod$number/sum(train_new_pod$number)
 
 
 train <-train[order(train$predict_Podtotal_new),]
-cutoff_y = round(train[271,"Predict_Pod_total_f"])
-
-test$Predict_Pod_total_f[test$Predict_Pod_total_f<cutoff_y ]=0
-test$Predict_Pod_total_f[test$Predict_Pod_total_f>=cutoff_y]=1
+# cutoff_y = round(train[271,"Predict_Pod_total_f"])
+# cutoff_y = round(train[136,"Predict_Pod_total_f"])
+cutoff_y = round(train[203,"Predict_Pod_total_f"])
+test$Predict_Pod_total_f[test$Predict_Pod_total_f<=cutoff_y ]=0
+test$Predict_Pod_total_f[test$Predict_Pod_total_f>cutoff_y]=1
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_pfs_adjust4_new_cutoff_y7.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust4_new_cutoff_y7.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",
@@ -464,7 +463,286 @@ print(p1)
 dev.off()
 #------------------------------
 fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=test)
-pdf("./figure/069_pre_survival_3a_pod_total_new_sum_Os_adjust4_new_cutoff_y7.pdf")
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust4_new_cutoff_y7.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Os",
+                 xlab = "Time (Months)",
+                 xlim=c(0,110))
+print(p1) 
+dev.off()
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#weight_a
+dat$B2mg_c_f <- dat$B2mg_c *0.09905660
+dat$LN_num_c_f <-dat$LN_num_c *0.13207547
+dat$LDH_c_f <- dat$LDH_c *0.24528302
+dat$age_raw_c_f <- dat$age_raw_c *0.06603774
+dat$Lym_Mono_c_f <-dat$Lym_Mono_c *0.11792453
+dat$HGB_c_f<- dat$HGB_c *0.06132075
+dat$Ki.67_c_f<- dat$Ki.67_c *0.02830189
+dat$SPD_c_f<- dat$SPD_c *0.11320755
+dat$SUVmax_c_f<- dat$SUVmax_c *0.01886792
+dat$Bsym_c_f <- dat$Bsym*0.08962264
+dat$BM_c_f<-dat$BM*0.02830189
+# dat$Bsym_c_f <- dat$Bsym
+# dat$BM_c_f<-dat$BM
+#-------------
+dat_s<-dat[,c("B2mg_c_f","LN_num_c_f","LDH_c_f","age_raw_c_f","Lym_Mono_c_f","HGB_c_f","Ki.67_c_f","SPD_c_f","SUVmax_c_f","Bsym_c_f","BM_c_f")]
+
+
+dat$predict_Podtotal_new <- base::rowSums(dat_s, na.rm = TRUE)
+dat$Predict_Pod_total_f <-dat$predict_Podtotal_new
+dat1 <-dat[order(dat$Predict_Pod_total_f),]
+dat1[1:round(nrow(dat)*0.80434783),"Predict_Pod_total_f"]=0
+a=round(nrow(dat)*0.80434783) +1
+dat1[a:nrow(dat),"Predict_Pod_total_f"]=1
+save(dat,file="069_count_predict_pod_total_new.Rdata")
+
+library("survival")
+library("survminer")
+
+fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_new_cutoff.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Pfs",
+                 xlab = " Time (Months)")
+print(p1) 
+dev.off()
+#------------------------------
+fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_new_cutoff.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Os",
+                 xlab = "Time (Months)",
+                 xlim=c(0,110))
+print(p1) 
+dev.off()
+
+# #------------------------------------------------------------------------------------------------------------------------------------------------------y cutoff11
+dat$LDH_c_f <- dat$LDH_c * 24.53
+dat$LN_num_c_f <-dat$LN_num_c *13.21
+dat$Lym_Mono_c_f <-dat$Lym_Mono_c*11.79
+dat$SPD_c_f<- dat$SPD_c *11.32
+dat$B2mg_c_f <- dat$B2mg_c*9.91
+dat$Bsym_c_f <- dat$Bsym*8.96
+dat$age_raw_c_f <- dat$age_raw_c*6.60
+dat$HGB_c_f<- dat$HGB_c *6.13
+dat$Ki.67_c_f<- dat$Ki.67_c *2.83
+dat$BM_c_f<-dat$BM*2.83
+dat$SUVmax_c_f<- dat$SUVmax_c *1.89
+#-------------
+dat_s<-dat[,c("B2mg_c_f","LN_num_c_f","LDH_c_f","age_raw_c_f","Lym_Mono_c_f","HGB_c_f","Ki.67_c_f","SPD_c_f","SUVmax_c_f","Bsym_c_f","BM_c_f")]
+dat$predict_Podtotal_new <- base::rowSums(dat_s, na.rm = TRUE)
+dat$Predict_Pod_total_f <-dat$predict_Podtotal_new/100
+dat1 <-dat[order(dat$Predict_Pod_total_f),]
+dat1[1:round(nrow(dat)*0.80434783),"Predict_Pod_total_f"]=0
+a=round(nrow(dat)*0.80434783) +1
+dat1[a:nrow(dat),"Predict_Pod_total_f"]=1
+
+
+library("survival")
+library("survminer")
+
+fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust1_new_cutoff.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Pfs",
+                 xlab = " Time (Months)")
+print(p1) 
+dev.off()
+#------------------------------
+fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust1_new_cutoff.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Os",
+                 xlab = "Time (Months)",
+                 xlim=c(0,110))
+print(p1) 
+dev.off()
+
+#---------------------------------------------------------Ratio_adjust2
+dat$LDH_c_f <- dat$LDH_c * 10
+dat$LN_num_c_f <-dat$LN_num_c *6
+dat$Lym_Mono_c_f <-dat$Lym_Mono_c*5
+dat$SPD_c_f<- dat$SPD_c *5
+dat$B2mg_c_f <- dat$B2mg_c*4
+dat$Bsym_c_f <- dat$Bsym*4
+dat$age_raw_c_f <- dat$age_raw_c*3
+dat$HGB_c_f<- dat$HGB_c *3
+dat$Ki.67_c_f<- dat$Ki.67_c *1
+dat$BM_c_f<-dat$BM*1
+dat$SUVmax_c_f<- dat$SUVmax_c *1
+#-------------
+dat_s<-dat[,c("B2mg_c_f","LN_num_c_f","LDH_c_f","age_raw_c_f","Lym_Mono_c_f","HGB_c_f","Ki.67_c_f","SPD_c_f","SUVmax_c_f","Bsym_c_f","BM_c_f")]
+dat$predict_Podtotal_new <- base::rowSums(dat_s, na.rm = TRUE)
+dat$Predict_Pod_total_f <-dat$predict_Podtotal_new
+# dat$Predict_Pod_total_f <-dat$predict_Podtotal_new/43
+dat1 <-dat[order(dat$Predict_Pod_total_f),]
+dat1[1:round(nrow(dat)*0.80434783),"Predict_Pod_total_f"]=0
+a=round(nrow(dat)*0.80434783) +1
+dat1[a:nrow(dat),"Predict_Pod_total_f"]=1
+
+fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust2_new_cutoff.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Pfs",
+                 xlab = " Time (Months)")
+print(p1) 
+dev.off()
+#------------------------------
+fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust2_new_cutoff.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Os",
+                 xlab = "Time (Months)",
+                 xlim=c(0,110))
+print(p1) 
+dev.off()
+#---------------------------------------------------------
+dat_s<-dat[,c("B2mg_c_f","LN_num_c_f","LDH_c_f","age_raw_c_f","Lym_Mono_c_f","HGB_c_f","Ki.67_c_f","SPD_c_f","SUVmax_c_f","Bsym_c_f","BM_c_f")]
+dat$predict_Podtotal_new <- base::rowSums(dat_s, na.rm = TRUE)
+dat$Predict_Pod_total_f <-dat$predict_Podtotal_new
+dat1 <-dat[order(dat$Predict_Pod_total_f),]
+dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f<22 ]=0
+dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f>=22 ]=1
+
+fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust2_new_cutoff_ycutoff_22.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Pfs",
+                 xlab = " Time (Months)")
+print(p1) 
+dev.off()
+#------------------------------
+fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust2_new_cutoff_ycutoff_22.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Os",
+                 xlab = "Time (Months)",
+                 xlim=c(0,110))
+print(p1) 
+dev.off()
+
+#------------------------------------------------------------------------------------------------------------------------------------------------------------adjust3
+dat$LDH_c_f <- dat$LDH_c * 4
+dat$LN_num_c_f <-dat$LN_num_c *3
+dat$Lym_Mono_c_f <-dat$Lym_Mono_c*3
+dat$SPD_c_f<- dat$SPD_c *3
+dat$B2mg_c_f <- dat$B2mg_c*2
+dat$Bsym_c_f <- dat$Bsym*2
+dat$age_raw_c_f <- dat$age_raw_c*2
+dat$HGB_c_f<- dat$HGB_c *2
+dat$Ki.67_c_f<- dat$Ki.67_c *1
+dat$BM_c_f<-dat$BM*1
+dat$SUVmax_c_f<- dat$SUVmax_c *1
+dat_s<-dat[,c("B2mg_c_f","LN_num_c_f","LDH_c_f","age_raw_c_f","Lym_Mono_c_f","HGB_c_f","Ki.67_c_f","SPD_c_f","SUVmax_c_f","Bsym_c_f","BM_c_f")]
+dat$predict_Podtotal_new <- base::rowSums(dat_s, na.rm = TRUE)
+# dat$Predict_Pod_total_f <-dat$predict_Podtotal_new/33
+dat$Predict_Pod_total_f <-dat$predict_Podtotal_new
+dat1 <-dat[order(dat$Predict_Pod_total_f),]
+dat1[1:round(nrow(dat)*0.80434783),"Predict_Pod_total_f"]=0
+a=round(nrow(dat)*0.80434783) +1
+dat1[a:nrow(dat),"Predict_Pod_total_f"]=1 
+fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust3_new_cutoff.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Pfs",
+                 xlab = " Time (Months)")
+print(p1) 
+dev.off()
+#------------------------------
+fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust3_new_cutoff.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Os",
+                 xlab = "Time (Months)",
+                 xlim=c(0,110))
+print(p1) 
+dev.off()
+#------------------------------------------------------------------------------------------------------------------------------------------------------y cutoff12
+dat1 <-dat[order(dat$Predict_Pod_total_f),]
+dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f<12 ]=0
+dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f>=12 ]=1
+
+# dat1$Predict_Pod_total_f[dat1$Predict_Pod_total_f>=16 ]=4
+fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust3_new_cutoff_Y_cutoff12.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Pfs",
+                 xlab = "Time (Months)",
+                xlim=c(0,120))
+print(p1) 
+dev.off()
+#------------------------------
+fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust3_new_cutoff_Y_cutoff12.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Os",
+                 xlab = "Time (Months)",
+                 xlim=c(0,110))
+print(p1) 
+dev.off()
+
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------adjust4
+
+dat$LDH_c_f <- dat$LDH_c * 5
+dat$LN_num_c_f <-dat$LN_num_c *3
+dat$Lym_Mono_c_f <-dat$Lym_Mono_c*3
+dat$SPD_c_f<- dat$SPD_c *2
+dat$B2mg_c_f <- dat$B2mg_c*2
+dat$Bsym_c_f <- dat$Bsym*2
+dat$age_raw_c_f <- dat$age_raw_c*1
+dat$HGB_c_f<- dat$HGB_c *1
+dat$Ki.67_c_f<- dat$Ki.67_c *1
+dat$BM_c_f<-dat$BM*1
+dat$SUVmax_c_f<- dat$SUVmax_c *1
+dat_s<-dat[,c("B2mg_c_f","LN_num_c_f","LDH_c_f","age_raw_c_f","Lym_Mono_c_f","HGB_c_f","Ki.67_c_f","SPD_c_f","SUVmax_c_f","Bsym_c_f","BM_c_f")]
+dat$predict_Podtotal_new <- base::rowSums(dat_s, na.rm = TRUE)
+# dat$Predict_Pod_total_f <-dat$predict_Podtotal_new/33
+dat$Predict_Pod_total_f <-dat$predict_Podtotal_new
+dat1 <-dat[order(dat$Predict_Pod_total_f),]
+dat1[1:round(nrow(dat)*0.80434783),"Predict_Pod_total_f"]=0
+a=round(nrow(dat)*0.80434783) +1
+dat1[a:nrow(dat),"Predict_Pod_total_f"]=1 
+fit <- survfit(Surv(pfs_month_new, pro_status) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_pfs_adjust4_new_cutoff.pdf")
+p1 <- ggsurvplot(fit,
+                  pval = TRUE,
+                 legend.title="Pod total new",
+                 title="3a: Pfs",
+                 xlab = " Time (Months)")
+print(p1) 
+dev.off()
+#------------------------------
+fit <- survfit(Surv(os_month_new, dead) ~ Predict_Pod_total_f, data=dat1)
+pdf("./figure/test/069_pre_survival_3a_pod_total_new_sum_Os_adjust4_new_cutoff.pdf")
 p1 <- ggsurvplot(fit,
                   pval = TRUE,
                  legend.title="Pod total new",

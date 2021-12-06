@@ -1,0 +1,36 @@
+library(ggplot2)
+library(Rcpp)
+library(readxl)
+library(dplyr)
+library(stringr)
+library(ggpubr)
+library(gridExtra)
+library(ggpval)
+library(VennDiagram)
+setwd("/home/huanhuan/project/GTEx/script/Tissue_merge/chr1_6/6kmer/4_community")
+
+
+tf4 <-read.table("knowResult_merge.txt",header = T,sep = "\t") %>% as.data.frame()
+tf3 <-read.table("/home/huanhuan/project/GTEx/script/Tissue_merge/chr1_6/6kmer/3_community/knowResult_merge.txt",header = T,sep = "\t") %>% as.data.frame()
+
+tf3<-filter(tf3,community <3)
+tf4 <-filter(tf4,community >=3)
+tf <- bind_rows(tf3,tf4)
+save(tf,file="bind_tf4.Rdata")
+tf$key =paste(tf$Motif_Name,tf$Consensus,sep="_")
+ff <-function(i){
+    i_c  <- filter(tf,community==i)%>%select(key)%>%as.matrix()%>%as.vector()    #%>%as.character()
+    return(i_c)
+}
+AAA <- list(Community1=ff(1),Community2=ff(2),Community3=ff(3),Community4=ff(4))
+# AAA <- list(C1=ff(1),C2=ff(2),C3=ff(3),C4=ff(4),C5=ff(5))
+# my_c2=c(colors()[616], colors()[38], colors()[468],"#beca5c")
+# my_c2=c(colors()[616], colors()[38], colors()[468],"#beca5c","#80ED99")
+# my_c2 =c("dodgerblue", "goldenrod1", "darkorange1", "seagreen3", "orchid3")
+my_c2 =c("dodgerblue", "goldenrod1", "darkorange1", "seagreen3")
+
+pdf("10_Venn_community4_motif.pdf",height=5,width=5)
+ P1 <- venn.diagram(x=AAA,filename =NULL,lwd=1,lty=2,col=my_c2 ,fill=my_c2,reverse=TRUE,cex=0.8,fontface = "bold",cat.cex=0.9,cat.fontfamily = "serif")
+#  print(P1)
+grid.draw(P1)
+dev.off()
