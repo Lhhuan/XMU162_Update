@@ -26,6 +26,9 @@ dat$stage_s[is.na(dat$stage_s) &dat$new_pod_total==1] =1
 dat$HGB_s =NA
 dat$HGB_s[dat$HGB <120]=1
 dat$HGB_s[dat$HGB >=120]=0
+dat$HGB_s[is.na(dat$HGB_s)]=dat$HGB0[is.na(dat$HGB_s)]
+dat$HGB_s[is.na(dat$HGB_s) &dat$new_pod_total==0] =0
+dat$HGB_s[is.na(dat$HGB_s) &dat$new_pod_total==1] =1
 
 dat$LDH_s =NA
 dat$LDH_s[dat$LDH <=245]= 0
@@ -40,7 +43,9 @@ dat$LN_num_s[dat$LN_num <=4]= 0
 dat$LN_num_s[dat$LN_num >4]= 1
 dat$LN_num_s[is.na(dat$LN_num_s)&dat$stage_s==1]=1
 dat$LN_num_s[is.na(dat$LN_num_s)&dat$stage_s==0]=0
+dat$Lym_Mono <- dat$Lym/dat$Mono
 
+save(dat,file="071_add_model_index_age_raw_pfs_os_filter_grade_mergrPod_all.Rdata")
 dat$FLIPI1_count <- base::rowSums(dat[,c("age_s","stage_s","HGB_s","LDH_s","LN_num_s")], na.rm = TRUE)
 
 dat$diff_f1 <-dat$FLIPI1_count -dat$FLIPI1

@@ -62,9 +62,7 @@ get_nhp <- function(j = NULL, org = NULL, cutoff = NULL, name = NULL){
         #-------------------------------------- snp has unique p，min_p
         org_p <- org2%>%dplyr::select(SNP_pos,Pvalue)%>%unique()
         rm(org2)
-        org_pg <- group_by(org_p, SNP_pos)
-        org1<-summarise(org_pg,min_p = min(Pvalue))%>%as.data.frame()
-        rm(org_pg)
+        org1<-group_by(org_p, SNP_pos) %>% summarise(min_p = min(Pvalue))%>%as.data.frame()
         #-----------------------------------
         org1 <- org1[order(org1$SNP_pos), ]
         BarEv <- POTevents.fun(T = -log10(org1$min_p), thres = cutoff, date = org1$SNP_pos) #POTevents.fun
@@ -83,9 +81,9 @@ get_nhp <- function(j = NULL, org = NULL, cutoff = NULL, name = NULL){
         print(i)
     }
     # print(file)
-    output_file1<-paste("NHPoisson_POTevents_Px_cutoff_",cutoff,"_",name,".txt", sep = "")
-    output_file2<-paste("NHPoisson_emplambda_interval_",j,"_cutoff_",cutoff,"_",name,".txt", sep = "")
-    output_file3<-paste("NHPoisson_POTevents_inddat_cutoff_",cutoff,"_",name,".txt", sep = "")
+    output_file1<-paste("NHPoisson_POTevents_Px_cutoff_7.3_",name,".txt", sep = "")
+    output_file2<-paste("NHPoisson_emplambda_interval_",j,"_cutoff_7.3_",name,".txt", sep = "")
+    output_file3<-paste("NHPoisson_POTevents_inddat_cutoff_7.3_",name,".txt", sep = "")
     write.table(rs1,output_file1,row.names = F, col.names = T,quote =F,sep="\t")
     write.table(rs2,output_file2,row.names = F, col.names = T,quote =F,sep="\t")
     write.table(rs3,output_file3,row.names = F, col.names = T,quote =F,sep="\t")
@@ -103,20 +101,21 @@ get_nhp <- function(j = NULL, org = NULL, cutoff = NULL, name = NULL){
 # for(tissue in tissues){
 ProcessBedGz <- function(tissue = NULL){
     print(c(tissue,"start"))
-    pwd_dir <-paste0("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/",tissue,"/Cis_eQTL/NHP/")
+    pwd_dir <-paste0("/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/",tissue,"/Cis_eQTL/NHP/")
+    unlink(pwd_dir,recursive = T)
     dir.create(pwd_dir,recursive = T)
     setwd(pwd_dir)
     org <- read.table(paste0("../../../",tissue,"/",tissue,"_cis_eQTL_1kg_Completion.txt.gz"),header = T,sep = "\t") %>% as.data.frame()
-    cutoff =7.3
+    cutoff =-log10(5e-8)
     num = 18
     get_nhp(j = num, org = org, cutoff = cutoff, name = tissue)
     print(c(tissue,"end"))
 }
 
-tissues <- c("Adipose_Subcutaneous","Adipose_Visceral_Omentum","Adrenal_Gland","Artery_Aorta","Brain_Anterior_cingulate_cortex_BA24","Brain_Caudate_basal_ganglia","Brain_Cerebellum","Brain_Cortex","Brain_Frontal_Cortex_BA9","Brain_Hippocampus","Brain_Spinal_cord_cervical_c-1","Brain_Substantia_nigra","Cells_EBV-transformed_lymphocytes","Colon_Sigmoid","Colon_Transverse","Esophagus_Gastroesophageal_Junction","Esophagus_Mucosa","Esophagus_Muscularis","Heart_Atrial_Appendage","Heart_Left_Ventricle","Kidney_Cortex","Muscle_Skeletal","Skin_Not_Sun_Exposed_Suprapubic","Skin_Sun_Exposed_Lower_leg","Small_Intestine_Terminal_Ileum","Spleen","Stomach","Uterus","Prostate"，"Brain_Cerebellar_Hemisphere","Testis","Brain_Nucleus_accumbens_basal_ganglia","Minor_Salivary_Gland","Cells_Cultured_fibroblasts","Pituitary","Vagina","Thyroid","Artery_Tibial","Artery_Coronary","Brain_Hypothalamus","Nerve_Tibial","Brain_Putamen_basal_ganglia","Brain_Amygdala")
+tissues <- c("Adipose_Subcutaneous","Adipose_Visceral_Omentum","Adrenal_Gland","Artery_Aorta","Brain_Anterior_cingulate_cortex_BA24","Brain_Caudate_basal_ganglia","Brain_Cerebellum","Brain_Cortex","Brain_Frontal_Cortex_BA9","Brain_Hippocampus","Brain_Spinal_cord_cervical_c-1","Brain_Substantia_nigra","Cells_EBV-transformed_lymphocytes","Colon_Sigmoid","Colon_Transverse","Esophagus_Gastroesophageal_Junction","Esophagus_Mucosa","Esophagus_Muscularis","Heart_Atrial_Appendage","Heart_Left_Ventricle","Kidney_Cortex","Muscle_Skeletal","Skin_Not_Sun_Exposed_Suprapubic","Skin_Sun_Exposed_Lower_leg","Small_Intestine_Terminal_Ileum","Spleen","Stomach","Uterus","Prostate","Brain_Cerebellar_Hemisphere","Testis","Brain_Nucleus_accumbens_basal_ganglia","Minor_Salivary_Gland","Cells_Cultured_fibroblasts","Pituitary","Vagina","Thyroid","Artery_Tibial","Artery_Coronary","Brain_Hypothalamus","Nerve_Tibial","Brain_Putamen_basal_ganglia","Brain_Amygdala","Breast_Mammary_Tissue","Liver","Lung","Ovary","Pancreas","Whole_Blood")
+# mclapply(tissues,ProcessBedGz,mc.cores = 4)
 
-# tissues <- c("Brain_Cerebellar_Hemisphere","Testis","Brain_Nucleus_accumbens_basal_ganglia","Minor_Salivary_Gland","Cells_Cultured_fibroblasts","Pituitary","Vagina","Thyroid","Artery_Tibial","Artery_Coronary","Brain_Hypothalamus","Nerve_Tibial","Brain_Putamen_basal_ganglia","Brain_Amygdala")
-mclapply(tissues,ProcessBedGz,mc.cores = 4)
+lapply(tissues,ProcessBedGz)
 
 
 

@@ -51,6 +51,29 @@ predictions = model.predict(X_test)
 accuracy = accuracy_score(y_test, predictions)
 print("Accuracy: %.2f%%" % (accuracy * 100.0))
 #77.45%
+cv = KFold(n_splits=10, shuffle=True, random_state=0)
+y_pred = cross_val_predict(model, X, y,cv=cv)
+accuracy = accuracy_score(y, y_pred)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+#76.85460%
+model = XGBClassifier(learning_rate=0.001, 
+    n_estimators = 50,
+    reg_alpha= 1e-5,
+    colsample_bytree = 0.5, 
+    subsample= 0.65,
+    gamma= 2.4, 
+    min_child_weight =5,
+    max_depth= 3, 
+    objective = "multi:softprob",
+    eval_metric= "mlogloss",
+    use_label_encoder=False,
+    seed=1024,
+    importance_type='weight')
+
+cv = KFold(n_splits=5, shuffle=True, random_state=1)
+y_pred = cross_val_predict(model, X, y,cv=cv)
+accuracy = accuracy_score(y, y_pred)
+print("Accuracy: %.5f%%" % (accuracy * 100.0))
 
 #--------------------------------------------------importance
 model = XGBClassifier(learning_rate=0.001, 

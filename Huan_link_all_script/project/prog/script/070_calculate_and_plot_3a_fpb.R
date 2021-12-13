@@ -50,28 +50,40 @@ dat$FLIPI1_count_re[grep("0|1",dat$FLIPI1_count)] <- "Low"
 dat$FLIPI1_count_re[grep("2",dat$FLIPI1_count)] <- "Intermediate"
 dat$FLIPI1_count_re[grep("3|4|5",dat$FLIPI1_count)] <- "High"
 
+custom_theme <- function() {
+  theme_survminer() %+replace%
+    theme(
+      plot.title=element_text(hjust=0.5)
+    )
+}
 
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ FLIPI1_count_re, data=dat)
-pdf("./figure/07_3a_FLIPI1_count_pfs.pdf")
 p1 <- ggsurvplot(fit,
-                  pval = TRUE,
-                 legend.title="FLIPI1",
-                 title="3a: Pfs",
-                 xlab = " Time (Months)",
-                 xlim=c(0,120))
-print(p1) 
-dev.off()
+                palette=c("#B71C1C", "#38aa34","#21618C"),
+                legend.labs=c("High","Intermediate","Low"), #标签
+                pval = TRUE,
+                legend.title="FLIPI1",
+                title="PFS",
+                xlab = " Time (Months)",
+                xlim=c(0,120),break.time.by=20,
+                ggtheme = custom_theme()
+                )
+# print(p1$plot) 
+
+ggsave("./figure/070_pfs_FLIPI1_ori_3a.png",p1$plot,dpi=300,height=5.2,width=5)
 
 fit <- survfit(Surv(os_month_new, dead) ~ FLIPI1_count_re, data=dat)
-pdf("./figure/07_3a_FLIPI1_count_os.pdf")
 p1 <- ggsurvplot(fit,
-                  pval = TRUE,
-                 legend.title="FLIPI1",
-                 title="3a: Os",
-                 xlab = " Time (Months)",
-                 xlim=c(0,110))
-print(p1) 
-dev.off()
+                palette=c("#B71C1C", "#38aa34","#21618C"),
+                legend.labs=c("High","Intermediate","Low"), #标签
+                pval = TRUE,
+                legend.title="FLIPI1",
+                title="OS",
+                xlab = " Time (Months)",
+                xlim=c(0,120),break.time.by=20,
+                ggtheme = custom_theme()
+)
+ggsave("./figure/070_os_FLIPI1_ori_3a.png",p1$plot,dpi=300,height=5.2,width=5)
 #-----------------------------------
 
 #---------------------------------------------flipi2
@@ -100,28 +112,32 @@ dat$FLIPI2_count_re[grep("3|4|5",dat$FLIPI2_count)] <- "High"
 #--------------------------------------------------------
 
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ FLIPI2_count_re, data=dat)
-pdf("./figure/070_3a_FLIPI2_count_pfs.pdf")
 p1 <- ggsurvplot(fit,
-                  pval = TRUE,
-                 legend.title="FLIPI2",
-                 title="3a: Pfs",
-                 xlab = " Time (Months)",
-                 xlim=c(0,120))
-print(p1) 
-dev.off()
+                palette=c("#B71C1C", "#38aa34","#21618C"),
+                legend.labs=c("High","Intermediate","Low"), #标签
+                pval = TRUE,
+                legend.title="FLIPI2",
+                title="PFS",
+                xlab = " Time (Months)",
+                xlim=c(0,120),break.time.by=20,
+                ggtheme = custom_theme()
+                )
+# print(p1$plot) 
+
+ggsave("./figure/070_pfs_FLIPI2_ori_3a.png",p1$plot,dpi=300,height=5.2,width=5)
 
 fit <- survfit(Surv(os_month_new, dead) ~ FLIPI2_count_re, data=dat)
-pdf("./figure/070_3a_FLIPI2_count_os.pdf")
 p1 <- ggsurvplot(fit,
-                  pval = TRUE,
-                 legend.title="FLIPI2",
-                 title="3a: Os",
-                 xlab = " Time (Months)",
-                 xlim=c(0,110))
-# print(p1) 
-    p1
-dev.off()
-# ggsave("./figure/070_3a_FLIPI2_count_os.pdf",p1)
+                palette=c("#B71C1C", "#38aa34","#21618C"),
+                legend.labs=c("High","Intermediate","Low"), #标签
+                pval = TRUE,
+                legend.title="FLIPI2",
+                title="OS",
+                xlab = "Time (Months)",
+                xlim=c(0,120),break.time.by=20,
+                ggtheme = custom_theme()
+)
+ggsave("./figure/070_os_FLIPI2_ori_3a.png",p1$plot,dpi=300,height=5.2,width=5)
 #------------------------------------------primapi
 
 dat$primapi_re  <- NA
@@ -137,48 +153,59 @@ dat$primapi_re[is.na(dat$primapi_re)]="Intermediate"
 save(dat,file ="07_add_model_index_age_raw_pfs_os_filter_grade_mergrPod_3A.Rdata")
 
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ primapi_re, data=dat)
-pdf("./figure/070_3a_Primapi_re_count_pfs.pdf")
 p1 <- ggsurvplot(fit,
-                  pval = TRUE,
-                 legend.title="PRIMA-PI",
-                 title="3a: Pfs",
-                 xlab = " Time (Months)",
-                 xlim=c(0,120))
-print(p1) 
-dev.off()
+                palette=c("#B71C1C", "#38aa34","#21618C"),
+                legend.labs=c("High","Intermediate","Low"), #标签
+                pval = TRUE,
+                legend.title="PRIMA-PI",
+                title="PFS",
+                xlab = "Time (Months)",
+                xlim=c(0,120),break.time.by=20,
+                ggtheme = custom_theme()
+                )
+# print(p1$plot) 
 
+ggsave("./figure/070_3a_Primapi_pfs_ori_3a.png",p1$plot,dpi=300,height=5.2,width=5)
+#--------------os
 fit <- survfit(Surv(os_month_new, dead) ~ primapi_re, data=dat)
-pdf("./figure/070_3a_Primapi_re_count_os.pdf")
 p1 <- ggsurvplot(fit,
-                  pval = TRUE,
-                 legend.title="PRIMA-PI",
-                 title="3a: Os",
-                 xlab = " Time (Months)",
-                 xlim=c(0,110))
-print(p1) 
-dev.off()
+                palette=c("#B71C1C", "#38aa34","#21618C"),
+                legend.labs=c("High","Intermediate","Low"), #标签
+                pval = TRUE,
+                legend.title="PRIMA-PI",
+                title="OS",
+                xlab = "Time (Months)",
+                xlim=c(0,120),break.time.by=20,
+                ggtheme = custom_theme()
+)
+ggsave("./figure/070_3a_Primapi_os_ori_3a.png",p1$plot,dpi=300,height=5.2,width=5)
 #----------------------------------b2mg
 fit <- survfit(Surv(pfs_month_new, pro_status) ~ X150b2mg_ldh, data=dat)
-pdf("./figure/070_3a_X150b2mg_ldh_re_count_pfs.pdf")
 p1 <- ggsurvplot(fit,
-                  pval = TRUE,
-                 legend.title="B2mg_LDH",
-                 title="3a: Pfs",
-                 xlab = " Time (Months)",
-                 xlim=c(0,120))
-print(p1) 
-dev.off()
-
+                palette=c("#B71C1C", "#38aa34","#21618C"),
+                legend.labs=c("High","Intermediate","Low"), #标签
+                pval = TRUE,
+                legend.title="B2M_LDH",
+                title="PFS",
+                xlab = "Time (Months)",
+                xlim=c(0,120),break.time.by=20,
+                ggtheme = custom_theme()
+                )
+ggsave("./figure/070_3a_B2M_ori_3a_PFS.png",p1$plot,dpi=300,height=5.2,width=5)
+#------------------------
 fit <- survfit(Surv(os_month_new, dead) ~ X150b2mg_ldh, data=dat)
 pdf("./figure/070_3a_X150b2mg_ldh_count_os.pdf")
 p1 <- ggsurvplot(fit,
-                  pval = TRUE,
-                 legend.title="B2mg_LDH",
-                 title="3a: Os",
-                 xlab = " Time (Months)",
-                 xlim=c(0,110))
-print(p1) 
-dev.off()
+                palette=c("#B71C1C", "#38aa34","#21618C"),
+                legend.labs=c("High","Intermediate","Low"), #标签
+                pval = TRUE,
+                legend.title="B2M_LDH",
+                title="OS",
+                xlab = "Time (Months)",
+                xlim=c(0,120),break.time.by=20,
+                ggtheme = custom_theme()
+                )
+ggsave("./figure/070_3a_B2M_ori_3a_OS.png",p1$plot,dpi=300,height=5.2,width=5)
 
 
 

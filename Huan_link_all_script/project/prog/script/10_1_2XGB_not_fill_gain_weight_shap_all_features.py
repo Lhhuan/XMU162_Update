@@ -20,49 +20,15 @@ import shap
 #----------------------------------------------------
 
 # dataset = pd.read_table("../output/01_add_age_raw_pfs_os_filter_grade_mergrPod_3A_fillna.txt")
-dataset = pd.read_table("../output/09_train_dataset.txt")
+dataset = pd.read_table("../output/10_3_train_dataset_new_cutoff.txt")
 
-# X = dataset.loc[:, ['gender','Ki.67','stage','Bsym','LN_num','site0','extend','BM','spleen','extend_num','BM_extend','LN6','SUVmax','SPD','X150b2mg_ldh','b2mg_LDH','ECOG','B2mg','LDH','LDH0','HGB','HGB0','Mono','Lym','age_raw','age_raw_60','ki67_20','LN_num_6','extend_num_0','SUVmax_2','LDH_300','Lym_Mono','B2mg_3.4','SPD_0']]
 
-X = dataset.loc[:, ['B2mg','LN_num','LDH','age_raw','Lym_Mono','HGB','Ki.67','SPD','SUVmax','Bsym','BM']]
+X = dataset.loc[:, ['Ki.67','stage','Bsym','LN_num','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2mg','LDH','HGB','age_raw','Lym_Mono','LN6']]
+
+# X = dataset.loc[:, ['gender','Ki.67','stage','Bsym','LN_num','site0','extend','BM','spleen','extend_num','BM_extend','LN6','SUVmax','SPD','ECOG','B2mg','LDH','LDH0','HGB','HGB0','Mono','Lym','age_raw','age_raw_c','Ki.67_c','LN_num_c','extend_num_0','SUVmax_c','LDH_c','Lym_Mono','B2mg_c','SPD_0']]
 
 y = dataset.loc[:, 'new_pod_total']
 X_COL = X.columns
-# X= dataset.iloc[:,1:540]
-# y = dataset.loc[:, 'AUC'].values
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=7)
-
-#-----------------------Accuracy
-model = XGBClassifier(reg_alpha = 1e-05,
-    colsample_bytree=0.85, 
-    subsample =0.9, 
-    gamma = 1.8, 
-    max_depth =3, 
-    min_child_weight =5,
-    objective = "binary:logistic",
-    eval_metric= "logloss",
-    use_label_encoder=False,
-    learning_rate = 0.001,
-    n_estimators=50, 
-    seed=1024,
-    importance_type='weight')
-
-model.fit(X_train,y_train)
-predictions = model.predict(X_test)
-accuracy = accuracy_score(y_test, predictions)
-print("Accuracy: %.2f%%" % (accuracy * 100.0))
-#81.37%
-
-cv = KFold(n_splits=10, shuffle=True, random_state=0)
-y_pred = cross_val_predict(model, X, y,cv=cv)
-accuracy = accuracy_score(y, y_pred)
-print("Accuracy: %.2f%%" % (accuracy * 100.0))
-#79.23%
-cv = KFold(n_splits=5, shuffle=True, random_state=0)
-y_pred = cross_val_predict(model, X, y,cv=cv)
-accuracy = accuracy_score(y, y_pred)
-print("Accuracy: %.2f%%" % (accuracy * 100.0))
-#78.93%
 #--------------------------------------------------importance
 model = XGBClassifier(reg_alpha = 1e-05,
     colsample_bytree=0.85, 
@@ -93,13 +59,13 @@ im_gain_df.columns=['Feature_importance']
 im_gain_df['Feature']=im_gain_df.index
 order=['Feature','Feature_importance']
 im_gain_df=im_gain_df[order].sort_values(by='Feature_importance',ascending=False)
-im_gain_df.to_csv("../output/10_1_not_fill_feature_importance_gain.txt",sep="\t",index=None)
+im_gain_df.to_csv("../output/10_1_not_fill_feature_importance_gain_all.txt",sep="\t",index=None)
 #--------------------------------------
 im_weight_df = pd.DataFrame([importance_weight]).T
 im_weight_df.columns=['Feature_importance']
 im_weight_df['Feature']=im_weight_df.index
 im_weight_df=im_weight_df[order].sort_values(by='Feature_importance',ascending=False)
-im_weight_df.to_csv("../output/10_1_not_fill_feature_importance_weight.txt",sep="\t",index=None)
+im_weight_df.to_csv("../output/10_1_not_fill_feature_importance_weight_all.txt",sep="\t",index=None)
 
 
 background = shap.maskers.Independent(X)
@@ -108,12 +74,6 @@ def f(x):
 explainer = shap.Explainer(f, background, link=shap.links.logit)
 shap_values = explainer(X)
 
-# visualize the first prediction's explanation
-# shap.plots.bar(shap_values)
-# plt.savefig('../output/figure/064_step3_fill_feature_shap_bar.pdf')
-# plt.show()
-
-
 feature_shap =pd.DataFrame(shap_values.values)
 feature_shap.columns =X.columns
-feature_shap.to_csv("../output/10_1_not_fill_feature_importance_shap_class.txt",sep="\t",index=None)
+feature_shap.to_csv("../output/10_1_not_fill_feature_importance_shap_class_all.txt",sep="\t",index=None)
