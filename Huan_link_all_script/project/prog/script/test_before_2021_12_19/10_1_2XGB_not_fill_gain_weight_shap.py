@@ -21,8 +21,11 @@ import shap
 
 # dataset = pd.read_table("../output/01_add_age_raw_pfs_os_filter_grade_mergrPod_3A_fillna.txt")
 dataset = pd.read_table("../output/09_train_dataset.txt")
-# covariates <- c('Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2MG_re0_train','LDH_re0_train','HGB','age_raw','Lym_Mono')
-X = dataset.loc[:, ['Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2mg','LDH','HGB','age_raw','Lym_Mono']]
+
+# X = dataset.loc[:, ['gender','Ki.67','stage','Bsym','LN_num','site0','extend','BM','spleen','extend_num','BM_extend','LN6','SUVmax','SPD','X150b2mg_ldh','b2mg_LDH','ECOG','B2mg','LDH','LDH0','HGB','HGB0','Mono','Lym','age_raw','age_raw_60','ki67_20','LN_num_6','extend_num_0','SUVmax_2','LDH_300','Lym_Mono','B2mg_3.4','SPD_0']]
+
+X = dataset.loc[:, ['B2mg','LN_num','LDH','age_raw','Lym_Mono','HGB','Ki.67','SPD','SUVmax','Bsym','BM']]
+
 y = dataset.loc[:, 'new_pod_total']
 X_COL = X.columns
 # X= dataset.iloc[:,1:540]

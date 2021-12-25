@@ -22,7 +22,8 @@ import shap
 # dataset = pd.read_table("../output/01_add_age_raw_pfs_os_filter_grade_mergrPod_3A_fillna.txt")
 dataset = pd.read_table("../output/09_train_dataset.txt")
 # covariates <- c('Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2MG_re0_train','LDH_re0_train','HGB','age_raw','Lym_Mono')
-X = dataset.loc[:, ['Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2mg','LDH','HGB','age_raw','Lym_Mono']]
+X = dataset.loc[:, ['Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2MG_re0_train','LDH_re0_train','HGB','age_raw','Lym_Mono']]
+
 y = dataset.loc[:, 'new_pod_total']
 X_COL = X.columns
 # X= dataset.iloc[:,1:540]
@@ -54,12 +55,12 @@ cv = KFold(n_splits=10, shuffle=True, random_state=0)
 y_pred = cross_val_predict(model, X, y,cv=cv)
 accuracy = accuracy_score(y, y_pred)
 print("Accuracy: %.2f%%" % (accuracy * 100.0))
-#79.23%
+#80.42%
 cv = KFold(n_splits=5, shuffle=True, random_state=0)
 y_pred = cross_val_predict(model, X, y,cv=cv)
 accuracy = accuracy_score(y, y_pred)
 print("Accuracy: %.2f%%" % (accuracy * 100.0))
-#78.93%
+#80.12%
 #--------------------------------------------------importance
 model = XGBClassifier(reg_alpha = 1e-05,
     colsample_bytree=0.85, 

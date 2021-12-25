@@ -8,10 +8,14 @@ library(cowplot)
 library(ggpubr)
 library(Hmisc)
 library(reshape2)
-load("/home/huanhuan/project/prog/data/04_add_age_raw_pfs_os_filter_grade_refine_ldh_b2m.Rdata")
-dat <-dat1
+load("/home/huanhuan/project/prog/data/01_add_age_raw_pfs_os_filter_grade.Rdata")
+dat$new_pod_total <-dat$pod_total
+dat$new_pod_total[grep("1|2",dat$new_pod_total)] <- 0
+dat$new_pod_total[grep("3|4",dat$new_pod_total)] <- 1
 # dat <-filter(dat,grade=="3a")
-covariates <- c('Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2mg','LDH','HGB','age_raw','Lym_Mono')
+
+
+
 #-------------
 dat$age_raw_c=NA
 dat$age_raw_c[dat$age_raw<=60]=0
@@ -25,9 +29,21 @@ dat$LN_num_c =NA
 dat$LN_num_c[dat$LN_num <=4]= 0
 dat$LN_num_c[dat$LN_num >4]= 1
 
+
 dat$extend_num_c <-NA
 dat$extend_num_c[dat$extend_num>0]=1
 dat$extend_num_c[dat$extend_num==0]=0
+
+dat$BM_c <-dat$BM
+dat$spleen_c <-dat$spleen
+
+dat$B2mg_c <- NA
+dat$B2mg_c[dat$B2mg<=2.7]=0
+dat$B2mg_c[dat$B2mg > 2.7]=1
+
+dat$LDH_c =NA
+dat$LDH_c[dat$LDH <=245]= 0
+dat$LDH_c[dat$LDH >245]= 1 #----
 
 dat$Lym_Mono <- dat$Lym/dat$Mono
 dat$Lym_Mono_c <-NA
@@ -49,24 +65,11 @@ dat$SPD_c[dat$SPD >20]=1
 dat$HGB_c =NA
 dat$HGB_c[dat$HGB <120]=1
 dat$HGB_c[dat$HGB >=120]=0
-
-dat$ECOG_c =NA
-dat$ECOG_c[dat$ECOG <=1]=0
-dat$ECOG_c[dat$ECOG >1]=1
-
-dat$BM_c <-dat$BM
-dat$spleen_c <-dat$spleen
-dat$Bsym_c <-dat$Bsym
-dat$LN6_c <-dat$LN6
-dat$BM_extend_c <-dat$BM_extend
-dat$B2mg_c <- dat$B2MG_re0_train
-dat$LDH_c =dat$LDH_re0_train
-
 #------------------
-covariates <- c('Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2mg','LDH','HGB','age_raw','Lym_Mono')
+
 grade_num <-group_by(dat,grade)%>%summarise(count=n())%>%as.data.frame()
 grade_num$class <-"grade_num"
-aaa <-dat[,c("grade","age_raw_c","stage_c","LN_num_c","extend_num_c","BM_c","spleen_c","B2mg_c","LDH_c","Lym_Mono_c","Ki.67_c","SUVmax_c","SPD_c","HGB_c","LN6_c","ECOG_c","Bsym_c","BM_extend_c")]
+aaa <-dat[,c("grade","age_raw_c","stage_c","LN_num_c","extend_num_c","BM_c","spleen_c","B2mg_c","LDH_c","Lym_Mono_c","Ki.67_c","SUVmax_c","SPD_c","HGB_c")]
 
 count_n<-function(i=NULL){
   cr =filter(aaa,aaa[,i]>0)%>%group_by(grade)%>%summarise(count=n())%>%as.data.frame()
@@ -88,15 +91,14 @@ bbb<-bbb[-1,]
 ccc <-apply(bbb, 2,as.numeric)%>%as.data.frame()
 rownames(ccc)<-rownames(bbb)
 colnames(ccc) <-c("Num_0","Num_3a")
-ccc$Perc_0 <- round(ccc$Num_0/ccc[8,1]*100,2)
-ccc$Perc_3a <- round(ccc$Num_3a/ccc[8,2]*100,2)
-ccc$ori_term=rownames(ccc)
-rownames(ccc)<-c("Age >60 years","β2-MG >UNL","BM","Extra BM","Bsym","ECOG >1","Extra sites >0","grade_num","HGB <120g/L","Ki.67 >20%","LDH >UNL","Lymph nodes >4","Lym/Mono >10","SPD >20mm","Spleen","Stage(I-II)","Stage(III-IV)","SUVmax >2")
+ccc$Perc_0 <- round(ccc$Num_0/ccc[5,1]*100,2)
+ccc$Perc_3a <- round(ccc$Num_3a/ccc[5,2]*100,2)
+rownames(ccc)<-c("Age >60 years","B2M >2.7 mg/L","BM","Extra sites >0","grade_num","HGB <120g/L","Ki.67 >20%","LDH >245U/L","Lymph nodes >4","Lym/Mono >10","SPD >20mm","Spleen","Stage(I-II)","Stage(III-IV)","SUVmax >2")
 ddd <-ccc[c("grade_num","Age >60 years","Stage(I-II)","Stage(III-IV)","Lymph nodes >4","Extra sites >0","BM","Spleen","B2M >2.7 mg/L","LDH >245U/L",
             "Lym/Mono >10","Ki.67 >20%","SUVmax >2","SPD >20mm","HGB <120g/L"),c(1,3,2,4)]
 library(tibble)
 ddd <-add_column(ddd, Variable = rownames(ddd), .before = 1)
-write.table(ddd,"05_feature_distribution_in_grade_0_3a_NA.txt",row.names = F,col.names = T,quote = F,sep = "\t")
+write.table(ddd,"10_5_feature_distribution_in_grade_0_3a_NA.txt",row.names = F,col.names = T,quote = F,sep = "\t")
 ddd_r <-ddd
 
 
@@ -139,4 +141,4 @@ f_chi$P_star <- pp_r
 ddd$class <-rownames(ddd)
 f3a <-left_join(ddd,f_chi,by="class")
 f3a<-f3a[,-6]
-write.table(f3a,"05_feature_0_3a_chi_NA.txt",col.names = T,row.names = F,quote=F,sep = "\t")
+write.table(f3a,"10_5_feature_0_3a_chi_NA.txt",col.names = T,row.names = F,quote=F,sep = "\t")

@@ -5,12 +5,12 @@ library(stringr)
 library(dplyr)
 library(Hmisc)
 
-setwd("/home/huanhuan/project/prog/output/")
-load("../data/04_add_age_raw_pfs_os_filter_grade_refine_ldh_b2m.Rdata")
-dat <-filter(dat1,grade=="3a")
+setwd("/home/huanhuan/project/prog/script/3a_0/output/")
+load("/home/huanhuan/project/prog/data/04_add_age_raw_pfs_os_filter_grade_refine_ldh_b2m.Rdata")
+dat <-filter(dat1,grade!="3b")
 dat$Lym_Mono <- dat$Lym/dat$Mono
 dat$SPD <-as.numeric(as.factor(dat$SPD))
-save(dat,file="06_3a_file.Rdata")
+save(dat,file="06_3a_0_file.Rdata")
 covariates <- c('Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2MG_re0_train','LDH_re0_train','HGB','age_raw','Lym_Mono')
 # covariates <- c('Ki.67','stage','Bsym','LN_num','LN6')
 # X = dataset.loc[:, ['B2mg','LN_num','LDH','age_raw','Lym_Mono','HGB','Ki.67','SPD','SUVmax','Bsym','BM']]
@@ -43,7 +43,7 @@ result1[,c(1,3:5)] <-apply(result1[,c(1,3:5)],2,as.numeric)
 # aa <-filter(result1,Pvalue <0.05)
 aa<-result1
 aa$var <-rownames(aa)
-write.table(aa,"06_univariate_cox_result_not_fill_3a_os.txt" ,quote=F,sep="\t",row.names=FALSE)
+write.table(aa,"06_univariate_cox_result_not_fill_3a_0_os.txt" ,quote=F,sep="\t",row.names=FALSE)
 #-----------------------------------------------plot
 pstar <-function(i){
   Pvalue <-i
@@ -95,7 +95,7 @@ p1<-ggplot(data=aa, aes(x=HR,y=var))+
   theme_bw()+
   p_theme +
   labs(x="Hazard ratio",y="")+
-  scale_x_continuous(limits= c(0, 11), breaks= seq(0,11,2))
+  scale_x_continuous(limits= c(0, 8), breaks= seq(0,8,2))
 
 p2 <-ggplot(data=aa, aes(x=-log10(Pvalue),y=var))+
     geom_bar(stat = "identity", width = 0.3,fill="#12497f") +
@@ -103,7 +103,7 @@ p2 <-ggplot(data=aa, aes(x=-log10(Pvalue),y=var))+
     theme_bw()+
     p_theme+
     labs(x="-log10(P-value)",y="")+
-    scale_x_continuous(limits= c(0, 7.2), breaks= seq(0,7,1))+
+    scale_x_continuous(limits= c(0, 15), breaks= seq(0,14,3))+
     theme(axis.text.y=element_blank(),
     axis.title.y = element_blank()) 
     # +margin(2, 2, 2, 2, "cm")
@@ -112,7 +112,7 @@ library(patchwork)
 p3<- (p1+theme(plot.margin=unit(c(0,0,0,0),"cm")))+(p2+theme(plot.margin=unit(c(0,0,0,0),"cm"))) + plot_layout(nrow = 1, width = c(100,30))
 
 # p3 <-p1+plot_spacer()+ p2 +plot_layout(nrow = 1, width = c(100,0,40))
-ggsave("./figure/06_univariate_cox_not_fill_na_3a_os_forest.png",p3,dpi=300,width=6.5,height=5)
+ggsave("./figure/06_univariate_cox_not_fill_na_3a_0_os_forest.png",p3,dpi=300,width=6.5,height=5)
 
 
 #-----------------------------------------------pfs
@@ -145,7 +145,7 @@ result1[,c(1,3:5)] <-apply(result1[,c(1,3:5)],2,as.numeric)
 # aa <-filter(result1,Pvalue <0.05)
 aa<-result1
 aa$var <-rownames(aa)
-write.table(aa,"06_univariate_cox_result_not_fill_3a_pfs.txt" ,quote=F,sep="\t",row.names=FALSE)
+write.table(aa,"06_univariate_cox_result_not_fill_3a_0_pfs.txt" ,quote=F,sep="\t",row.names=FALSE)
 #-----------------------------------------------plot
 
 pp <-lapply(aa[c(1:nrow(aa)),1],pstar)
@@ -175,7 +175,7 @@ p1<-ggplot(data=aa, aes(x=HR,y=var))+
   theme_bw()+
   p_theme +
   labs(x="Hazard ratio",y="")+
-  scale_x_continuous(limits= c(0, 11), breaks= seq(0,11,2))
+  scale_x_continuous(limits= c(0, 8), breaks= seq(0,8,2))
 
 p2 <-ggplot(data=aa, aes(x=-log10(Pvalue),y=var))+
     geom_bar(stat = "identity", width = 0.3,fill="#12497f") +
@@ -183,7 +183,7 @@ p2 <-ggplot(data=aa, aes(x=-log10(Pvalue),y=var))+
     theme_bw()+
     p_theme+
     labs(x="-log10(P-value)",y="")+
-    scale_x_continuous(limits= c(0, 7.2), breaks= seq(0,7,1))+
+    scale_x_continuous(limits= c(0, 15), breaks= seq(0,14,3))+
     theme(axis.text.y=element_blank(),
     axis.title.y = element_blank()) 
     # +margin(2, 2, 2, 2, "cm")
@@ -191,4 +191,4 @@ p2 <-ggplot(data=aa, aes(x=-log10(Pvalue),y=var))+
 library(patchwork)
 p3<- (p1+theme(plot.margin=unit(c(0,0,0,0),"cm")))+(p2+theme(plot.margin=unit(c(0,0,0,0),"cm"))) + plot_layout(nrow = 1, width = c(100,30))
 # p3 <-p1+plot_spacer()+ p2 +plot_layout(nrow = 1, width = c(100,0,40))
-ggsave("./figure/06_univariate_cox_not_fill_na_3a_pfs_forest.png",p3,dpi=300,width=6.5,height=5)
+ggsave("./figure/06_univariate_cox_not_fill_na_3a_0_pfs_forest.png",p3,dpi=300,width=6.5,height=5)

@@ -1,0 +1,9 @@
+Rscript 06_cox_variable_and_plot.R #06_3a_0_file.Rdata
+Rscript 070_calculate_and_plot_3a_0_fpb.R #07_add_model_index_age_raw_pfs_os_filter_grade_mergrPod_3A_0.Rdata
+Rscript 090_extract_train_dataset_for_model.R #09_test_train_dataset.Rdata ,09_train_dataset.txt
+python 10_1_2XGB_not_fill_gain_weight_shap.py
+Rscript 10_2_plot_feature_importance_not_fill_gain_weight_shap.R
+python 10_03_feature_selection_2XGB_not_fill_gain_weight_shap.py
+Rscript 10_04_plot_feature_importance_not_fill_gain_weight_shap.R
+
+Rscript 10_3_new_Pod_total_test_dataset.R

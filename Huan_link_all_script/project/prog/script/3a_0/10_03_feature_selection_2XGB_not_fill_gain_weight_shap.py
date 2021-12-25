@@ -18,11 +18,9 @@ from sklearn.feature_selection import SelectFromModel
 from numpy import sort
 import shap
 #----------------------------------------------------
-
-# dataset = pd.read_table("../output/01_add_age_raw_pfs_os_filter_grade_mergrPod_3A_fillna.txt")
-dataset = pd.read_table("../output/09_train_dataset.txt")
+dataset = pd.read_table("./output/09_train_dataset.txt")
 # covariates <- c('Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2MG_re0_train','LDH_re0_train','HGB','age_raw','Lym_Mono')
-X = dataset.loc[:, ['Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2mg','LDH','HGB','age_raw','Lym_Mono']]
+X = dataset.loc[:, ["LDH","LN_num","HGB","B2mg","ECOG","BM_extend","SPD","Lym_Mono","LN6","BM","SUVmax"]]
 y = dataset.loc[:, 'new_pod_total']
 X_COL = X.columns
 # X= dataset.iloc[:,1:540]
@@ -48,18 +46,18 @@ model.fit(X_train,y_train)
 predictions = model.predict(X_test)
 accuracy = accuracy_score(y_test, predictions)
 print("Accuracy: %.2f%%" % (accuracy * 100.0))
-#81.37%
+#79.87%
 
 cv = KFold(n_splits=10, shuffle=True, random_state=0)
 y_pred = cross_val_predict(model, X, y,cv=cv)
 accuracy = accuracy_score(y, y_pred)
 print("Accuracy: %.2f%%" % (accuracy * 100.0))
-#79.23%
-cv = KFold(n_splits=5, shuffle=True, random_state=0)
+#80.93%
+cv = KFold(n_splits=5, shuffle=True, random_state=10)
 y_pred = cross_val_predict(model, X, y,cv=cv)
 accuracy = accuracy_score(y, y_pred)
 print("Accuracy: %.2f%%" % (accuracy * 100.0))
-#78.93%
+#81.43%
 #--------------------------------------------------importance
 model = XGBClassifier(reg_alpha = 1e-05,
     colsample_bytree=0.85, 
@@ -90,13 +88,13 @@ im_gain_df.columns=['Feature_importance']
 im_gain_df['Feature']=im_gain_df.index
 order=['Feature','Feature_importance']
 im_gain_df=im_gain_df[order].sort_values(by='Feature_importance',ascending=False)
-im_gain_df.to_csv("../output/10_1_not_fill_feature_importance_gain.txt",sep="\t",index=None)
+im_gain_df.to_csv("./output/10_03_not_fill_feature_importance_gain.txt",sep="\t",index=None)
 #--------------------------------------
 im_weight_df = pd.DataFrame([importance_weight]).T
 im_weight_df.columns=['Feature_importance']
 im_weight_df['Feature']=im_weight_df.index
 im_weight_df=im_weight_df[order].sort_values(by='Feature_importance',ascending=False)
-im_weight_df.to_csv("../output/10_1_not_fill_feature_importance_weight.txt",sep="\t",index=None)
+im_weight_df.to_csv("./output/10_03_not_fill_feature_importance_weight.txt",sep="\t",index=None)
 
 
 background = shap.maskers.Independent(X)
@@ -113,4 +111,4 @@ shap_values = explainer(X)
 
 feature_shap =pd.DataFrame(shap_values.values)
 feature_shap.columns =X.columns
-feature_shap.to_csv("../output/10_1_not_fill_feature_importance_shap_class.txt",sep="\t",index=None)
+feature_shap.to_csv("./output/10_03_not_fill_feature_importance_shap_class.txt",sep="\t",index=None)
