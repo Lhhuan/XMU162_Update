@@ -196,9 +196,12 @@ FN <-length(test$new_pod_total[test$adjust5<5&test$new_pod_total==1])
 TN <-length(test$new_pod_total[test$adjust5<5&test$new_pod_total==0])
 TPR = TP / (TP+FN)
 FPR = FP / (FP + TN)
-mycolor <-c("#E53935","#827717","#1B5E20","#006064","#01579B")
+# mycolor <-c("#E53935","#827717","#1B5E20","#006064","#01579B")
+mycolor <-c("#827717","#1B5E20","#006064","#E53935","#01579B")
+test$Ours <-test$adjust5
+
 library(plotROC)
-longtest <-melt_roc(test,"new_pod_total",c("FLIPI1_count","FLIPI2_count","primapi_re_n","b2mg_ldh1.5s","adjust5"))
+longtest <-melt_roc(test,"new_pod_total",c("FLIPI1_count","FLIPI2_count","primapi_re_n","b2mg_ldh1.5s","Ours"))
 longtest$name <-gsub("_count","",longtest$name)
 longtest$name <-gsub("primapi_re_n","PRIMA-PI",longtest$name)
 longtest$name <-gsub("b2mg_ldh1.5s","LDH+B2mg",longtest$name)
@@ -219,7 +222,7 @@ p1 <- p+annotate("text",x=0.85,y=0.15,
               names(auc)[4]," AUC: ",round(auc[4],3),"\n",
               names(auc)[5]," AUC: ",round(auc[5],3),"\n"),
               size=3.5)
-p1 <-p1 +annotate("text",x=0.4,y=0.9,label= "5",size=5,color="#E53935" )+geom_point(x=FPR,y=TPR ,size=4,color="#E53935" )
+p1 <-p1 +annotate("text",x=0.43,y=0.82,label= "5",size=5,color="#E53935" )+geom_point(x=FPR,y=TPR ,size=4,color="#E53935" )
 
   p2 <-p1 +scale_x_continuous(limits= c(0, 1), breaks= seq(0,1,0.2))+ #expand = c(0, 0)
   scale_y_continuous(limits= c(0, 1), breaks= seq(0,1,0.2)) #+theme(panel.background = element_rect(color="black",size=1.2))

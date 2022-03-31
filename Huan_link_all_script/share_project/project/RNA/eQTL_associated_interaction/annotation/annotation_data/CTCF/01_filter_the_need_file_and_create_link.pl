@@ -25,7 +25,8 @@ while(<$I1>)
     my $file_name = $f[0];
     my $size =$f[-1];
     $size =~ s/size=//g;
-    if ($file_name =~/Ctcf/ && $file_name=~/narrowPeak/){
+    if ($file_name =~/Ctcf/ && $file_name=~/narrowPeak/ ){
+    # if ($file_name =~/Ctcf/ && $file_name=~/narrowPeak/ && $_=~/origAssembly=hg19/ ){
         # print "$file_name\n";
         my $file = $file_name;
         $file =~ s/Rep.*+$//g; #从Rep 到最后替换成空

@@ -1,0 +1,1 @@
+wget -c ftp://ftp.ebi.ac.uk/pub/databases/intact/current/all.zip

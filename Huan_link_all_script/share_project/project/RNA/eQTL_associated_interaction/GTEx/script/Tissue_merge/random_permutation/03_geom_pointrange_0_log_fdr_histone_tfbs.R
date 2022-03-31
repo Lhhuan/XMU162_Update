@@ -8,7 +8,7 @@ library(gridExtra)
 library(data.table)
 library(Seurat)
 
-setwd("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/enrichment/figure/0/")
+setwd("/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/enrichment/figure/0/")
 org<-read.table("compare_0_jaacard_index_fisher_test_histone_tfbs_two_side.txt",header = T,sep = "\t") %>% as.data.frame()
 org$marker<-str_replace(org$marker,"CHROMATIN_Accessibility","CA")
 org <-org%>%arrange(OR) #order to plot

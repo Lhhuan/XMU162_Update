@@ -8,11 +8,11 @@ library(gridExtra)
 library(ggpval)
 library(Seurat)
 
-setwd("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/enrichment/")
-hotspot<-read.table("hotspot_cutoff_0.176_histone_marker.txt",header = T,sep = "\t") %>% as.data.frame()
+setwd("/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/enrichment/")
+hotspot<-read.table("hotspot_cutoff_0.176_histone_marker_filter_3103833.txt",header = T,sep = "\t") %>% as.data.frame()
 random<-read.table("original_random_0_0.176_histone_marker.txt.gz",header = T,sep = "\t") %>% as.data.frame()
 
-f_hotspot <-read.table("../../interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge.bed.gz",header = T,sep = "\t")%>% as.data.frame()
+f_hotspot <-read.table("../Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge_filter_3103833.bed.gz",header = T,sep = "\t")%>% as.data.frame()
 
 
 hotspot$random_number <- 1

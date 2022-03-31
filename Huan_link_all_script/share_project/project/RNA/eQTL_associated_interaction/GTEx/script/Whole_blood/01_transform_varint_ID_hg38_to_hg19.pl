@@ -1,4 +1,4 @@
-#利用"../data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz" 将../data/GTEx_Analysis_v8_eQTL/*.v8.signif_variant_gene_pairs.txt.gz转换为hg19, 得../data/GTEx_Analysis_v8_eQTL/*.v8.signif_variant_gene_pairs.txt.gz
+#利用"../data/GTEx_Analysis_2017-06-05_v8_WholeGenomeSeq_838Indiv_Analysis_Freeze.lookup_table.txt.gz" 将../data/GTEx_Analysis_v8_eQTL/*.v8.signif_variant_gene_pairs.txt.gz转换为hg19, 得../data/GTEx_Analysis_v8_eQTL_hg19/*.v8.signif_variant_gene_pairs.txt.gz
 #!/usr/bin/perl
 use warnings;
 use strict; 

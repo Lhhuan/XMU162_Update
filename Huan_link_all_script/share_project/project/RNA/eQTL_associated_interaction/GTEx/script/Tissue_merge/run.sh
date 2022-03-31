@@ -5,7 +5,7 @@ perl 04_extend_hotspot.pl #用"/share/Projects/huanhuan/project/RNA/eQTL_associa
 bedtools merge -i "/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted.bed.gz" |gzip >"/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge.bed.gz"
 
 
-Rscript 041_plot_distribution_the_length_of_hotspot.R #filter 3103833
+Rscript 041_plot_distribution_the_length_of_hotspot.R #filter 3103833 Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge_filter_3103833.bed.gz
 bedtools intersect  -a "/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_extend_3103833.bed.gz" -b  "/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted.bed.gz" -wo > "/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/output/Tissue_merge/Cis_eQTL/hotspot_cis_eQTL/interval_18/Tissue_merge_segment_hotspot_cutoff_0.176_extend_3103833_contain.bed" 
 
 
@@ -18,6 +18,7 @@ Rscript 071_heatmap_annotation.R
 perl 072_count_anno_histone_mark.pl
 perl 073_calculate_jaccard_index_mark.pl #对 $input_dir/${mark}_Tissue_merge_segment_hotspot_cutoff_0.176_extend_sorted_merge.bed.gz 计算 jaccard index得$out_dir/${group}_cutoff_${cutoff}_marker_jaccard_index.txt.gz
 #-------------------------------------------filter 3103833
+perl 06_merge_merge_hotspot_and_egene_filter_3103833.pl 
 perl 07_annotation_markers_filter_3103833.pl #去掉最长的3103833片段进行 annotation
 
 Rscript 071_heatmap_annotation_filter_3103833.R

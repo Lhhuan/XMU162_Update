@@ -1,0 +1,1 @@
+wget -c http://geneontology.org/gene-associations/goa_human.gaf.gz

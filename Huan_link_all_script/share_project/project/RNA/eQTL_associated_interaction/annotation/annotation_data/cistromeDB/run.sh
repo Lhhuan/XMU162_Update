@@ -23,6 +23,16 @@ perl 05_filter_normal_chrom_info.pl # #筛选@files = ("./Human_FACTOR/human_fac
 
 perl 061_union_segment.pl #将normal cell ${dir}/merge_pos_info_narrow_peak_sort.bed.gz bedtools merge -i 为${dir}/merge_pos_info_narrow_peak_sort_union.bed.gz，得互补文件${dir}/merge_pos_info_narrow_peak_union_complement.bed.gz
 
+liftOver "./normal_cell/Human_FACTOR/merge_pos_info_narrow_peak_sort_union.bed.gz" "/home/huanhuan/reference/hg38ToHg19.over.chain.gz" ./normal_cell/Human_FACTOR/hg19/merge_pos_info_narrow_peak_union.bed ./normal_cell/Human_FACTOR/merge_pos_info_narrow_peak_sort_union_unmap_hg19.bed
+gzip ./normal_cell/Human_FACTOR/hg19/merge_pos_info_narrow_peak_union.bed
+zless ./normal_cell/Human_FACTOR/hg19/merge_pos_info_narrow_peak_union.bed.gz |sort -k1,1 -k2,2n |gzip > ./normal_cell/Human_FACTOR/hg19/merge_pos_info_narrow_peak_sort_union.bed.gz
+
+
+liftOver "./normal_cell/Human_CHROMATIN_Accessibility/merge_pos_info_narrow_peak_sort_union.bed.gz" "/home/huanhuan/reference/hg38ToHg19.over.chain.gz" ./normal_cell/Human_CHROMATIN_Accessibility/hg19/merge_pos_info_narrow_peak_union.bed ./normal_cell/Human_CHROMATIN_Accessibility/merge_pos_info_narrow_peak_union_unmap_hg19.bed
+
+gzip ./normal_cell/Human_CHROMATIN_Accessibility/hg19/merge_pos_info_narrow_peak_union.bed
+zless ./normal_cell/Human_CHROMATIN_Accessibility/hg19/merge_pos_info_narrow_peak_union.bed.gz |sort -k1,1 -k2,2n |gzip > ./normal_cell/Human_CHROMATIN_Accessibility/hg19/merge_pos_info_narrow_peak_sort_union.bed.gz
+
 # Rscript 06_plot_length_distribution_of_factor_and_calculate_mean.R
 # perl 07_get_no_factor_and_split.pl 
 

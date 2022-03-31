@@ -43,6 +43,9 @@ pca_list[[7]]<- kpca(~.,data=dat[test,], kernel="polydot", kpar = list(degree = 
 pca_list[[8]] <-kpca(~.,data=dat[test,], kernel='splinedot', kpar = list())
 
 names(pca_list)=c("rbfdot","laplacedot","tanhdot","besseldot","anovadot","vanilladot","polydot","splinedot")
+save(pca_list,file = "04_kpca.Rdata")
+
+
 plot <-function(i=NULL){
     aa=as.data.frame(pca_list[[i]]@rotated)
     colnames(aa)[1:2] <- c("PC1","PC2")
@@ -77,18 +80,25 @@ pdf("./04_kpca_umap_sampling_result.pdf",width=8.3, height=4)
 CombinePlots(plist,ncol=4,nrow=2)
 dev.off()
 
+#---------------------------plot 3d pca
+plot_3D <-function(i=NULL){
+  aa=as.data.frame(pca_list[[i]]@rotated)
+  colnames(aa)[1:3] <- c("PC1","PC2","PC3")
+  p =ggplot(aa,aes(x = PC1, y = PC2,z=PC3)) + axes_3D()+stat_3D(size=0.001, alpha = 0.3)+
+    ggtitle(names(pca_list)[i])+
+    theme_void() +
+    labs_3D(labs=c("x", "y", "z"),angle=c(0,0,0))#+ p_theme
+  return(p)
+}
+
+plist <-lapply(c(1:8),plot_3D)
+pdf("./04_kpca_sampling_3D_result.pdf",width=8.3, height=4)
+CombinePlots(plist,ncol=4,nrow=2)
+dev.off()
 
 
 
-
-
-
-
-rumap <- uwot::umap(pca_result, n_neighbors = 30)
-df <-data.frame(UMAP_1=rumap[,1],UMAP_2=rumap[,2])
-
-p =ggplot(df) + geom_point(aes(x = UMAP_1, y = UMAP_2), size = 0.3, alpha = 0.3)+ggtitle("10 factors")+theme_bw() + p_theme
-ggsave("04_Umap_cluster.png",p,dpi=150,width=5,height=5)
+#------------------
 
 
 
