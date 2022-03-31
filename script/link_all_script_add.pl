@@ -24,7 +24,7 @@ foreach my $f1(@files){
     {
         chomp;
         my $script = $_;
-        unless($script=~/^\.\/anaconda|^\.\/Script_backup|^\.\/php|^\.\/tools|^\.\/\.local|^\.\/R|^\.\/\.conda/){  
+        unless($script=~/^\.\/anaconda|^\.\/Script_backup|^\.\/php|^\.\/tools|^\.\/\.local|^\.\/R|^\.\/\.conda|^\.\/\.config|^\.\/\.aspera/){  
             my $file = basename($script);
             my $dir = dirname($script);
             $dir=~s/^\.\///;
