@@ -16,7 +16,7 @@ my $fo1 = "../output/02_merge_all_tissue_cis_eQTL_eur_egene_sig_0.05.bed.gz";
 open my $O1, "| gzip >$fo1" or die $!;
 my $fo2 = "../output/02_merge_all_tissue_cis_eQTL_eur_egene_sig_5e_8.bed.gz";
 open my $O2, "| gzip >$fo2" or die $!;
-print $O2 "SNP_chr\tSNP_pos\tPvalue\tegene\n";
+print $O2 "SNP_chr\tSNP_start\tSNP_start\tegene\tPvalue\n";
 
 my (%hash1,%hash2,%hash3,%hash4);
 
@@ -29,10 +29,11 @@ while(<$I1>)
         my $SNP_pos =$f[1];
         my $Pvalue =$f[2];
         my $egene =$f[3];
+        my $tissue=$f[4];
         my $chr ="chr${SNP_chr}";
         my $start = $SNP_pos-1;
         my $end =$SNP_pos;
-        my $output = "$chr\t$start\t$end\t$egene";
+        my $output = "$chr\t$start\t$end\t$egene\t$Pvalue\t$tissue";
         if($Pvalue <0.05){
             unless(exists $hash1{$output}){
                 $hash1{$output}=1;

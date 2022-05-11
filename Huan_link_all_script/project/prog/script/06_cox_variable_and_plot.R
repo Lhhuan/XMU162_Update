@@ -11,7 +11,7 @@ dat <-filter(dat1,grade=="3a")
 dat$Lym_Mono <- dat$Lym/dat$Mono
 dat$SPD <-as.numeric(as.factor(dat$SPD))
 save(dat,file="06_3a_file.Rdata")
-covariates <- c('Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','BM_extend','SUVmax','SPD','ECOG','B2MG_re0_train','LDH_re0_train','HGB','age_raw','Lym_Mono')
+covariates <- c('Ki.67','stage','Bsym','LN_num','LN6','BM','spleen','extend_num','SUVmax','ECOG','B2MG_re0_train','LDH_re0_train','HGB','age_raw','Lym_Mono')
 # covariates <- c('Ki.67','stage','Bsym','LN_num','LN6')
 # X = dataset.loc[:, ['B2mg','LN_num','LDH','age_raw','Lym_Mono','HGB','Ki.67','SPD','SUVmax','Bsym','BM']]
 # c('gender','Ki.67','stage','Bsym','LN_num','site0','extend','BM','spleen','extend_num','BM_extend','LN6','SUVmax','SPD','X150b2mg_ldh','b2mg_LDH','ECOG','B2mg','LDH','LDH0','HGB','HGB0','Mono','Lym','age_raw','age_raw_60','ki67_20','LN_num_6','extend_num_0','SUVmax_2','LDH_300','Lym_Mono','B2mg_3.4','SPD_0')

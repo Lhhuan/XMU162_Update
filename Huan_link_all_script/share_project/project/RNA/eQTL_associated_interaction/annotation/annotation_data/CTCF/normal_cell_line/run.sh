@@ -16,9 +16,16 @@ liftOver 05_normal_cell_line_ctcf_sort_union.bed.gz "/home/huanhuan/reference/hg
 gzip ./hg38/05_normal_cell_line_ctcf_sort_union.bed  05_normal_cell_line_ctcf_sort_union_unmap_hg38.bed
 
 
-
+cd hg38/
 zless 05_normal_cell_line_ctcf_sort_union.bed.gz |sort -k1,1 -k2,2n |gzip >05_normal_cell_line_ctcf_sort_union_sort.bed.gz
 bedtools merge -i 05_normal_cell_line_ctcf_sort_union_sort.bed.gz | gzip > 05_normal_cell_line_ctcf_sort_union_merge.bed.gz
+
+cd ..
+perl 05_filter_normal_cell_line_sample.pl #相比于05_filter_normal_cell_line.pl的输出多sample一列，得05_normal_cell_line_ctcf_sample.bed.gz
+liftOver 05_normal_cell_line_ctcf_sample.bed.gz "/home/huanhuan/reference/hg19ToHg38.over.chain.gz"  ./hg38/05_normal_cell_line_ctcf_sample.bed 05_normal_cell_line_ctcf_sample_unmap_hg38.bed
+gzip ./hg38/05_normal_cell_line_ctcf_sample.bed
+zless ./hg38/05_normal_cell_line_ctcf_sample.bed.gz |sort -k1,1 -k2,2n |gzip > ./hg38/05_normal_cell_line_ctcf_sample_sorted.bed.gz
+
 #------------------------------------------------------unused
 #-----------------------------------------------------
 #------------------------------------------------------

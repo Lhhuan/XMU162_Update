@@ -76,7 +76,7 @@ foreach my $dir(@dirs){
     open my $O1, "| gzip >$fo1" or die $!;
     my $fo2 = "${output_dir}/merge_pos_info_narrow_peak.bed.gz";
     open my $O2, "| gzip >$fo2" or die $!;
-    print $O1 "chr\tstart\tend\tfactor\tname\tfile_name\n";
+    # print $O1 "chr\tstart\tend\tfactor\tcell_line\tfile_name\n";
     #--------对dir 下all file 进行判断
     foreach my $file(@files){
         if ( $file =~ /[a-z]/) {
@@ -87,6 +87,7 @@ foreach my $dir(@dirs){
                 my $v =$hash2{$id};
                 my @h = split/\t/,$v;
                 my $factor = $h[0];
+                my $cell_line =$h[1];
                 # print "$id\n";
                 my $f3 = "$dir/$file";
                 # open my $I3, '<', $f3 or die "$0 : failed to open input file '$f3' : $!\n"; 
@@ -101,7 +102,7 @@ foreach my $dir(@dirs){
                     my $end =$f[2];
                     my $name = $f[3];
                     if (exists $hash5{$chr}){
-                        my $output1 = "$chr\t$start\t$end\t$factor\t$name\t$file";
+                        my $output1 = "$chr\t$start\t$end\t$factor\t$cell_line\t$file";
                         my $output2 = "$chr\t$start\t$end";
                         unless(exists $hash3{$output1}){
                             $hash3{$output1}=1;
@@ -116,4 +117,6 @@ foreach my $dir(@dirs){
             }
         }
     }
+    close($O1);
+    system "zless $fo1 |sort -k1,1 -k2,2n |gzip > ${output_dir}/merge_pos_info_sample_narrow_peak_sorted.bed.gz";
 }

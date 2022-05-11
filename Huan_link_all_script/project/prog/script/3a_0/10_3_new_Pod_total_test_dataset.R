@@ -16,8 +16,8 @@ dat$primapi_re_n[dat$primapi_re =="Low"]=0
 dat$primapi_re_n[dat$primapi_re =="Intermediate"]=1
 dat$primapi_re_n[dat$primapi_re =="High"]=2
 #------------------------------------------------------------------new_cutoff
-dat$LN_num_c <-dat$LN_num_s
 dat$LDH_c <-dat$LDH_re0
+dat$LN_num_c <-dat$LN_num_s
 dat$HGB_c =dat$HGB_s
 dat$B2M_c <-dat$B2MG_re0
 
@@ -27,31 +27,31 @@ dat$ECOG_c[dat$ECOG >1]=1
 dat$ECOG_c[is.na(dat$ECOG_c)&dat$new_pod_total==1]=1
 dat$ECOG_c[is.na(dat$ECOG_c)&dat$new_pod_total==0]=0
 
-dat$BM_extend_c <-dat$BM_extend
-dat$BM_extend_c[is.na(dat$BM_extend_c)&dat$new_pod_total==1]=1
-dat$BM_extend_c[is.na(dat$BM_extend_c)&dat$new_pod_total==0]=0
-
-
-dat$SUVmax_c <-NA
-dat$SUVmax_c[dat$SUVmax <=2]=0
-dat$SUVmax_c[dat$SUVmax >2 ]=1
-dat$SUVmax_c[is.na(dat$SUVmax_c)&dat$new_pod_total==1]=1
-dat$SUVmax_c[is.na(dat$SUVmax_c)&dat$new_pod_total==0]=0
 
 dat$Lym_Mono_c <-NA
 dat$Lym_Mono_c[dat$Lym_Mono <=10]=0
 dat$Lym_Mono_c[dat$Lym_Mono >10 ]=1
 dat$Lym_Mono_c[is.na(dat$Lym_Mono_c)&dat$new_pod_total==1]=1
 dat$Lym_Mono_c[is.na(dat$Lym_Mono_c)&dat$new_pod_total==0]=0
-
-dat$SPD_c <-NA
-dat$SPD_c[dat$SPD <=20]=0
-dat$SPD_c[dat$SPD >20]=1
-dat$SPD_c[is.na(dat$SPD_c)&dat$new_pod_total==1]=1
-dat$SPD_c[is.na(dat$SPD_c)&dat$new_pod_total==0]=0
-
-dat$LN6_c <-dat$LN6_s
 dat$BM_c <-dat$BM_s
+
+
+dat$SUVmax_c <-NA
+dat$SUVmax_c[dat$SUVmax <=10]=0
+dat$SUVmax_c[dat$SUVmax >10 ]=1
+dat$SUVmax_c[is.na(dat$SUVmax_c)&dat$new_pod_total==1]=1
+dat$SUVmax_c[is.na(dat$SUVmax_c)&dat$new_pod_total==0]=0
+
+# dat$Lym_Mono_c <-NA
+# dat$Lym_Mono_c[dat$Lym_Mono <=10]=0
+# dat$Lym_Mono_c[dat$Lym_Mono >10 ]=1
+# dat$Lym_Mono_c[is.na(dat$Lym_Mono_c)&dat$new_pod_total==1]=1
+# dat$Lym_Mono_c[is.na(dat$Lym_Mono_c)&dat$new_pod_total==0]=0
+
+
+
+# dat$LN6_c <-dat$LN6_s
+
 # #-------------------------------------------------------------------------------------------------------------
 test <-dat[test_set_number,]
 # im <-read.table("/share/Projects/huanhuan/project/prog/10_2_feature_ratio.txt",header=T,sep="\t")
@@ -60,98 +60,59 @@ test <-dat[test_set_number,]
 # base::rowSums(dat_s, na.rm = TRUE)
 
 #-----------------------------------------------adjust2
-test$LN_num_c_f <-test$LN_num_c *10
-test$LDH_c_f <- test$LDH_c*9
+test$LDH_c_f <- test$LDH_c*11
+test$LN_num_c_f <-test$LN_num_c *11
 test$HGB_c_f<- test$HGB_c*9
-test$B2M_c_f <-test$B2M_c*9
-test$ECOG_c_f<- test$ECOG_c *4
-test$BM_extend_c_f<-test$BM_extend_c*3
-test$SUVmax_c_f<- test$SUVmax_c *1
-test$Lym_Mono_c_f <-test$Lym_Mono_c*1
-test$SPD_c_f<- test$SPD_c *1
-test$LN6_c_f <-test$LN6_c*1
-test$BM_c_f <-test$BM_c*1
-test$sum_score<-base::rowSums(test[,c("LN_num_c_f","LDH_c_f","HGB_c_f","B2M_c_f","ECOG_c_f","BM_extend_c_f","SUVmax_c_f","Lym_Mono_c_f","SPD_c_f","LN6_c_f","BM_c_f")])
+test$B2M_c_f <-test$B2M_c*7
+test$ECOG_c_f<- test$ECOG_c *5
+test$Lym_Mono_c_f <-test$Lym_Mono_c*4
+test$BM_c_f <-test$BM_c*4
+test$SUVmax_c_f<- test$SUVmax_c *2
+
+test$sum_score<-base::rowSums(test[,c("LDH_c_f","LN_num_c_f","HGB_c_f","B2M_c_f","ECOG_c_f","Lym_Mono_c_f","BM_c_f","SUVmax_c_f")])
 # test[is.na($sum_score),]
 test$adjust2 <- test$sum_score
 #-----------------------------------------------adjust3
-test$LN_num_c_f <-test$LN_num_c *5
-test$LDH_c_f <- test$LDH_c*4
-test$HGB_c_f<- test$HGB_c*4
-test$B2M_c_f <-test$B2M_c*4
-test$ECOG_c_f<- test$ECOG_c *2
-test$BM_extend_c_f<-test$BM_extend_c*2
+test$LDH_c_f <- test$LDH_c*6
+test$LN_num_c_f <-test$LN_num_c *6
+test$HGB_c_f<- test$HGB_c*5
+test$B2M_c_f <-test$B2M_c*3
+test$ECOG_c_f<- test$ECOG_c *3
+test$Lym_Mono_c_f <-test$Lym_Mono_c*2
+test$BM_c_f <-test$BM_c*2
 test$SUVmax_c_f<- test$SUVmax_c *1
-test$Lym_Mono_c_f <-test$Lym_Mono_c*1
-test$SPD_c_f<- test$SPD_c *1
-test$LN6_c_f <-test$LN6_c*1
-test$BM_c_f <-test$BM_c*1
-test$sum_score<-base::rowSums(test[,c("LN_num_c_f","LDH_c_f","HGB_c_f","B2M_c_f","ECOG_c_f","BM_extend_c_f","SUVmax_c_f","Lym_Mono_c_f","SPD_c_f","LN6_c_f","BM_c_f")])
+
+test$sum_score<-base::rowSums(test[,c("LDH_c_f","LN_num_c_f","HGB_c_f","B2M_c_f","ECOG_c_f","Lym_Mono_c_f","BM_c_f","SUVmax_c_f")])
 # test[is.na($sum_score),]
 test$adjust3 <- test$sum_score
 #-----------------------------------------------adjust4
-test$LN_num_c_f <-test$LN_num_c *3
 test$LDH_c_f <- test$LDH_c*2
+test$LN_num_c_f <-test$LN_num_c *2
 test$HGB_c_f<- test$HGB_c*2
-test$B2M_c_f <-test$B2M_c*2
+test$B2M_c_f <-test$B2M_c*1
 test$ECOG_c_f<- test$ECOG_c *1
-test$BM_extend_c_f<-test$BM_extend_c*1
-test$SUVmax_c_f<- test$SUVmax_c *1
 test$Lym_Mono_c_f <-test$Lym_Mono_c*1
-test$SPD_c_f<- test$SPD_c *1
-test$LN6_c_f <-test$LN6_c*1
 test$BM_c_f <-test$BM_c*1
-test$sum_score<-base::rowSums(test[,c("LN_num_c_f","LDH_c_f","HGB_c_f","B2M_c_f","ECOG_c_f","BM_extend_c_f","SUVmax_c_f","Lym_Mono_c_f","SPD_c_f","LN6_c_f","BM_c_f")])
+test$SUVmax_c_f<- test$SUVmax_c *1
+
+test$sum_score<-base::rowSums(test[,c("LDH_c_f","LN_num_c_f","HGB_c_f","B2M_c_f","ECOG_c_f","Lym_Mono_c_f","BM_c_f","SUVmax_c_f")])
 # test[is.na($sum_score),]
 test$adjust4 <- test$sum_score
 #--------------------------------------
-#-----------------------------------------------adjust5
-test$LN_num_c_f <-test$LN_num_c *2
-test$LDH_c_f <- test$LDH_c*2
-test$HGB_c_f<- test$HGB_c*2
-test$B2M_c_f <-test$B2M_c*2
-test$ECOG_c_f<- test$ECOG_c *1
-test$BM_extend_c_f<-test$BM_extend_c*1
-test$SUVmax_c_f<- test$SUVmax_c *1
-test$Lym_Mono_c_f <-test$Lym_Mono_c*1
-test$SPD_c_f<- test$SPD_c *1
-test$LN6_c_f <-test$LN6_c*1
-test$BM_c_f <-test$BM_c*1
-test$sum_score<-base::rowSums(test[,c("LN_num_c_f","LDH_c_f","HGB_c_f","B2M_c_f","ECOG_c_f","BM_extend_c_f","SUVmax_c_f","Lym_Mono_c_f","SPD_c_f","LN6_c_f","BM_c_f")])
-# test[is.na($sum_score),]
-test$adjust5 <- test$sum_score
-# #-----------------------------------------------adjust6
-# test$B2M_c_f <-test$B2M_c*5
-# test$LDH_c_f <- test$LDH_c *5
-# test$Lym_Mono_c_f <-test$Lym_Mono_c*5
-# test$HGB_c_f<- test$HGB_c *2
-# test$age_c_f<- test$age_c *2
-# test$LN_num_c_f <-test$LN_num_c *1
-# test$extend_num_c_f <-test$extend_num_c *1
-# test$SUVmax_c_f<- test$SUVmax_c *1
-# test$BM_extend_c_f<-test$BM_extend_c*1
+# #-----------------------------------------------adjust5
+# test$LDH_c_f <- test$LDH_c*2
+# test$LN_num_c_f <-test$LN_num_c *2
+# test$HGB_c_f<- test$HGB_c*2
 # test$ECOG_c_f<- test$ECOG_c *1
+# test$B2M_c_f <-test$B2M_c*1
+# test$Lym_Mono_c_f <-test$Lym_Mono_c*1
+# test$BM_c_f <-test$BM_c*1
 # test$SPD_c_f<- test$SPD_c *1
-# test$sum_score<-base::rowSums(test[,c("B2M_c_f","LDH_c_f","Lym_Mono_c_f","HGB_c_f","age_c_f","LN_num_c_f","extend_num_c_f","SUVmax_c_f","BM_extend_c_f","ECOG_c_f","SPD_c_f")])
+
+# test$sum_score<-base::rowSums(test[,c("LDH_c_f","LN_num_c_f","HGB_c_f","ECOG_c_f","B2M_c_f","Lym_Mono_c_f","BM_c_f","SPD_c_f")])
 # # test[is.na($sum_score),]
-# test$adjust6 <- test$sum_score
-# #-----------------------------------------------adjust7
-# test$B2M_c_f <-test$B2M_c*2
-# test$LDH_c_f <- test$LDH_c *2
-# test$Lym_Mono_c_f <-test$Lym_Mono_c*2
-# test$HGB_c_f<- test$HGB_c *1
-# test$age_c_f<- test$age_c *1
-# test$LN_num_c_f <-test$LN_num_c *1
-# test$extend_num_c_f <-test$extend_num_c *1
-# test$SUVmax_c_f<- test$SUVmax_c *1
-# test$BM_extend_c_f<-test$BM_extend_c*1
-# test$ECOG_c_f<- test$ECOG_c *1
-# test$SPD_c_f<- test$SPD_c *1
-# test$sum_score<-base::rowSums(test[,c("B2M_c_f","LDH_c_f","Lym_Mono_c_f","HGB_c_f","age_c_f","LN_num_c_f","extend_num_c_f","SUVmax_c_f","BM_extend_c_f","ECOG_c_f","SPD_c_f")])
-# # test[is.na($sum_score),]
-# test$adjust7 <- test$sum_score
-#----------------------------------------------
-# setwd("/share/Projects/huanhuan/project/prog/")
+# test$adjust5 <- test$sum_score
+
 
 p_theme<-theme(panel.grid =element_blank())+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
                                                   panel.background = element_rect(color="black",size=1.2),
@@ -164,7 +125,7 @@ p_theme<-theme(panel.grid =element_blank())+theme(panel.grid.major = element_bla
 mycolor <-c("#673AB7","#9C27B0","#E53935","#827717","#1B5E20","#006064","#01579B")
 #--------------------------------------------------------------------------8
 library(plotROC)
-longtest <-melt_roc(test,"new_pod_total",c("FLIPI1_count","FLIPI2_count","primapi_re_n","b2mg_ldh1.5s","adjust5","adjust3","adjust4"))
+longtest <-melt_roc(test,"new_pod_total",c("FLIPI1_count","FLIPI2_count","primapi_re_n","b2mg_ldh1.5s","adjust2","adjust3","adjust4"))
 longtest$name <-gsub("_count","",longtest$name)
 longtest$name <-gsub("primapi_re_n","PRIMA-PI",longtest$name)
 longtest$name <-gsub("b2mg_ldh1.5s","LDH+B2mg",longtest$name)
@@ -190,15 +151,15 @@ ggsave("./figure/10_3_cutoff1_roc7_new.png",p1,dpi=300,width=7,height=5.8)
 
 #------------------------------------------------------
 #--------------------------------------------------------------------------adjust5
-TP <-length(test$new_pod_total[test$adjust5>=5&test$new_pod_total==1])
-FP <-length(test$new_pod_total[test$adjust5>=5&test$new_pod_total==0])
-FN <-length(test$new_pod_total[test$adjust5<5&test$new_pod_total==1])
-TN <-length(test$new_pod_total[test$adjust5<5&test$new_pod_total==0])
+TP <-length(test$new_pod_total[test$adjust4>=4&test$new_pod_total==1])
+FP <-length(test$new_pod_total[test$adjust4>=4&test$new_pod_total==0])
+FN <-length(test$new_pod_total[test$adjust4<4&test$new_pod_total==1])
+TN <-length(test$new_pod_total[test$adjust4<4&test$new_pod_total==0])
 TPR = TP / (TP+FN)
 FPR = FP / (FP + TN)
 # mycolor <-c("#E53935","#827717","#1B5E20","#006064","#01579B")
 mycolor <-c("#827717","#1B5E20","#006064","#E53935","#01579B")
-test$Ours <-test$adjust5
+test$Ours <-test$adjust4
 
 library(plotROC)
 longtest <-melt_roc(test,"new_pod_total",c("FLIPI1_count","FLIPI2_count","primapi_re_n","b2mg_ldh1.5s","Ours"))
@@ -222,14 +183,59 @@ p1 <- p+annotate("text",x=0.85,y=0.15,
               names(auc)[4]," AUC: ",round(auc[4],3),"\n",
               names(auc)[5]," AUC: ",round(auc[5],3),"\n"),
               size=3.5)
-p1 <-p1 +annotate("text",x=0.43,y=0.82,label= "5",size=5,color="#E53935" )+geom_point(x=FPR,y=TPR ,size=4,color="#E53935" )
+p1 <-p1 +annotate("text",x=0.35,y=0.75,label= "4",size=5,color="#E53935" )+geom_point(x=FPR,y=TPR ,size=4,color="#E53935" )
 
   p2 <-p1 +scale_x_continuous(limits= c(0, 1), breaks= seq(0,1,0.2))+ #expand = c(0, 0)
   scale_y_continuous(limits= c(0, 1), breaks= seq(0,1,0.2)) #+theme(panel.background = element_rect(color="black",size=1.2))
-ggsave("./figure/10_3_roc_adjust5_NEW.png",p2,dpi=300,width=7,height=5.8)
+ggsave("./figure/10_3_roc_ours_NEW.png",p2,dpi=300,width=7,height=5.8)
 pdf("aaa.pdf")
 print(p2)
 dev.off()
+
+
+custom_theme <- function() {
+  theme_survminer() %+replace%
+    theme(
+      plot.title=element_text(hjust=0.5)
+    )
+}
+
+cutoff_y=4
+test$Ours_01 <-NA
+test$Ours_01[test$Ours<cutoff_y ]=0
+test$Ours_01[test$Ours>=cutoff_y]=1
+library("survival")
+library("survminer")
+
+fit <- survfit(Surv(pfs_month_new, pro_status) ~ Ours_01, data=test)
+# pdf("./figure/10_3_pod24_pfs_cutoff1_Ours.pdf",height=5.2,width=5)
+p1 <- ggsurvplot(fit,
+                palette=c("#21618C","#B71C1C"),
+                legend.labs=c("Low risk","High risk"), #标签
+                pval = TRUE,
+                legend.title="POD24",
+                title="PFS",
+                xlab = " Time (Months)",
+                xlim=c(0,110),
+                ggtheme = custom_theme()
+                )
+ggsave("./figure/10_3_pod24_pfs_cutoff1_Ours_new.png",p1$plot,dpi=300,height=5.2,width=5)
+
+fit <- survfit(Surv(os_month_new, dead) ~ Ours_01, data=test)
+# pdf("./figure/10_3_pod24_Os_cutoff1_Ours.pdf",height=5.2,width=5)
+p1 <- ggsurvplot(fit,
+                palette=c("#21618C","#B71C1C"),
+                legend.labs=c("Low risk","High risk"), #标签
+                pval = TRUE,
+                legend.title="POD24",
+                title="OS",
+                xlab = " Time (Months)",
+                xlim=c(0,110),
+                ggtheme = custom_theme()
+                )
+ggsave("./figure/10_3_pod24_Os_cutoff1_Ours_new.png",p1$plot,dpi=300,height=5.2,width=5)
+
+
 
 #------------------------------------------------------------------------FLIPI
 
@@ -394,77 +400,10 @@ p1 <- ggsurvplot(fit,
 ggsave("./figure/10_3_OS_b2mg_ldh1.5s_test.png",p1$plot,dpi=300,height=5.2,width=5)
 
 
-#--------------------------------------------------------------------------------------------adjust7
-# cutoff_y=4
-# test$adjust7_01 <-NA
-# test$adjust7_01[test$adjust7<cutoff_y ]=0
-# test$adjust7_01[test$adjust7>=cutoff_y]=1
-# library("survival")
-# library("survminer")
 
-# fit <- survfit(Surv(pfs_month_new, pro_status) ~ adjust7_01, data=test)
-# # pdf("./figure/10_3_pod24_pfs_cutoff1_adjust3.pdf",height=5.2,width=5)
-# p1 <- ggsurvplot(fit,
-#                 palette=c("#21618C","#B71C1C"),
-#                 legend.labs=c("Low","High"), #标签
-#                 pval = TRUE,
-#                 legend.title="POD24",
-#                 title="Progression Free Survival",
-#                 xlab = " Time (Months)",
-#                 xlim=c(0,110),
-#                 ggtheme = custom_theme()
-#                 )
-# ggsave("./figure/10_3_pod24_pfs_cutoff1_adjust7_new.png",p1$plot,dpi=300,height=5.2,width=5)
-# #------------------------------
-# fit <- survfit(Surv(os_month_new, dead) ~ adjust7_01, data=test)
-# # pdf("./figure/10_3_pod24_Os_cutoff1_adjust3.pdf",height=5.2,width=5)
-# p1 <- ggsurvplot(fit,
-#                 palette=c("#21618C","#B71C1C"),
-#                 legend.labs=c("Low","High"), #标签
-#                 pval = TRUE,
-#                 legend.title="POD24",
-#                 title="Overall survival",
-#                 xlab = " Time (Months)",
-#                 xlim=c(0,110),
-#                 ggtheme = custom_theme()
-#                 )
-# ggsave("./figure/10_3_pod24_Os_cutoff1_adjust7_new.png",p1$plot,dpi=300,height=5.2,width=5)
 #-----------------
 #--------------------------------------------------------------------------------------------adjust5
-cutoff_y=5
-test$adjust5_01 <-NA
-test$adjust5_01[test$adjust5<cutoff_y ]=0
-test$adjust5_01[test$adjust5>=cutoff_y]=1
-library("survival")
-library("survminer")
 
-fit <- survfit(Surv(pfs_month_new, pro_status) ~ adjust5_01, data=test)
-# pdf("./figure/10_3_pod24_pfs_cutoff1_adjust5.pdf",height=5.2,width=5)
-p1 <- ggsurvplot(fit,
-                palette=c("#21618C","#B71C1C"),
-                legend.labs=c("Low risk","High risk"), #标签
-                pval = TRUE,
-                legend.title="POD24",
-                title="PFS",
-                xlab = " Time (Months)",
-                xlim=c(0,110),
-                ggtheme = custom_theme()
-                )
-ggsave("./figure/10_3_pod24_pfs_cutoff1_adjust5_new.png",p1$plot,dpi=300,height=5.2,width=5)
-
-fit <- survfit(Surv(os_month_new, dead) ~ adjust5_01, data=test)
-# pdf("./figure/10_3_pod24_Os_cutoff1_adjust5.pdf",height=5.2,width=5)
-p1 <- ggsurvplot(fit,
-                palette=c("#21618C","#B71C1C"),
-                legend.labs=c("Low risk","High risk"), #标签
-                pval = TRUE,
-                legend.title="POD24",
-                title="OS",
-                xlab = " Time (Months)",
-                xlim=c(0,110),
-                ggtheme = custom_theme()
-                )
-ggsave("./figure/10_3_pod24_Os_cutoff1_adjust5_new.png",p1$plot,dpi=300,height=5.2,width=5)
 
 
 #--------------------------------------------------------------------------------------------ori

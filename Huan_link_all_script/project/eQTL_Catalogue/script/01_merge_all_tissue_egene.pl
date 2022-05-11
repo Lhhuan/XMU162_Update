@@ -14,7 +14,7 @@ open my $I1, '<', $f1 or die "$0 : failed to open input file '$f1' : $!\n";
 
 my $fo2 = "../output/01_merge_all_tissue_cis_eQTL_eur_egene.txt.gz";
 open my $O2, "| gzip >$fo2" or die $!;
-print $O2 "SNP_chr\tSNP_pos\tPvalue\tegene\n";
+print $O2 "SNP_chr\tSNP_pos\tPvalue\tegene\ttissue\n";
 
 my $dir = "/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/eQTL_Catalogue/data";
 my (%hash1,%hash2,%hash3,%hash4);
@@ -49,6 +49,7 @@ while(<$I1>)
     unless(/^study/){
         my @f = split/\t/;
         my $study= $f[0];
+        my $qtl_group =$f[1];
         my $tissue_label = $f[4];
         my $condition_label =$f[5];
         my $quant_method =$f[6];
@@ -77,12 +78,12 @@ while(<$I1>)
                     my $gene_id = $ss[-3];
                     # print "$variant\n$chrpos\n";
                     if(exists $hash3{$variant}){  #test in eur 
-                        print $O2 "$chrpos\t$pvalue\t$gene_id\n";
+                        print $O2 "$chrpos\t$pvalue\t$gene_id\t$qtl_group\n";
 
                     }
                     else{
                         if(exists $hash4{$chrpos}){
-                            print $O2 "$chrpos\t$pvalue\t$gene_id\n";                              
+                            print $O2 "$chrpos\t$pvalue\t$gene_id\t$qtl_group\n";                              
                         }
                     }
                     
