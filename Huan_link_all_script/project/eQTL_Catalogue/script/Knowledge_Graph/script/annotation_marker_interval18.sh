@@ -16,4 +16,4 @@ bedtools intersect -a $sorted_input_file -b "/share/Projects/huanhuan/project/RN
 #hg38
 bedtools intersect -a $sorted_input_file -b "/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/annotation/annotation_data/CTCF/normal_cell_line/hg38/05_normal_cell_line_ctcf_sample_sorted.bed.gz" -wo | gzip > $output_dir/CTCF_$input_file_base_name
 
-bedtools intersect -a $sorted_input_file -b "/home/huanhuan/project/link_database/EnhancerAtlas/01_merge_enahcner_sample_sorted.bed.gz" -wo | gzip > $output_dir/Enhancer_$input_file_base_name
+bedtools intersect -a $sorted_input_file -b "/home/huanhuan/project/link_database/EnhancerAtlas/hg38/01_merge_enhancer_sample_sorted.bed.gz" -wo | gzip > $output_dir/EnhancerAtlas_$input_file_base_name

@@ -27,6 +27,6 @@ python 10_03_feature_selection_2XGB_not_fill_gain_weight_shap.py
 Rscript 10_04_plot_feature_importance_not_fill_gain_weight_shap.R
 
 Rscript 10_3_new_Pod_total_test_dataset.R #importance 10_3_train_dataset_new_cutoff.txt 10_3_test_vaild.Rdata
-Rscript 10_3_new_Pod_total_test_dataset_5os.R  #10_3_ALL_data_OS_valid.Rdata
+Rscript 10_3_new_Pod_total_test_dataset_os.R  #10_3_ALL_data_OS_valid.Rdata, final_3a_data20220512.Rdata
 Rscript 11_test_in_US.R  #11_US.Rdata 11_us_for_vaild.Rdata
 Rscript 12_test_in_test_add_US.R

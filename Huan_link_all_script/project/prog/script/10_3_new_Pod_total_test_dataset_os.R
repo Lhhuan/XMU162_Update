@@ -75,9 +75,13 @@ dat$sum_score<-base::rowSums(dat[,c("B2M_c_f","Lym_Mono_c_f","LDH_c_f","HGB_c_f"
 dat$Ours <- dat$sum_score
 save(dat,file="10_3_ALL_data_OS_valid.Rdata")
 
-
-
-
+dat1 <-dat
+load("/home/huanhuan/project/prog/data/sex.Rdata")
+dat1 <-left_join(dat1,sex,by="No")
+dat1$class <- NA
+dat1[test_set_number,"class"] ="test"
+dat1[train_set_number,"class"] ="train"
+save(dat1,file="final_3a_data20220512.Rdata")
 
 p_theme<-theme(panel.grid =element_blank())+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
                                                   panel.background = element_rect(color="black",size=1.2),
@@ -181,13 +185,100 @@ ggsave("./figure/10_3_OS_dead_roc5_test_data_new.png",p2,dpi=300,width=7,height=
 pdf("aaa.pdf")
 print(p2)
 dev.off()
+#----------------------------------
 
+custom_theme <- function() {
+  theme_survminer() %+replace%
+    theme(
+      plot.title=element_text(hjust=0.5)
+    )
+}
 
+cutoff_y=3
+dat$Ours_01 <-NA
+dat$Ours_01[dat$Ours<cutoff_y ]=0
+dat$Ours_01[dat$Ours>=cutoff_y]=1
+library("survival")
+library("survminer")
+#-----------------total
+fit <- survfit(Surv(pfs_month_new, pro_status) ~ Ours_01, data=dat)
+# pdf("./figure/10_3_pod24_pfs_cutoff1_adjust3.pdf",height=5.2,width=5)
+p1 <- ggsurvplot(fit,
+                palette=c("#21618C","#B71C1C"),
+                legend.labs=c("Low risk","High risk"), #标签
+                pval = TRUE,
+                legend.title="POD24",
+                title="PFS",
+                xlab = " Time (Months)",
+                xlim=c(0,110),
+                ggtheme = custom_theme()
+                )
+ggsave("./figure/10_3_pod24_pfs_alldata_Ours.png",p1$plot,dpi=300,height=5.2,width=5)
+#------------------------------
+fit <- survfit(Surv(os_month_new, dead) ~ Ours_01, data=dat)
+# pdf("./figure/10_3_pod24_Os_cutoff1_adjust3.pdf",height=5.2,width=5)
+p1 <- ggsurvplot(fit,
+                palette=c("#21618C","#B71C1C"),
+                legend.labs=c("Low risk","High risk"), #标签
+                pval = TRUE,
+                legend.title="POD24",
+                title="OS",
+                xlab = " Time (Months)",
+                xlim=c(0,110),
+                ggtheme = custom_theme()
+                )
+ggsave("./figure/10_3_pod24_Os_alldata_Ours.png",p1$plot,dpi=300,height=5.2,width=5)
 
+#---------------FLIPI1
 
+FLIPI1 <-filter(dat,FLIPI1_count_re=="High")
 
+fit <- survfit(Surv(os_month_new, dead) ~ Ours_01, data=FLIPI1)
+# pdf("./figure/10_3_pod24_Os_cutoff1_adjust3.pdf",height=5.2,width=5)
+p1 <- ggsurvplot(fit,
+                palette=c("#21618C","#B71C1C"),
+                legend.labs=c("Low risk","High risk"), #标签
+                pval = TRUE,
+                legend.title="POD24",
+                title="OS",
+                xlab = "Time (Months)",
+                xlim=c(0,110),
+                ggtheme = custom_theme()
+                )
+ggsave("./figure/10_3_pod24_OS_FLIPI1_high.png",p1$plot,dpi=300,height=5.2,width=5)
 
+#-------------------------------
+FLIPI2 <-filter(dat,FLIPI2_count_re=="High")
 
+fit <- survfit(Surv(os_month_new, dead) ~ Ours_01, data=FLIPI2)
+# pdf("./figure/10_3_pod24_Os_cutoff1_adjust3.pdf",height=5.2,width=5)
+p1 <- ggsurvplot(fit,
+                palette=c("#21618C","#B71C1C"),
+                legend.labs=c("Low risk","High risk"), #标签
+                pval = TRUE,
+                legend.title="POD24",
+                title="OS",
+                xlab = "Time (Months)",
+                xlim=c(0,110),
+                ggtheme = custom_theme()
+                )
+ggsave("./figure/10_3_pod24_OS_FLIPI2_high.png",p1$plot,dpi=300,height=5.2,width=5)
+
+#-------------------------
+primapi_re <-filter(dat,primapi_re=="Intermediate" |primapi_re=="Low")
+fit <- survfit(Surv(os_month_new, dead) ~ Ours_01, data=FLIPI2)
+# pdf("./figure/10_3_pod24_Os_cutoff1_adjust3.pdf",height=5.2,width=5)
+p1 <- ggsurvplot(fit,
+                palette=c("#21618C","#B71C1C"),
+                legend.labs=c("Low risk","High risk"), #标签
+                pval = TRUE,
+                legend.title="POD24",
+                title="OS",
+                xlab = "Time (Months)",
+                xlim=c(0,110),
+                ggtheme = custom_theme()
+                )
+ggsave("./figure/10_3_pod24_OS_primapi_re_Intermediate_low.png",p1$plot,dpi=300,height=5.2,width=5)
 
 
 

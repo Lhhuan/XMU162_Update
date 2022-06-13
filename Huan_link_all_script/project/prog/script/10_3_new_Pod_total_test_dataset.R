@@ -269,3 +269,28 @@ p1 <-ggplot(data = pod_total_new , mapping = aes(x=Var1,y=Freq)) + geom_bar(stat
     axis.text.x = element_text(color="black"))
 
 ggsave("./figure/10_3_distrbution_pod_total_new.png",p1,dpi=300,height=4,width=4)
+
+
+
+#-----------------------------------------------------------------------------------------Ours only
+mycolor <-c("#673AB7","#9C27B0","#E53935","#827717","#1B5E20","#006064","#01579B")
+#--------------------------------------------------------------------------8
+library(plotROC)
+longtest <-melt_roc(test,"new_pod_total",c("Ours","FLIPI1_count"))
+longtest$name <-gsub("_count","",longtest$name)
+longtest$name <-gsub("primapi_re_n","PRIMA-PI",longtest$name)
+longtest$name <-gsub("b2mg_ldh1.5s","LDH+B2mg",longtest$name)
+library(Hmisc)
+longtest$name <- capitalize(longtest$name)
+# pdf("./figure/10_3_cutoff1_roc7.pdf",width=7,height=6)
+p <-ggplot(longtest,aes(d=D,m=M,color=name))+geom_roc(show.legend = TRUE,labels=TRUE) + scale_color_manual(values=mycolor)+#,color=name aes(color=mycolor)
+  p_theme+xlab("FPR")+ylab("TPR") #+scale_x_continuous(expand=c(0,0)) + scale_y_continuous(expand=c(0,0))
+auc  <- calc_auc(p)$AUC
+names(auc) <-levels(factor(longtest[,"name"]))
+auc <-sort(auc,decreasing=T)
+p1 <- p+annotate("text",x=0.85,y=0.15,
+  label=paste(names(auc)[1]," AUC: ",round(auc[1],3),"\n",
+              names(auc)[2]," AUC: ",round(auc[2],3),"\n"),
+              size=3.5)
+            
+ggsave("./figure/10_3_test_only_ours.png",p1,dpi=300,width=7,height=5.8)

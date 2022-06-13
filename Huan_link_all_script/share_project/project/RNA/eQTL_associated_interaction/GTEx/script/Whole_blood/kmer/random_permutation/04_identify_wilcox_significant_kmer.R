@@ -10,7 +10,7 @@ library(Seurat)
 library(reshape2)
 library(parallel)
 
-load("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Whole_blood/kmer/figure/hotspot_kmer_need_test_value.Rdata")
+load("/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Whole_blood/kmer/figure/hotspot_kmer_need_test_value.Rdata")
 
 unique_hotspot_kmer_need_test <-as.data.frame(unique(hotspot_kmer_need_test_value$seq))
 colnames(unique_hotspot_kmer_need_test)[1] <-"seq"
@@ -35,7 +35,7 @@ ProcessBedGz<-function(i=NULL){
 
 a <-mclapply(c(1:100), ProcessBedGz, mc.cores = 15)
 all_random_kmer_need_test_value <-do.call(rbind,a)
-setwd("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Whole_blood/kmer/random_permutation/figure/")
+setwd("/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Whole_blood/kmer/random_permutation/figure/")
 save(all_random_kmer_need_test_value,file ="all_random_kmer_need_test_value_1_100.Rdata") 
 #---------------------
 unique_hotspot_kmer_need_test1 <-as.character(unique(unique_hotspot_kmer_need_test$seq))

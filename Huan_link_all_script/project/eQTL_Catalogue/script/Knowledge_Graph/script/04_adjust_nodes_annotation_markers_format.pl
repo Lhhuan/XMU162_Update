@@ -9,7 +9,7 @@ use Env qw(PATH);
 use Parallel::ForkManager;
 use List::MoreUtils ':all';
 
-my @markers = ("H3K27ac","H3K4me1","H3K4me3","H3K9ac","H3K36me3","H3K27me3","H3K9me3","CTCF","Enhancer","CHROMATIN_Accessibility","TFBS");
+my @markers = ("H3K27ac","H3K4me1","H3K4me3","H3K9ac","H3K36me3","H3K27me3","H3K9me3","CTCF","CHROMATIN_Accessibility","TFBS");
 foreach my $marker(@markers){
     my $f1 = "../output/nodes_annotation/${marker}_Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge.bed.gz";
     open( my $I1 ,"gzip -dc $f1|") or die ("can not open input file '$f1' \n"); #读压缩文件

@@ -1,0 +1,1 @@
+perl 01_merge_TAD_tissue.pl #../data/endothelial_cell_of_hepatic_sinusoid/ENCFF879NDS.bed.gz 转成hg38,再合并到一起得"../output/hg38/01_merge_TAD_sample.bed.gz"，排序得../output/hg38/01_merge_TAD_sample_sorted.bed.gz

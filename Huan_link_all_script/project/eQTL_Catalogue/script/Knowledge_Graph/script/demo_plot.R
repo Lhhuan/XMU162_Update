@@ -3,15 +3,17 @@ library(igraph)
 library(ggraph)
 library(graphlayouts)
 
-actors <- data.frame(name=c("hotspot", "gene1","gene2","gene3","gene4", "enhancer1", "H3K27ac",
-                            "H3K4me1","tissue1","tissue2"),
-                     Node=c("Hotspot","Gene","Gene","Gene","Gene","CRE","Epigenetic marker","Epigenetic marker","Tissue","Tissue"))
+actors <- data.frame(name=c("hotspot2","hotspot1", "gene1","gene2","gene3","gene4","gene5","gene6","gene7","gene8"),
+                     Node=c("Hotspot","Hotspot","Gene","Gene","Gene","Gene","Gene","Gene","Gene","Gene"))
 
-relations <- data.frame(from=c("hotspot", "gene1", "gene1", "gene1","hotspot", "hotspot","hotspot","enhancer1","gene1"),
-                        to=c("gene1", "gene2", "gene3", "gene4", "enhancer1", "H3K27ac","H3K4me1","tissue2","tissue1"),
-                        Edge=c("Hotspot-Target","Co-expression","Functional interaction","Functional interaction",
-                                "Hotspot annotation","Hotspot annotation","Hotspot annotation","Tissue","Tissue"))
+# rep()
+relations <- data.frame(from=c("hotspot1","hotspot1", "gene1", "gene1", "gene1","gene1","hotspot2","hotspot2","gene7","gene8","gene6","gene3"),
+                        to=c("gene7","gene1", "gene2", "gene3", "gene4","gene5","gene5","gene6","gene8","gene1","gene2","gene4"),
+                        Edge=c("Hotspot-Target","Hotspot-Target","Co-expression","Functional interaction","Functional interaction","Co-expression","Hotspot-Target","Hotspot-Target","Co-expression","Functional interaction","Co-expression","Functional interaction"))
 
+
+
+# relations <- relations[-c(5:9),]
 g <- graph_from_data_frame(relations, directed=T, vertices=actors)
 
 nodes <-c(relations$from,relations$to)
@@ -30,3 +32,6 @@ p <- ggraph(g, "stress", bbox = 15) +
 pdf("demo.pdf")
 print(p)
 dev.off()
+
+
+

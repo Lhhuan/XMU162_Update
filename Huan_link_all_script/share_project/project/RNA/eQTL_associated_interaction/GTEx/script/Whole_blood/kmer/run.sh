@@ -56,6 +56,14 @@ gzip 6mers.csv
 #---------
 Rscript 07_count_kmer_count.R
 
+Rscript 08_Cluster_hotspot_by_sig_kmer.R 
+
+
+
+
+
+
+
 #----------------------------
 Rscript boxplot_kmer_count_chr1.R
 

@@ -1,0 +1,2 @@
+wget -c http://159.226.67.237/sun/oncobase/assets/data/download/EpiTensor.txt.gz
+perl 01_merge_normal_cell_line_enhancer_type.pl #通过"/home/huanhuan/project/link_database/JEME/ENCODE_Roadmap_info_man.txt" 筛选normal tissue/cell 将"/home/huanhuan/project/link_database/OncoBase/EpiTensor.txt.gz" 中的TSS_TSS等type分开，得"./output/01_${type}.bed.gz，转hg38得"./output/hg38/01_${type}.bed",sort得"./output/hg38/01_${type}_sorted.bed.gz"

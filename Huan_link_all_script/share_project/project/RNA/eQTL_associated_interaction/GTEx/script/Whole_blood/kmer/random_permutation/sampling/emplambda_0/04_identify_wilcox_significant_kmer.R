@@ -10,12 +10,12 @@ library(Seurat)
 library(reshape2)
 library(parallel)
 
-load("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Whole_blood/kmer/figure/hotspot_kmer_need_test_value.Rdata")
+load("/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Whole_blood/kmer/figure/hotspot_kmer_need_test_value.Rdata")
 
 unique_hotspot_kmer_need_test <-as.data.frame(unique(hotspot_kmer_need_test_value$seq))
 colnames(unique_hotspot_kmer_need_test)[1] <-"seq"
 #---------
-setwd("/share/data0/QTLbase/huan/GTEx/Whole_Blood/Cis_eQTL/hotspot_cis_eQTL/interval_18_filter/6/kmer/random/background_original_random/0/")
+# setwd("/share/data0/QTLbase/huan/GTEx/Whole_Blood/Cis_eQTL/hotspot_cis_eQTL/interval_18_filter/6/kmer/random/background_original_random/0/")
 
 
 #-------------
@@ -30,14 +30,18 @@ ProcessBedGz<-function(i=NULL){
     org3 <-dplyr::select(org2,-hotspot)
     rm(org2)
     random_kmer_need_test_value <-inner_join(org3,unique_hotspot_kmer_need_test,by="seq")
+    random_kmer_need_test_value$random_ID =i
     gc()
     return(random_kmer_need_test_value)
 }
 
-a <-mclapply(c(1:100), ProcessBedGz, mc.cores = 15)
-all_random_kmer_need_test_value <-do.call(rbind,a)
+# a <-mclapply(c(1:100), ProcessBedGz, mc.cores = 15)
+# all_random_kmer_need_test_value <-do.call(rbind,a)
 
-setwd("/home/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Whole_blood/kmer/random_permutation/sampling/emplambda_0/figure/")
+
+a <-lapply(c(1:100), ProcessBedGz)
+all_random_kmer_need_test_value <-do.call(rbind,a)
+setwd("/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/GTEx/script/Whole_blood/kmer/random_permutation/sampling/emplambda_0/figure/")
 save(all_random_kmer_need_test_value,file ="all_random_kmer_need_test_value_1_100.Rdata") 
 
 
