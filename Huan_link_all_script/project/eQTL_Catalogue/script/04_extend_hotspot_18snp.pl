@@ -68,8 +68,8 @@ while(<$I2>)
                 my @t2 = split/\t/,$new_end_line_v;
                 my $ne_chr=$t2[0];
                 my $ne_pos = $t2[1];
-                my $new_start = $ns_pos-1;
-                my $new_end = $ne_pos+1-1;
+                my $new_start = $ns_pos-1+1; #防止科学计数法
+                my $new_end = $ne_pos+1;
                 print $O3 "$chr\t$new_start\t$new_end\t$SNP_number\t$center_snp\n";
             }
         }

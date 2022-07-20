@@ -81,8 +81,8 @@ dat1 <-left_join(dat1,sex,by="No")
 dat1$class <- NA
 dat1[test_set_number,"class"] ="test"
 dat1[train_set_number,"class"] ="train"
-save(dat1,file="final_3a_data20220512.Rdata")
-
+save(dat1,file="final_3a_data20220630.Rdata")
+write.table(dat1,"final_3a_data20220630.txt",row.names = F, col.names = T,quote =F,sep="\t")
 p_theme<-theme(panel.grid =element_blank())+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
                                                   panel.background = element_rect(color="black",size=1.2),
                                                   axis.title.y = element_text(size = 15),

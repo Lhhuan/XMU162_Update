@@ -1,4 +1,4 @@
-# 用/home/huanhuan/project/link_database/OncoBase/output/hg38/01_${type}_sorted.bed.gz 对"/home/huanhuan/project/eQTL_Catalogue/output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_0.05.bed.gz"进行annotation,得"../output/edges_annotation/success_${type}_hotspot_egene.bed.gz"，adjust format得"../output/edges_annotation/${type}_hotspot_egene.bed.gz"
+# 用/home/huanhuan/project/link_database/OncoBase/output/hg38/01_${type}_sorted.bed.gz 对"/home/huanhuan/project/eQTL_Catalogue/output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_5e_8.bed.gz"进行annotation,得"../output/edges_annotation/success_${type}_hotspot_egene.bed.gz"，adjust format得"../output/edges_annotation/${type}_hotspot_egene.bed.gz"
 #!/usr/bin/perl
 use warnings;
 use strict; 
@@ -10,7 +10,7 @@ use Parallel::ForkManager;
 use List::MoreUtils ':all';
 
 my %hash1;
-my $sorted_input_file = "/home/huanhuan/project/eQTL_Catalogue/output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_0.05.bed.gz";
+my $sorted_input_file = "/home/huanhuan/project/eQTL_Catalogue/output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_5e_8.bed.gz";
 
 
 my @types=("TSS_TSS","ENH_ENH","TSS_ENH");

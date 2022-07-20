@@ -161,12 +161,12 @@ ggsave("./figure/11_pod24_test_in_US.png",p1,dpi=300,width=7,height=5.8)
 
 
 
-TP <-length(test$new_pod_total[test$adjust5>=5&test$new_pod_total==1])
-FP <-length(test$new_pod_total[test$adjust5>=5&test$new_pod_total==0])
-FN <-length(test$new_pod_total[test$adjust5<5&test$new_pod_total==1])
-TN <-length(test$new_pod_total[test$adjust5<5&test$new_pod_total==0])
-TPR = TP / (TP+FN)
-FPR = FP / (FP + TN)
+# TP <-length(test$new_pod_total[test$adjust5>=5&test$new_pod_total==1])
+# FP <-length(test$new_pod_total[test$adjust5>=5&test$new_pod_total==0])
+# FN <-length(test$new_pod_total[test$adjust5<5&test$new_pod_total==1])
+# TN <-length(test$new_pod_total[test$adjust5<5&test$new_pod_total==0])
+# TPR = TP / (TP+FN)
+# FPR = FP / (FP + TN)
 mycolor <-c("#827717","#1B5E20","#E53935","#006064","#01579B")
 # test$Ours <-test$adjust5
 

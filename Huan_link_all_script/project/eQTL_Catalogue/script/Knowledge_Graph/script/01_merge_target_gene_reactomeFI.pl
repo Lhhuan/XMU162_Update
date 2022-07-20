@@ -1,4 +1,4 @@
-#"../../../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_0.05.bed.gz" 与reactomeFI "/home/huanhuan/project/link_database/reactome_FI/output/04_ReactomeFI_start_end_all.txt.gz" merge在一起得 ../output/01_hotspot_target_gene_reactomeFI.bed.gz 
+#"../../../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_5e_8.bed.gz" 与reactomeFI "/home/huanhuan/project/link_database/reactome_FI/output/04_ReactomeFI_start_end_all.txt.gz" merge在一起得 ../output/01_hotspot_target_gene_reactomeFI.bed.gz 
 #!/usr/bin/perl
 use warnings;
 use strict; 
@@ -6,7 +6,7 @@ use utf8;
 
 my $f4 = "/home/huanhuan/project/link_database/reactome_FI/output/04_ReactomeFI_start_end_all.txt.gz"; #
 open( my $I4 ,"gzip -dc $f4|") or die ("can not open input file '$f4' \n"); #读压缩文件
-my $f5 = "../../../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_0.05.bed.gz"; #
+my $f5 = "../../../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_5e_8.bed.gz"; #
 open( my $I5 ,"gzip -dc $f5|") or die ("can not open input file '$f5' \n"); #读压缩文件
 my $fo1 = "../output/01_hotspot_target_gene_reactomeFI.bed.gz"; #
 open my $O1, "| gzip >$fo1" or die $!;

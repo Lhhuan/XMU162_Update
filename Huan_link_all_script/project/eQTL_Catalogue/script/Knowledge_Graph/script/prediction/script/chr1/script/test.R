@@ -1,0 +1,18 @@
+library(ggplot2)
+library(Rcpp)
+library(readxl)
+library(dplyr)
+library(stringr)
+library(ggpubr)
+library(gridExtra)
+library(ggpval)
+library(Seurat)
+library(reshape2)
+library(R.utils)
+library(mclust)
+
+setwd("/home/huanhuan/project/eQTL_Catalogue/script/Knowledge_Graph/script/prediction/script/chr1/output/")
+gidx <-read.table("01_gene_idx.txt.gz",header = T,sep = "\t")%>% as.data.frame()
+
+hidx <-read.table("01_hotspot_idx.txt.gz",header = T,sep = "\t")%>% as.data.frame()
+max(hidx$hotspot_idx)

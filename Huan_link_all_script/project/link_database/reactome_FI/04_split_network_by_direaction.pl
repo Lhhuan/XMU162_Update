@@ -31,8 +31,8 @@ while(<$I1>)
     my @f= split/\t/;
     unless(/^Gene1/){
         my $Direction =$f[3];
-        my $Gene1_ensembl =$f[-2];
-        my $Gene2_ensembl =$f[-1];
+        my $Gene1_ensembl =$f[5];
+        my $Gene2_ensembl =$f[-4];
         if ($Direction =~/^<-$/ |$Direction =~/^\|-$/ ){
             print $O2 "$Gene1_ensembl\t$Gene2_ensembl\n";
             print $O4 "$Gene2_ensembl\t$Gene1_ensembl\n";

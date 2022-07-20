@@ -26,8 +26,8 @@ while(<$I1>)
         my $chr =$f[2];
         my $CHR = "chr${chr}";
         my $POS = $f[1];
-        my $start =$POS-1;
-        my $end = $POS+1-1;
+        my $start =$POS+1-1; #避免文件出现科学计数法(e+)
+        my $end = $POS+1;
         print $O2 "$CHR\t$start\t$end\n";
     }
 }

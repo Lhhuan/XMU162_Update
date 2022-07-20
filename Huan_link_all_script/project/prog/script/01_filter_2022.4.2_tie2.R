@@ -38,7 +38,11 @@ dat$pod12[grep("NA",dat$pod12)] <- NA
 dat$pod24[grep("NA",dat$pod24)] <- NA
 dat$pod36[grep("NA",dat$pod36)] <- NA
 dat$pod48[grep("NA",dat$pod48)] <- NA
-dat[,26:29] <-lapply(26:28,function(i){as.numeric(dat[,i])})
+# dat[,26:29] <-lapply(26:29,function(i){as.numeric(dat[,i])})
+dat[,26] <-as.numeric(dat[,26])
+dat[,27] <-as.numeric(dat[,27])
+dat[,28] <-as.numeric(dat[,28])
+dat[,29] <-as.numeric(dat[,29])
 
 dat$pod_total <-rowSums(dat[,26:29]) #c("pod12","pod24","pod36","pod48")
 dat$Ki.67[grep("NA",dat$Ki.67)] <- NA

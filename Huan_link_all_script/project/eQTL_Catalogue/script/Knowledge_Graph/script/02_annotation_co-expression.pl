@@ -17,7 +17,7 @@ my $dir = "/home/huanhuan/project/link_database/COXPRESdb/ENSG_G16808_S85825/";
 opendir (DIR, $dir) or die "can't open the directory!";
 my @dir = readdir DIR;
 foreach my $file(@dir){
-    if($file=~/ENSG/){
+    if($file=~/same_pos/){
        my @t= split/_/,$file;
        my $ensg =$t[1];
        $ensg =~s/\.txt.*//g;

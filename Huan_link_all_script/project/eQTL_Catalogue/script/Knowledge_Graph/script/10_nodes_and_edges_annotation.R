@@ -10,7 +10,7 @@ library(Seurat)
 
 setwd("/home/huanhuan/project/eQTL_Catalogue/script/Knowledge_Graph/output/")
 
-hotspot_g <-read.table("/home/huanhuan/project/eQTL_Catalogue/output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_0.05.bed.gz",header = F,sep = "\t") %>% as.data.frame()
+hotspot_g <-read.table("/home/huanhuan/project/eQTL_Catalogue/output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_5e_8.bed.gz",header = F,sep = "\t") %>% as.data.frame()
 colnames(hotspot_g) <-c("chr","start","end","egene")
 hotspot_g$Hotspot <-paste(hotspot_g$chr,hotspot_g$start,hotspot_g$end,sep="_")
 #------------------nodes
@@ -38,6 +38,7 @@ co_ex_interaction <- read.table("02_hotspot_target_gene_reactomeFI_co-expression
 
 anno$Hotspot_gene <-paste(anno$Hotspot,anno$egene,sep=":")
 anno <-left_join(anno,gene_tissue,by="Hotspot_gene")
+colnames(enhancer_gene)[1] <-"Hotspot_gene"
 anno <-left_join(anno,enhancer_gene,by="Hotspot_gene")
 anno <-left_join(anno,ENH_ENH,by="Hotspot_gene")
 anno <-left_join(anno,TSS_ENH,by="Hotspot_gene")

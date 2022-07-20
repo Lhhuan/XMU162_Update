@@ -31,8 +31,8 @@ while(<$I1>)
         my $egene =$f[3];
         my $tissue=$f[4];
         my $chr ="chr${SNP_chr}";
-        my $start = $SNP_pos-1;
-        my $end =$SNP_pos;
+        my $start = $SNP_pos-1+1;
+        my $end =$SNP_pos+1;
         my $output = "$chr\t$start\t$end\t$egene\t$Pvalue\t$tissue";
         if($Pvalue <0.05){
             unless(exists $hash1{$output}){

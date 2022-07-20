@@ -25,7 +25,7 @@ while(<$I1>)
     my @f = split/\t/;
     my $k = join("\t",@f[0..2]);
     # my $v = join("\t",@f[3..5]);
-    my $v= $f[5];
+    my $v= $f[4];
     push @{$hash1{$k}},$v;
 }
 foreach my $k(keys %hash1){
@@ -43,7 +43,8 @@ foreach my $k(keys %hash1){
         print $O2 "$k\t$num\t$v_center\n";
     }
     else{#偶数
-        my $center=$int_n;
+        # print "$int_n\t$num\n";
+        my $center=$int_n; #下一步，前9后8
         my $v_center = $sorted_vs[$center];
         print $O2 "$k\t$num\t$v_center\n";
     }

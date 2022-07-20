@@ -103,8 +103,8 @@ foreach my $chr (sort keys %hash1){
                     # print $O1 "$chr\t$starts[0]\t$ends[0]\n";
                     # print "555\n";
                     # my $bed_ends = $ends[0]+1;
-                    my $bed_ends = $ends[0];
-                    my $bed_starts= $starts[0]-1;
+                    my $bed_ends = $ends[0]+1;
+                    my $bed_starts= $starts[0]-1+1; #避免文件出现科学计数法(e+)
                     print $O3 "chr${chr}\t$bed_starts\t$bed_ends\n";
                     # print $O3 "chr${chr}\t$starts[0]\t$bed_ends\n";
                     # print  "chr${chr}\t$starts[0]\t$bed_ends\n";

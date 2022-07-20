@@ -17,4 +17,5 @@ cd ..
 perl 01_get_gene_list.pl #获取./G16808_S85825 下的文件名，得01_G16808_S85825_get_gene_file_list.txt.gz
 Rscript 02_transform_entrez_to_ENSG.R #02_G16808_S85825_entrezgene_symbol_ensembl.gene.txt
 perl 03_unique_symbol_ENSG.pl ##unique "02_G16808_S85825_entrezgene_symbol_ensembl.gene.txt" 的ENSG,得03_entrezgene_symbol_ensembl.txt.gz
+perl 031_merge_ensg_pos.pl ##"/home/huanhuan/reference/grch38_ensg_pos_from_ensembl106.txt.gz"  注释 "03_entrezgene_symbol_ensembl.txt.gz" 的位置，得"03_entrezgene_symbol_ensembl_pos.txt.gz"
 perl 04_transfrom_entrezgene_ensembl.pl #将 03_entrezgene_symbol_ensembl.txt.gz 中包含文件的top 300的entrezgene转成ensembl得./ENSG_G16808_S85825/${file_entrezgene}_${file_ensembl}
