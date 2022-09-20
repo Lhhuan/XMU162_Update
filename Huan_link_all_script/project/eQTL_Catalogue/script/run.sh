@@ -31,9 +31,13 @@ perl 07_annotation_markers.pl
 Rscript 071_heatmap_annotation.R
 perl 072_count_anno_histone_mark.pl ##对../../output/${tissue}/Cis_eQTL/annotation/interval_18/ALL/${group}/${cutoff}*的marker进行count,得$out_dir/${group}_histone_marker.txt.gz
 perl 073_calculate_jaccard_index_mark.pl ##对 $input_dir/${mark}_Tissue_merge_segment_hotspot_cutoff_0.176_extend_18snp.bed.gz 计算 jaccard index得$out_dir/${group}_cutoff_${cutoff}_marker_jaccard_index.txt.gz
-
+perl 073_calculate_jaccard_index_mark.pl ##对 $input_dir/${mark}_Tissue_merge_segment_hotspot_cutoff_0.176_extend_18snp.bed.gz 计算 jaccard index得$out_dir/${group}_cutoff_${cutoff}_marker_jaccard_index_hotspot.txt.gz
 # perl count_eqtl_and_variant.pl #
 bedtools intersect -a "../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge.bed.gz" -b "../output/02_merge_all_tissue_cis_eQTL_eur_egene_sig_0.05_sorted.bed.gz" -wa -wb |cut -f1-3,7 |sort -u|sort -k1,1 -k2,2n |gzip > "../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_0.05.bed.gz"
 
 bedtools intersect -a "../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge.bed.gz" -b "../output/02_merge_all_tissue_cis_eQTL_eur_egene_sig_5e_8_sorted.bed.gz" -wa -wb |cut -f1-3,7 |sort -u|sort -k1,1 -k2,2n |gzip > "../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_5e_8.bed.gz"
 
+bedtools intersect -a "../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge.bed.gz" -b "../output/02_merge_all_tissue_cis_eQTL_eur_egene_sig_5e_8_sorted.bed.gz" -wa -wb |cut -f1-7 |sort -u|sort -k1,1 -k2,2n |gzip > "../output/all_tissue_status/hotspot/Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge_egene_eQTL_5e_8.bed.gz"
+
+perl 08_anno_hotspot_marker_signalValue.pl 
+perl 09_anno_gene_marker_signalValue.pl 

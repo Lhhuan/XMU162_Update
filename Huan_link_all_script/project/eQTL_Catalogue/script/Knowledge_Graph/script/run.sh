@@ -13,7 +13,7 @@ bedtools intersect -a "/home/huanhuan/project/eQTL_Catalogue/output/all_tissue_s
 perl 041_adjust_hotspot_tissue_anno.pl # 调整../output/nodes_annotation/hotspot_tissue_anno.bed.gz 的格式得../output/nodes_annotation/Adjust_hotspot_tissue_anno.bed.gz
 Rscript 05_merge_node_markers_annotation.R  #../output/nodes_annotation/nodes_marker_enhancers_eqtl_annotation.txt
 gzip ../output/nodes_annotation/nodes_marker_enhancers_eqtl_annotation.txt
-zless ../output/nodes_annotation/nodes_marker_enhancers_eqtl_annotation.txt.gz |cut -f1-3,5-15|gzip >../output/nodes_annotation/hotspot_annotation.txt.gz
+# zless ../output/nodes_annotation/nodes_marker_enhancers_eqtl_annotation.txt.gz |cut -f1-3,5-15|gzip >../output/nodes_annotation/hotspot_annotation.txt.gz
 Rscript 051_adjust_hotspot_annotation.R # ../output/nodes_annotation/hotspot_annotation.txt
 gzip ../output/nodes_annotation/hotspot_annotation.txt
 

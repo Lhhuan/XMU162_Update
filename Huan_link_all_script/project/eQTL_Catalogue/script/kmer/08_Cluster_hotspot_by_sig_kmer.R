@@ -14,7 +14,8 @@ library(mclust)
 setwd("/share/data0/QTLbase/huan/eQTL_Catalogue/kmer/hotspot/")
 org<-read.csv("6mers_uc_us_no_log.csv.gz",header = T,sep = ",") %>% as.data.frame()
 
-load("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/emplambda_0/06_permutation_test_100_sig_kmer.Rdata")
+# load("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/emplambda_0/06_permutation_test_1000_sig_kmer.Rdata")
+load("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/emplambda_0/06_permutation_test_1000_sig_kmer.Rdata")
 sigK <-fdat0
 
 colnames(org)[1] <-"hotspot"
@@ -24,7 +25,7 @@ org <-org[,-1]
 
 Sorg <-org[,which(colnames(org) %in% sigK$seq)]
 setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/figure/")
-save(Sorg,file ="sig_kmer_0_100.Rdata")
+save(Sorg,file ="sig_kmer_0_1000.Rdata")
 
 p_theme<-theme(panel.grid =element_blank())+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
                                                 panel.background = element_rect(color="black",size=1), axis.title.y = element_text(size = 10), #,size=1.2
