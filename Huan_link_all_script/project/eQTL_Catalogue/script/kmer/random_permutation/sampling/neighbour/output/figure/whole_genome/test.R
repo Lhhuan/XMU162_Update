@@ -1,0 +1,21 @@
+library(ggplot2)
+library(Rcpp)
+library(readxl)
+library(dplyr)
+library(stringr)
+library(ggpubr)
+library(gridExtra)
+library(ggpval)
+library(Seurat)
+library(reshape2)
+library(R.utils)
+library(ggsci)
+
+setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/figure/whole_genome/")
+now <-read.table("11_whole_genome_leiden_pca3_k50_resolution1e-04.txt",header = T,sep = "\t") %>% as.data.frame()
+before <- read.table("../whole_genome_before_2022_10_25/3pc_before2022_10_25/11_whole_genome_leiden_pca3_k50_resolution1e-04.txt",header = T,sep = "\t") %>% as.data.frame()
+# aricode::ARI()
+
+colnames(before)[8] <-"before_cluster"
+dat <-left_join(now,before[,c("hotspot","before_cluster")],by="hotspot")
+aricode::ARI(dat$cluster,dat$before_cluster)

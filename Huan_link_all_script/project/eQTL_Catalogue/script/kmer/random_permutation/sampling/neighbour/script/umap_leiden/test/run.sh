@@ -1,0 +1,4 @@
+bedtools intersect -a "/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/figure/whole_genome/using_umap_clustering/3pca_1e_5/homer_200/cluster_5.bed" -b "/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/figure/whole_genome/homer_200/cluster_7.bed" -wo |gzip >5_7_overlap.bed.gz
+
+
+bedtools intersect -a "/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/figure/whole_genome/using_umap_clustering/3pca_1e_5/homer_200/cluster_8.bed" -b "/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/figure/whole_genome/homer_200/cluster_7.bed" -wo |gzip >8_7_overlap.bed.gz
