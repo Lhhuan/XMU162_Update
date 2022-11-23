@@ -71,8 +71,10 @@ ggsave(paste0("11_whole_genome_leiden_pca",pcn,"_k",k,"_resolution",resolution,"
 p <- ggplot(df, aes(x = UMAP_1, y = UMAP_2, color = cluster)) + 
   geom_point(size = 1, alpha = 0.6) + 
   scale_color_d3("category20") + 
+  labs(color="Cluster")+
+  # guides(fill = guide_legend(title = "Cluster"))+
   theme_bw()
-ggsave(paste0("11_whole_genome_leiden_pca",pcn,"_k",k,"_resolution",resolution,"_umap.png"), p, width = 6, height = 5.3)
+ggsave(paste0("11_whole_genome_leiden_pca",pcn,"_k",k,"_resolution",resolution,"_umap.png"), p, width = 3, height = 2.1)
 
 dup <-data.frame(dat_dup[,1:3],hotspot=rownames(dat_dup))
 colnames(dup)[1:3] <-paste0("PC_",1:3)

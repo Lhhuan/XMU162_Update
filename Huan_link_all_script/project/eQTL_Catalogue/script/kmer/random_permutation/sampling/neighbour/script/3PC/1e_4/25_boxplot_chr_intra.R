@@ -78,11 +78,12 @@ for (sample in sample_name){
         geom_boxplot()+
         scale_fill_manual(values=c("#C22324","#FF7F0E","#1E77B4","#9567BD","#8C554B","#2CA02C"))+
         theme_bw()+
-        ggtitle(paste0(title," (intra chr)"))+
+        # ggtitle(paste0(title," (intra chr)"))+
+        ggtitle(title)+
         geom_hline(aes(yintercept=log(mean_sig)),linetype="dashed")+
         p_theme +
-        labs(x="Cluster",y=paste0("Log(mean(signal of ",type," per kb))"))
-    pdf(paste0("25_boxplot_",title2,"_signal_mean_by_hotspot_length_intra_chr.pdf"),height=4.7,width=4.5)
+        labs(x="Cluster",y=paste0("Log(mean(signal per kb))"))
+    pdf(paste0("25_boxplot_",title2,"_signal_mean_by_hotspot_length_intra_chr.pdf"),height=3.1,width=3)
     print(p1)
     dev.off()
     #=====
@@ -99,7 +100,8 @@ for (sample in sample_name){
         geom_boxplot()+
         scale_fill_manual(values=c("#C22324","#FF7F0E","#1E77B4","#9567BD","#8C554B","#2CA02C"))+
         theme_bw()+
-        ggtitle(paste0(title," (intra chr)"))+
+        # ggtitle(paste0(title," (intra chr)"))+
+        ggtitle(title)+
         p_theme +
         labs(x="Cluster",y=paste0("fraction of ",type))
     pdf(paste0("25_boxplot_",title2,"_mean_overlap_by_hotspot_length_intra_chr.pdf"),height=4.7,width=4.5)

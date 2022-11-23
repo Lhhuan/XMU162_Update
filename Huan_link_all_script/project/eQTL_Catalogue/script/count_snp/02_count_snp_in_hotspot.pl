@@ -39,7 +39,7 @@ foreach my $k(keys %hash1){
     my $remainder_n =$num % 2;
     if($remainder_n>0){ #奇数
         my $center=$int_n+$remainder_n;
-        my $v_center = $sorted_vs[$center-1]; #0-based
+        my $v_center = $sorted_vs[$center-1]; #Perl 0-based index
         print $O2 "$k\t$num\t$v_center\n";
     }
     else{#偶数

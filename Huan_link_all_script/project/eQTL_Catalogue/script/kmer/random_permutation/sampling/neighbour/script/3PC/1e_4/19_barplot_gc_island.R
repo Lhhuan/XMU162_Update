@@ -58,7 +58,7 @@ ggtitle("CPG island")+
 theme(legend.position ="none")+
 p_theme
 
-pdf("19_barpolt_whole_genome_cpg_island.pdf",height=4.7,width=4.5)
+pdf("19_barpolt_whole_genome_cpg_island.pdf",height=3.1,width=3)
 print(p1)
 dev.off()
 

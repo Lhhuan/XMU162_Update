@@ -39,7 +39,7 @@ p_theme<-theme(
 all_gene_count1$cluster <-factor(all_gene_count1$cluster,levels=c(4,2,1,5,6,3))
 p1 <- ggplot(all_gene_count1, aes(x=as.factor(cluster), y=log(adjust_eqtl_gene_count),group=cluster,fill = as.factor(cluster))) + 
     geom_boxplot()+
-    labs(x="Cluster",y="Log(number of eQTL-eGene pairs per kb)")+
+    labs(x="Cluster",y="Log(number of pairs per kb)")+
     # scale_fill_manual(values=c("#1E77B4","#FF7F0E","#2CA02C","#C22324","#9567BD","#8C554B","#E277C1","#7F7F7F","#BCBC22","#15BECE"))+
     # scale_fill_manual(values=c("#1E77B4","#FF7F0E","#2CA02C","#C22324","#9567BD","#8C554B"))+
     # scale_fill_manual(values=c("#8C554B","#C22324","#1E77B4","#FF7F0E","#9567BD","#2CA02C"))+
@@ -48,7 +48,7 @@ p1 <- ggplot(all_gene_count1, aes(x=as.factor(cluster), y=log(adjust_eqtl_gene_c
     ggtitle("eQTL-eGene pairs")+
     theme(legend.position="none")+
     p_theme
-pdf("13_eqtl_gene_count_boxplot.pdf",height=4.5,width=4.5)
+pdf("13_eqtl_gene_count_boxplot.pdf",height=3.1,width=3)
 print(p1)
 dev.off()
 

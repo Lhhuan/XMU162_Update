@@ -54,7 +54,7 @@ p1 <- ggplot(eqtl_n, aes(x=cluster, y=log(adjust_eqtl),fill =cluster)) +
     p_theme +
     # labs(x="Cluster",y="mean(signal of hic)")
     labs(x="Cluster",y="Log(Number of eQTL per kb)")
-pdf("13_3_boxplot_of_adjust_eqtl_count_cluster.pdf",height=4.7,width=4.5)
+pdf("13_3_boxplot_of_adjust_eqtl_count_cluster.pdf",height=3.1,width=3)
 print(p1)
 dev.off() 
 
@@ -127,11 +127,11 @@ p1 <- ggplot(egene_n1, aes(x=cluster, y=log(adjust_egene_n),fill =cluster)) +
     # scale_fill_manual(values=c(1="#1E77B4",2="#FF7F0E",3="#2CA02C",4="#C22324",5="#9567BD",6="#8C554B"))+
     scale_fill_manual(values=c("#C22324","#FF7F0E","#1E77B4","#9567BD","#8C554B","#2CA02C"))+
     theme_bw()+
-    ggtitle("egene")+
+    ggtitle("eGene")+
     p_theme +
     # labs(x="Cluster",y="mean(signal of hic)")
     labs(x="Cluster",y="Log(Number of egene per kb)")
-pdf("13_3_boxplot_of_Number_of_egene_per_kb.pdf",height=4.7,width=4.5)
+pdf("13_3_boxplot_of_Number_of_egene_per_kb.pdf",height=3.1,width=3)
 print(p1)
 dev.off() 
 #==================================================================
@@ -142,11 +142,11 @@ p1 <- ggplot(eqtl_n, aes(x=cluster, y=log10(length),fill =cluster)) +
     # scale_fill_manual(values=c(1="#1E77B4",2="#FF7F0E",3="#2CA02C",4="#C22324",5="#9567BD",6="#8C554B"))+
     scale_fill_manual(values=c("#C22324","#FF7F0E","#1E77B4","#9567BD","#8C554B","#2CA02C"))+
     theme_bw()+
-    ggtitle("Length of hotspot")+
+    ggtitle("Length")+
     p_theme +
     # labs(x="Cluster",y="mean(signal of hic)")
     labs(x="Cluster",y="Log10(length of hotspot)")+
     scale_y_continuous(name="Length of hotspot(bp)", breaks=c(2,3,4,5), labels=c(100,1000,10000,100000))+
-pdf("13_3_boxplot_of_length_of_hotspot_cluster.pdf",height=4.7,width=4.7)
+pdf("13_3_boxplot_of_length_of_hotspot_cluster.pdf",height=3.1,width=3.2)
 print(p1)
 dev.off() 

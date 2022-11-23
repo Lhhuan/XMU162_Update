@@ -20,7 +20,7 @@ for (my $i=1;$i<1001;$i++){
 }
 
 
-my $pm = Parallel::ForkManager->new(20);
+my $pm = Parallel::ForkManager->new(30);
 foreach my $i(@unexists){
     # my $i=100;
     my $pid = $pm->start and next; #开始多线程

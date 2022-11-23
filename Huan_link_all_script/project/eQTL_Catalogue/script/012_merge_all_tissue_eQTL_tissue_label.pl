@@ -71,8 +71,8 @@ while(<$I1>)
                 my $pvalue =$ss[8];
                 my $chrpos ="$chr\t$pos";
                 my $variant = "$chrpos\t$ref\t$alt";
-                my $start = $pos-1+1;
-                my $end =$pos+1;
+                my $start = $pos-1;
+                my $end =$pos+1-1;
                 my $bed="chr${chr}\t$start\t$end\t$pvalue\t$qtl_group";
                 if($pvalue <5e-8){            
                     # print "$variant\n$chrpos\n";

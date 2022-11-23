@@ -36,6 +36,6 @@ p1 <- ggplot(org, aes(x=cluster, y=gc_content,fill =cluster)) +
     ggtitle("GC content")+
     p_theme +
     labs(x="Cluster",y="GC content")
-pdf("15_gc_count_boxplot.pdf",height=4.7,width=4.5)
+pdf("15_gc_count_boxplot.pdf",height=2.7,width=2.5)
 print(p1)
 dev.off()

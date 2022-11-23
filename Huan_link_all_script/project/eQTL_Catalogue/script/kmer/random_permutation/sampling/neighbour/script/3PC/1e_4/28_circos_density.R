@@ -25,7 +25,7 @@ par(mar = c(2, 2, 2, 2))
 circos.par(start.degree = 90)
 circos.initializeWithIdeogram(species= "hg38",chromosome.index = paste0("chr", 1:22))
 circos.genomicDensity(tmp[[1]], col = c("#1E77B4"), track.height = 0.1,ylim.force=T,window.size = 1e4)
-circos.genomicDensity(tmp[[2]],, col = c("#FF7F0E"), track.height = 0.1,ylim.force=T,window.size = 1e4)
+circos.genomicDensity(tmp[[2]], col = c("#FF7F0E"), track.height = 0.1,ylim.force=T,window.size = 1e4)
 circos.genomicDensity(tmp[[3]], col = c("#2CA02C"), track.height = 0.1,ylim.force=T,window.size = 1e4)
 circos.genomicDensity(tmp[[4]], col = c("#C22324"), track.height = 0.1,ylim.force=T,window.size = 1e4)
 circos.genomicDensity(tmp[[5]], col = c("#9567BD"), track.height = 0.1,ylim.force=T,window.size = 1e4)
@@ -33,8 +33,72 @@ circos.genomicDensity(tmp[[6]], col = c("#8C554B"), track.height = 0.1,ylim.forc
 
 dev.off()
 print("finish")
+#========================
+circos.clear()
+pdf("28_circos_hotspot_density_6cluster_1e7bp.pdf")
+par(mar = c(2, 2, 2, 2))
+circos.par(start.degree = 90)
+circos.initializeWithIdeogram(species= "hg38",chromosome.index = paste0("chr", 1:22))
+circos.genomicDensity(tmp[[1]], col = c("#1E77B4"), track.height = 0.1,ylim.force=T,window.size = 1e7)
+circos.genomicDensity(tmp[[2]], col = c("#FF7F0E"), track.height = 0.1,ylim.force=T,window.size = 1e7)
+circos.genomicDensity(tmp[[3]], col = c("#2CA02C"), track.height = 0.1,ylim.force=T,window.size = 1e7)
+circos.genomicDensity(tmp[[4]], col = c("#C22324"), track.height = 0.1,ylim.force=T,window.size = 1e7)
+circos.genomicDensity(tmp[[5]], col = c("#9567BD"), track.height = 0.1,ylim.force=T,window.size = 1e7)
+circos.genomicDensity(tmp[[6]], col = c("#8C554B"), track.height = 0.1,ylim.force=T,window.size = 1e7)
 
+dev.off()
+print("finish")
+#==========================
 
+#========================
+circos.clear()
+pdf("28_circos_hotspot_density_6cluster_1e6bp.pdf")
+par(mar = c(2, 2, 2, 2))
+circos.par(start.degree = 90)
+circos.initializeWithIdeogram(species= "hg38",chromosome.index = paste0("chr", 1:22))
+circos.genomicDensity(tmp[[1]], col = c("#1E77B4"), track.height = 0.1,window.size = 1e6)
+circos.genomicDensity(tmp[[2]], col = c("#FF7F0E"), track.height = 0.1,window.size = 1e6)
+circos.genomicDensity(tmp[[3]], col = c("#2CA02C"), track.height = 0.1,window.size = 1e6)
+circos.genomicDensity(tmp[[4]], col = c("#C22324"), track.height = 0.1,window.size = 1e6)
+circos.genomicDensity(tmp[[5]], col = c("#9567BD"), track.height = 0.1,window.size = 1e6)
+circos.genomicDensity(tmp[[6]], col = c("#8C554B"), track.height = 0.1,window.size = 1e6)
+
+dev.off()
+print("finish")
+#========================
+circos.clear()
+pdf("28_circos_hotspot_density_6cluster_1e5bp.pdf")
+par(mar = c(2, 2, 2, 2))
+circos.par(start.degree = 90)
+circos.initializeWithIdeogram(species= "hg38",chromosome.index = paste0("chr", 1:22))
+circos.genomicDensity(tmp[[1]], col = c("#1E77B4"), track.height = 0.1,window.size = 1e5)
+circos.genomicDensity(tmp[[2]], col = c("#FF7F0E"), track.height = 0.1,window.size = 1e5)
+circos.genomicDensity(tmp[[3]], col = c("#2CA02C"), track.height = 0.1,window.size = 1e5)
+circos.genomicDensity(tmp[[4]], col = c("#C22324"), track.height = 0.1,window.size = 1e5)
+circos.genomicDensity(tmp[[5]], col = c("#9567BD"), track.height = 0.1,window.size = 1e5)
+circos.genomicDensity(tmp[[6]], col = c("#8C554B"), track.height = 0.1,window.size = 1e5)
+
+dev.off()
+print("finish")
+#==========================
+#========================
+circos.clear()
+pdf("28_circos_hotspot_density_6cluster_1e4bp.pdf")
+par(mar = c(2, 2, 2, 2))
+circos.par(start.degree = 90)
+circos.initializeWithIdeogram(species= "hg38",chromosome.index = paste0("chr", 1:22))
+circos.genomicDensity(tmp[[1]], col = c("#1E77B4"), track.height = 0.1,window.size = 1e4)
+circos.genomicDensity(tmp[[2]], col = c("#FF7F0E"), track.height = 0.1,window.size = 1e4)
+circos.genomicDensity(tmp[[3]], col = c("#2CA02C"), track.height = 0.1,window.size = 1e4)
+circos.genomicDensity(tmp[[4]], col = c("#C22324"), track.height = 0.1,window.size = 1e4)
+circos.genomicDensity(tmp[[5]], col = c("#9567BD"), track.height = 0.1,window.size = 1e4)
+circos.genomicDensity(tmp[[6]], col = c("#8C554B"), track.height = 0.1,window.size = 1e4)
+
+dev.off()
+print("finish")
+#==========================
+
+#=============================
 
        --colors "#1E77B4" "#FF7F0E" "#2CA02C" "#C22324" "#9567BD" "#8C554B"\
 #----------------------------
