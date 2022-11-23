@@ -125,31 +125,31 @@ color2 = colorRampPalette(c('#c6dbef','#6baed6','#2171b5'))(50)
 pdf("13_1_gene_expression_tissue_heatmap_top500.pdf",width=15,height=50)
 pheatmap(as.matrix(fgene[1:500,4:57]),cluster_rows = TRUE, cluster_cols = FALSE,angle_col = 90,color= color2,display_numbers = FALSE,show_rownames = T,cellwidth= 10)
 dev.off()
-log_fgene <- log(fgene[,4:57]+1)
+log_fgene <- log(fgene[,4:57]+0.0001)
 pdf("13_1_gene_expression_tissue_heatmap_top500_log.pdf",width=15,height=55)
 pheatmap(as.matrix(log_fgene[1:500,]),cluster_rows = TRUE, cluster_cols = FALSE,angle_col = 90,color= color2,display_numbers = FALSE,show_rownames = T,cellwidth= 10)
 dev.off()
 #====================
-pca<-prcomp(fgene[1:5000,4:57])#top30%
+pca<-prcomp(log_fgene[1:5000,])#
 pc <-pca$x
 df <-data.frame(pc[,1:2],Name=rownames(pc))
 p <- ggplot(df, aes(x = PC1, y = PC2)) + 
   geom_point(size = 1, alpha = 0.6) + 
   theme_bw()
-ggsave("./egene_cluster/13_1_top_gene_pca.png", p, width = 6, height = 5.3)
+ggsave("./egene_cluster/log/13_1_top_gene_pca.png", p, width = 6, height = 5.3)
 
 library(kernlab)
 pca_list <-list()
-pca_list[[1]]<- kpca(~.,data=fgene[1:3000,4:57], kernel="rbfdot",kpar = list(sigma = 0.1),features = 0, th = 1e-4)
-# pca_list[[2]]<- kpca(~.,data=fgene[1:3000,4:57], kernel="laplacedot", kpar = list(sigma = 0.01))
-pca_list[[2]]<- kpca(~.,data=fgene[1:3000,4:57], kernel="tanhdot", kpar = list(scale = 0.01, offset = 1))
-# pca_list[[4]]<- kpca(~.,data=fgene[1:3000,4:57], kernel="besseldot", kpar = list(sigma = 1, order = 1, degree = 1))
-pca_list[[3]]<- kpca(~.,data=fgene[1:3000,4:57], kernel="anovadot", kpar = list(degree = .1))
-pca_list[[4]]<- kpca(~.,data=fgene[1:3000,4:57], kernel="vanilladot", kpar = list())
-pca_list[[5]]<- kpca(~.,data=fgene[1:3000,4:57], kernel="polydot", kpar = list(degree = 2, scale = 1, offset = 5))
-# pca_list[[8]] <-kpca(~.,data=fgene[1:3000,4:57], kernel='splinedot', kpar = list())
+pca_list[[1]]<- kpca(~.,data=log_fgene[1:2000,], kernel="rbfdot",kpar = list(sigma = 0.1),features = 0, th = 1e-4)
+pca_list[[2]]<- kpca(~.,data=log_fgene[1:2000,], kernel="laplacedot", kpar = list(sigma = 0.01))
+pca_list[[3]]<- kpca(~.,data=log_fgene[1:2000,], kernel="tanhdot", kpar = list(scale = 0.01, offset = 1))
+pca_list[[4]]<- kpca(~.,data=log_fgene[1:2000,], kernel="besseldot", kpar = list(sigma = 1, order = 1, degree = 1))
+pca_list[[5]]<- kpca(~.,data=log_fgene[1:2000,], kernel="anovadot", kpar = list(degree = .1))
+pca_list[[6]]<- kpca(~.,data=log_fgene[1:2000,], kernel="vanilladot", kpar = list())
+pca_list[[7]]<- kpca(~.,data=log_fgene[1:2000,], kernel="polydot", kpar = list(degree = 2, scale = 1, offset = 5))
+pca_list[[8]] <-kpca(~.,data=log_fgene[1:2000,], kernel='splinedot', kpar = list())
 
-names(pca_list)=c("rbfdot","tanhdot","anovadot","vanilladot","polydot")
+names(pca_list)=c("rbfdot","laplacedot","tanhdot","besseldot","anovadot","vanilladot","polydot",'splinedot')
 # save(pca_list,file = "08_kpca.Rdata")
 plot <-function(i=NULL){
     aa=as.data.frame(pca_list[[i]]@rotated)
@@ -158,21 +158,21 @@ plot <-function(i=NULL){
     return(p)
 }
 
-plist <-lapply(c(1:5),plot)
-pdf(paste0("./egene_cluster/13_1_kpca_sampling_result.pdf"),width=8.3, height=4)
+plist <-lapply(c(1:8),plot)
+pdf(paste0("./egene_cluster/log/13_1_kpca_sampling_result.pdf"),width=8.3, height=4)
 CombinePlots(plist,ncol=4,nrow=2)
 dev.off()
 #===============================kpca
 num<-round(nrow(fgene)*0.3)
 library(kernlab)
-pca1<- kpca(~.,data=fgene[1:num,4:57], kernel="anovadot",kpar = list(sigma = 0.1),features = 0, th = 1e-4)
+pca1<- kpca(~.,data=log_fgene[1:num,], kernel="anovadot",kpar = list(sigma = 0.1),features = 0, th = 1e-4)
 aa=as.data.frame(pca1@rotated)
 colnames(aa)[1:2] <- c("PC1","PC2")
 
 p <- ggplot(aa, aes(x = PC1, y = PC2)) + 
   geom_point(size = 1, alpha = 0.6) + 
   theme_bw()
-ggsave(paste0("./egene_cluster/13_1_top_gene_kpca_anovadot_top_",num,".png"), p, width = 6, height = 5.3)
+ggsave(paste0("./egene_cluster/log/13_1_top_gene_kpca_anovadot_top_",num,".png"), p, width = 6, height = 5.3)
 #======================================================scree plot
 library(ggplot2)
 library(igraph)
@@ -197,7 +197,7 @@ p1 <-ggplot(data = variances[1:30,], mapping = aes(x =Dimensions, y = y)) +
     scale_y_continuous(expand=c(0,0))+
     scale_x_continuous(breaks = seq(1, 30, by = 1))+
     labs(y="Percentage of explained variances",title="Scree plot")
-ggsave(paste0("./egene_cluster/13_1_gene_expression_top_",num,"_kPCA_screeplot_whole_genome.pdf"),p1,dpi=300,width=6,height=5) 
+ggsave(paste0("./egene_cluster/log/13_1_gene_expression_top_",num,"_kPCA_screeplot_whole_genome.pdf"),p1,dpi=300,width=6,height=5) 
 #===================================umap,tsne
 pcn = 2
 # reduction
@@ -206,10 +206,10 @@ rownames(dat)=1:nrow(dat)
 
 set.seed(123)
 umap <- uwot::umap(dat)
-save(umap,file=paste0("./egene_cluster/13_1_top_",num,"_gene_expression_",pcn,"kpca_umap.Rdata"))
+save(umap,file=paste0("./egene_cluster/log/13_1_top_",num,"_gene_expression_",pcn,"kpca_umap.Rdata"))
 set.seed(123)
 tsne = Rtsne::Rtsne(dat, initial_dims = pcn, pca = FALSE)
-save(tsne,file=paste0("./egene_cluster/13_1_top_",num,"_gene_expression_",pcn,"kpca_tsne.Rdata"))
+save(tsne,file=paste0("./egene_cluster/log/13_1_top_",num,"_gene_expression_",pcn,"kpca_tsne.Rdata"))
 #================================graph 
 k = 30
 set.seed(1)
@@ -228,13 +228,13 @@ p <- ggplot(df, aes(x = tSNE_1, y = tSNE_2, color = cluster)) +
   geom_point(size = 0.8, alpha = 0.6) + 
   scale_color_d3("category20") + 
   theme_bw()
-ggsave(paste0("./egene_cluster/13_1_top_",num,"_gene_expression_louvain_pca",pcn,"_k",k,"_tsne.png"), p, width = 6, height = 5.3)
+ggsave(paste0("./egene_cluster/log/13_1_top_",num,"_gene_expression_louvain_pca",pcn,"_k",k,"_tsne.png"), p, width = 6, height = 5.3)
 
 p <- ggplot(df, aes(x = UMAP_1, y = UMAP_2, color = cluster)) + 
   geom_point(size = 0.8, alpha = 0.6) + 
   scale_color_d3("category20") + 
   theme_bw()
-ggsave(paste0("./egene_cluster/13_1_top_",num,"_gene_expression_louvain_pca",pcn,"_k",k,"_umap.png"), p, width = 6, height = 5)
+ggsave(paste0("./egene_cluster/log/13_1_top_",num,"_gene_expression_louvain_pca",pcn,"_k",k,"_umap.png"), p, width = 6, height = 5)
 
 #================leiden
 resolution=0.0022
@@ -248,13 +248,13 @@ p <- ggplot(df, aes(x = tSNE_1, y = tSNE_2, color = cluster)) +
   geom_point(size = 1, alpha = 0.6) + 
   scale_color_d3("category20") + 
   theme_bw()
-ggsave(paste0("./egene_cluster/13_1_top_",num,"_gene_expression_leiden_pca",pcn,"_k",k,"_resolution",resolution,"_tsne.png"), p, width = 6, height = 5.3)
+ggsave(paste0("./egene_cluster/log/13_1_top_",num,"_gene_expression_leiden_pca",pcn,"_k",k,"_resolution",resolution,"_tsne.png"), p, width = 6, height = 5.3)
 #-----
 p <- ggplot(df, aes(x = UMAP_1, y = UMAP_2, color = cluster)) + 
   geom_point(size = 1, alpha = 0.6) + 
   scale_color_d3("category20") + 
   theme_bw()
-ggsave(paste0("./egene_cluster/13_1_top_",num,"_gene_expression_leiden_pca",pcn,"_k",k,"_resolution",resolution,"_umap.png"), p, width = 6, height = 5.3)
+ggsave(paste0("./egene_cluster/log/13_1_top_",num,"_gene_expression_leiden_pca",pcn,"_k",k,"_resolution",resolution,"_umap.png"), p, width = 6, height = 5.3)
 
 df$all_gene <- rownames(pca1@xmatrix)
 tmp1 <-strsplit(df$all_gene,"-")
@@ -262,29 +262,9 @@ tmp2 <- do.call(rbind,tmp1)%>%data.frame()
 colnames(tmp2) <- c("hotspot_cluster","ENSG")
 df <- bind_cols(df,tmp2)
 df <-df%>%dplyr::select(-all_gene)
-aricode::ARI(df$cluster,df$hotspot_cluster)
-no_other <- filter(df,hotspot_cluster!="Other" & hotspot_cluster!="Share")
+no_other <- filter(df,hotspot_cluster!="Other")
 aricode::ARI(no_other$cluster,no_other$hotspot_cluster)
 for (i in 1:6){
     cg <- filter(df,hotspot_cluster==i)
     print(aricode::ARI(cg$cluster,cg$hotspot_cluster))
 }
-
-fisher_rs_all<-data.frame()
-all_n <-nrow(df)
-hotspot_n <-table(no_other$hotspot_cluster)%>%data.frame()
-colnames(hotspot_n)[1] <-"hotspot_cluster"
-for(i in 1:8){
-  gcluster <- filter(df,cluster==i)
-  for(j in 1:6){
-    h_in <-nrow(filter(gcluster,hotspot_cluster==j))
-    all_h <- hotspot_n$Freq[hotspot_n$hotspot_cluster==j]
-    x <- matrix(c(h_in,nrow(gcluster),all_h-h_in,all_n - all_h - nrow(gcluster)),nrow=2)
-    fisher_rs <- fisher.test(x)
-    fisher_rs_all <-bind_rows(fisher_rs_all,data.frame(hotspot_cluster=j,gene_cluster=i,fisher_pvalue=fisher_rs$p.value))
-  }  
-}
-
-write.table(fisher_rs_all,"./egene_cluster/13_1_cluster_specific_egene_fisher_test.txt")
-
-sig_fisher_rs <-filter(fisher_rs_all,fisher_pvalue<0.05)

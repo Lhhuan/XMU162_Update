@@ -58,30 +58,4 @@ foreach my $level(@levels){
     system "bash plot_chip_seq_point_umap.sh";
     print "$marker\t$level\n";
 }
-# # my @pol2=()
-#=============pol2
-foreach my $level(@levels){
-    my $output_dir ="$dir/markers/point/${level}";
-    my $marker_bw ="/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/figure/whole_genome/3pca_1e_4/Po2/data/PolII_hg38_chr1_22_merge_${level}_signalvalue.bw";
-    my $marker="PolII(CD4+_T_cells)";
-    $ENV{'cluster_inputdir'} = $cluster_inputdir ;
-    $ENV{'marker'} = $marker ;
-    $ENV{'level'} = $level ;
-    $ENV{'marker_bw'} = $marker_bw ;
-    $ENV{'output_dir'} = $output_dir ;
-    system "bash plot_chip_seq_point_umap.sh";
-    print "$marker\t$level\n";
-}
-
-foreach my $level(@levels){
-    my $output_dir ="$dir/markers/point/${level}";
-    my $marker_bw ="/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/annotation/annotation_data/cistromeDB/normal_cell/Human_FACTOR/POL2/merge_${level}_signalvalue.bw";
-    my $marker="PolII(cistromeDB)";
-    $ENV{'cluster_inputdir'} = $cluster_inputdir ;
-    $ENV{'marker'} = $marker ;
-    $ENV{'level'} = $level ;
-    $ENV{'marker_bw'} = $marker_bw ;
-    $ENV{'output_dir'} = $output_dir ;
-    system "bash plot_chip_seq_point_umap.sh";
-    print "$marker\t$level\n";
-}
+# my @pol2=()

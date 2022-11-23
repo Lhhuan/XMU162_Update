@@ -32,37 +32,13 @@ cluster_n <- all_hotspot %>%group_by(cluster)%>%summarise(hotspot_count=n())%>%d
 dat <- left_join(dat,cluster_n,by=c("cluster"))
 dat$proporation <-dat$ucscLabel_count/dat$hotspot_count
 
-p_theme<-theme(
-    panel.grid.minor = element_blank(), 
-    panel.background = element_blank(), 
-    axis.title.y = element_text(size = 12),
-    axis.title.x = element_text(size = 12),
-    axis.text.y = element_text(size = 12),
-    axis.text.x = element_text(size = 12),
-    axis.line = element_line(colour = "black"),
-    plot.title = element_text(hjust = 0.5))
+fdat <-dcast(dat[,c(1,2,5),],cluster~ucscLabel)
 
-plist<-list()
-for(i in unique(dat$ucscLabel)){
-    fdatcount <-filter(dat,ucscLabel==i)
-    fdatcount$cluster <-factor(fdatcount$cluster,levels=c(4,2,1,5,6,3))
-   plist[[i]] <- ggplot(fdatcount, aes(x=as.factor(cluster), y=proporation,group=cluster,fill = as.factor(cluster))) + 
-    # geom_boxplot(outlier.colour = NA)+
-    geom_bar(stat = 'identity', width=0.8)+
-    scale_fill_manual(values=c("#C22324","#FF7F0E","#1E77B4","#9567BD","#8C554B","#2CA02C"))+
-    theme_bw()+
-    labs(x="Cluster",y="Fraction of hotspots")+
-    ggtitle(i)+
-    theme(legend.position ="none")+
-    p_theme
-    print(i)
-    pdf(paste0("12_barplot_of_",i,".pdf"),height=4.7,width=4.5)
-    print(plist[[i]])
-    dev.off()
-}
-
-pdf("22_barplot_of_cCRE.pdf",width=12, height=2.8)
-gridExtra::marrangeGrob(plist,ncol=5,nrow=1,top="Candidate Cis-Regulatory Elements")
+color2 = colorRampPalette(c('#c6dbef','#6baed6','#2171b5'))(50)
+# color2 = colorRampPalette(c('#D3BDF3','#9469FE','#5C33FC'))(50)
+library(pheatmap)
+pdf("22_2_cCRE_propotion_heatmap.pdf",width=2.7,height=2.8)
+pheatmap(fdat[,2:6],cluster_rows = FALSE, cluster_cols = FALSE,color= color2,angle_col = 0,display_numbers = TRUE,show_rownames = T,show_colnames = T)
 dev.off()
 
 

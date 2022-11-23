@@ -10,19 +10,21 @@ library(Seurat)
 library(reshape2)
 library(R.utils)
 library(ggsci)
-
+rm(list=ls())
 setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/figure/whole_genome/3pca_1e_4/GWAS/")
-org <-read.table("17_whole_genome_leiden_pca3_k50_resolution1e-04_gwas_metaid.bed.gz",header = T,sep = "\t") %>% as.data.frame()
+org <-read.table("26_gwas_catalogy_cluster.bed.gz",header = F,sep = "\t") %>% as.data.frame()
+colnames(org) <- c("CHR","start","end","cluster","GWAS_chr","GWAS_start","GWAS_end","rsid","trait")
+
 org$hotspot <-paste(org$CHR,org$start,org$end,sep=":")
 org$length <- org$end-org$start
-
-org$cluster <-as.factor(org$cluster)
-org$trait_gwas <- paste(org$GWAS_chr,org$GWAS_start,org$GWAS_end,org$meta_id,sep="_")
+#============================================
+# org$cluster <-as.factor(org$cluster)
+org$trait_gwas <- paste(org$GWAS_chr,org$GWAS_start,org$GWAS_end,org$trait,sep="_")
 dat <-org%>%group_by(hotspot,length,cluster)%>%summarise(trait_count=n())%>%data.frame()
 
 all_hotspot <- read.table("17_whole_genome_leiden_pca3_k50_resolution1e-04_sorted.bed.gz",header = F,sep = "\t") %>% as.data.frame()
 colnames(all_hotspot) <-c("CHR","start","end","cluster")
-all_hotspot$cluster <-as.factor(all_hotspot$cluster)
+# all_hotspot$cluster <-as.factor(all_hotspot$cluster)
 all_hotspot$hotspot <- paste(all_hotspot$CHR,all_hotspot$start,all_hotspot$end,sep=":")
 all_hotspot$length <- all_hotspot$end-all_hotspot$start
 all_hotspot <- all_hotspot[,c("hotspot","length","cluster")]
@@ -54,13 +56,14 @@ ggtitle("SNP-trait pairs")+
 theme(legend.position ="none")+
 p_theme
 
-pdf("18_boxpolt_whole_genome_gwas_trait.pdf",height=4.7,width=4.5)
+pdf("27_boxpolt_whole_genome_gwas_trait_GWAS_catalogy.pdf",height=4.7,width=4.5)
 print(p1)
 dev.off()
 
 
 
 p1 <- ggplot(dat1, aes(x=as.factor(cluster), y=log(adjust_trait_count+0.1),group=cluster,fill = as.factor(cluster))) + 
+# p1 <- ggplot(dat1, aes(x=as.factor(cluster), y=adjust_trait_count,group=cluster,fill = as.factor(cluster))) + 
 # geom_boxplot(outlier.colour = NA)+
 geom_boxplot()+
 # scale_fill_manual(values=c("#1E77B4","#FF7F0E","#2CA02C","#C22324","#9567BD","#8C554B","#E277C1","#7F7F7F","#BCBC22","#15BECE"))+
@@ -72,7 +75,7 @@ ggtitle("SNP-trait pairs")+
 theme(legend.position ="none")+
 p_theme
 
-pdf("18_boxpolt_whole_genome_gwas_trait_1E-8.pdf",height=4.7,width=4.5)
+pdf("27_boxpolt_whole_genome_gwas_trait_GWAS_catalogy_1E-8.pdf",height=4.7,width=4.5)
 print(p1)
 dev.off()
 
@@ -86,7 +89,7 @@ labs(x="Log(Number of snp-trait pairs per kb)",color="Cluster") +
 ggtitle("SNP-trait pairs")+
 p_theme
 
-pdf("18_densityplot_whole_genome_gwas_trait.pdf",height=4.5,width=4.9)
+pdf("27_densityplot_whole_genome_gwas_trait_GWAS_catalogy.pdf",height=4.5,width=4.9)
 print(p)
 dev.off()
 
@@ -110,53 +113,6 @@ ggtitle("GWAS")+
 theme(legend.position ="none")+
 p_theme
 
-pdf("18_barpolt_whole_genome_GWAS.pdf",height=4.7,width=4.5)
-print(p1)
-dev.off()
-
-
-dat2 <- org[,c("GWAS_chr","GWAS_start","GWAS_end","meta_id","hotspot")]%>%unique()
-dat3 <-dat2%>%group_by(GWAS_chr,GWAS_start,GWAS_end,hotspot)%>%summarise(trait_n=n())%>%data.frame()
-dat4 <-left_join(all_hotspot[,c("hotspot","cluster")],dat3,by="hotspot")
-dat4$trait_n[is.na(dat4$trait_n)] <-0
-
-dat4$cluster <-factor(dat4$cluster,levels=c(4,2,1,5,6,3))
-
-p1 <- ggplot(dat4, aes(x=as.factor(cluster), y=log(trait_n+0.0001),group=cluster,fill = as.factor(cluster))) + 
-# geom_boxplot(outlier.colour = NA)+
-geom_boxplot()+
-# scale_fill_manual(values=c("#1E77B4","#FF7F0E","#2CA02C","#C22324","#9567BD","#8C554B","#E277C1","#7F7F7F","#BCBC22","#15BECE"))+
-# scale_fill_manual(values=c("#8C554B","#C22324","#1E77B4","#FF7F0E","#9567BD","#2CA02C"))+
-scale_fill_manual(values=c("#C22324","#FF7F0E","#1E77B4","#9567BD","#8C554B","#2CA02C"))+
-theme_bw()+
-labs(x="Cluster",y="Log(number of trait per snp)")+
-ggtitle("GWAS")+
-theme(legend.position ="none")+
-p_theme
-
-pdf("18_boxpolt_whole_genome_trait_per_snp.pdf",height=4.7,width=4.5)
-print(p1)
-dev.off()
-
-trait <- org[,c("meta_id","hotspot","length")]%>%unique()
-trait_n <- trait %>%group_by(hotspot,length)%>%summarise(trait_number=n())%>%data.frame()
-trait_n$adjust_trait_number <- trait_n$trait_number/trait_n$length*1000
-dat5 <-left_join(all_hotspot[,c("hotspot","cluster")],trait_n,by="hotspot")
-dat5$adjust_trait_number[is.na(dat5$adjust_trait_number)] <-0
-#===========
-dat5$cluster <-factor(dat5$cluster,levels=c(4,2,1,5,6,3))
-p1 <- ggplot(dat5, aes(x=as.factor(cluster), y=log(adjust_trait_number+0.0001),group=cluster,fill = as.factor(cluster))) + 
-# geom_boxplot(outlier.colour = NA)+
-geom_boxplot()+
-# scale_fill_manual(values=c("#1E77B4","#FF7F0E","#2CA02C","#C22324","#9567BD","#8C554B","#E277C1","#7F7F7F","#BCBC22","#15BECE"))+
-# scale_fill_manual(values=c("#8C554B","#C22324","#1E77B4","#FF7F0E","#9567BD","#2CA02C"))+
-scale_fill_manual(values=c("#C22324","#FF7F0E","#1E77B4","#9567BD","#8C554B","#2CA02C"))+
-theme_bw()+
-labs(x="Cluster",y="Log(number of trait per kb)")+
-ggtitle("Trait")+
-theme(legend.position ="none")+
-p_theme
-
-pdf("18_boxpolt_whole_genome_trait_per_kb.pdf",height=4.7,width=4.5)
+pdf("27_barpolt_whole_genome_GWAS_catalogy.pdf",height=4.7,width=4.5)
 print(p1)
 dev.off()
