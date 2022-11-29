@@ -9,8 +9,8 @@ use Env qw(PATH);
 use Parallel::ForkManager;
 
 my $out_dir = "/share/data0/QTLbase/huan/eQTL_Catalogue/kmer/random/10_fold_neighbour/";
-my $pm = Parallel::ForkManager->new(20);
-for (my $i=1;$i<101;$i++){
+my $pm = Parallel::ForkManager->new(10);
+for (my $i=1;$i<401;$i++){
     # my $i=100;
     my $pid = $pm->start and next; #开始多线程
     my $bed_input = "${out_dir}/${i}_10_fold_neighbour_resemble_Tissue_merge_segment_hotspot_cutoff_0.176_extend_18_snp_sorted_merge.bed.gz";

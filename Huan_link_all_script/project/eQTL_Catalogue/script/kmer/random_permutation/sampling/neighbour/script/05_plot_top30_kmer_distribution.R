@@ -25,7 +25,7 @@ colnames(org2)[2] <-"seq"
 
 sorg <-filter(org2,seq %in% tsg$seq)
 
-all_random<-read.csv("/share/data0/QTLbase/huan/eQTL_Catalogue/kmer/random/10_fold_neighbour/1_6mers_uc_us_no_log.csv.gz",header = T,sep = ",") %>% as.data.frame()
+all_random<-read.csv("/share/data0/QTLbase/huan/eQTL_Catalogue/kmer/random/10_fold_neighbour/100_6mers_uc_us_no_log.csv.gz",header = T,sep = ",") %>% as.data.frame()
 colnames(all_random)[1] <-"hotspot"
 all_random2 <-melt(all_random,"hotspot")
 colnames(all_random2)[2] <-"seq"

@@ -1,6 +1,7 @@
-library(unix)
-rlimit_as(1e18)
+# library(unix)
+# rlimit_as(1e18)
 library(kernlab)
+library(dplyr)
 
 setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/figure")
 load("08_permutation_wilocx_overlap_sig_kmer_0_1000.Rdata")

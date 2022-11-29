@@ -9,6 +9,7 @@ library(ggpval)
 library(Seurat)
 library(reshape2)
 library(parallel)
+library(data.table)
 
 setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/")
 org1 <- read.table("../../../figure/hit_hospot_ratio_kmer.txt",header= T,sep = "\t") %>% as.data.frame()
@@ -21,11 +22,11 @@ ProcessBedGz<-function(i=NULL){
     setwd("/share/data0/QTLbase/huan/eQTL_Catalogue/kmer/random/10_fold_neighbour/")
     print(i)
     file_name <-paste0(i,"_6mers_uc_us_no_log.csv.gz")
-    org<-read.csv(file_name,header = T,sep = ",") %>% as.data.frame()
+    org<-fread(file_name,header = T,sep = ",") %>% as.data.frame()
     rownames(org) <- org[,1]
     Sorg <-org[,which(colnames(org) %in% sigK$seq)]
     Sorg$hotspot <- rownames(Sorg)
-    org2 <-melt(Sorg,"hotspot")
+    org2 <-reshape2::melt(Sorg,"hotspot")
     colnames(org2)[2] <-"seq"
     # sig_hotspot <-filter(org2, value>0 & seq %in% sigK$seq)
     sig_hotspot <-filter(org2, value>0)

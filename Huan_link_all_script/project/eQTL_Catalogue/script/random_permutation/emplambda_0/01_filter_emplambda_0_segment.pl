@@ -106,9 +106,9 @@ foreach my $chr (sort keys %hash1){
                 if ($end_diff <2 ){ #距离hotspot 一行的位置
                     # print $O1 "$chr\t$starts[0]\t$ends[0]\n";
                     # print "555\n";
-                    my $bed_ends = $ends[0]+1;
-                    # my $bed_ends = $ends[0]+1-1;
-                    my $bed_starts = $starts[0]-1+1;
+                    # my $bed_ends = $ends[0]+1;
+                    my $bed_ends = $ends[0]+1-1;
+                    my $bed_starts = $starts[0]-1;
                     print $O3 "chr${chr}\t$bed_starts\t$bed_ends\n";
                     # print  "chr${chr}\t$starts[0]\t$bed_ends\n";
                     @contents =();#输出一次，清空@contents

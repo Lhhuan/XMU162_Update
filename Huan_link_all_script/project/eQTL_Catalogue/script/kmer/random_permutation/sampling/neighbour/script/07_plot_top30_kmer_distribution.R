@@ -73,8 +73,3 @@ gridExtra::marrangeGrob(plist,nrow=3,ncol=4)
 dev.off()
 print(111)
 
-
-
-
-
-all_s_h <-mclapply(c(1:300), ProcessBedGz, mc.cores = 40)

@@ -49,7 +49,7 @@ system "bedtools merge -i $anno_dir/complement_final_${cutoff2}_sorted.bed.gz |g
 my $genome="/share/Projects/huanhuan/ref_data/UCSC/hg38/hg38.chrom1_22.sizes";
 
 
-for (my $i=1;$i<10001;$i++){
+for (my $i=1;$i<1001;$i++){
     # my $i=1;
     my $out_file = "$output_dir/${i}_resemble_${input_file_base_name}";
     #generate random file 

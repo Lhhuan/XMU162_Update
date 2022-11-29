@@ -9,11 +9,12 @@ library(ggpval)
 library(Seurat)
 library(reshape2)
 library(R.utils)
+library(data.table)
 
-setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/")
-org<-read.csv("6mers_uc_us_no_log.csv.gz",header = T,sep = ",") %>% as.data.frame()
+setwd("/share/data0/QTLbase/huan/eQTL_Catalogue/kmer/hotspot/")
+org<-fread("6mers_uc_us_no_log.csv.gz",header = T,sep = ",") %>% as.data.frame()
 colnames(org)[1] <-"hotspot"
-org2 <-melt(org,"hotspot")
+org2 <-reshape2::melt(org,"hotspot")
 colnames(org2)[2] <-"seq"
 
 sig_hotspot <-filter(org2, value>0)
@@ -22,7 +23,8 @@ sig_hotspot <-filter(org2, value>0)
 seq_count <- sig_hotspot%>%group_by(seq)%>%summarise(count=n())%>%as.data.frame()
 seq_count$ratio <-seq_count$count/nrow(org)
 
-
+setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/")
+write.table(seq_count,"./figure/hit_hospot_ratio_kmer.txt",row.names = F, col.names = T,quote =F,sep="\t")
 
 p_theme<-theme(panel.grid =element_blank())+theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
                                                 panel.background = element_blank(), axis.title.y = element_text(size = 8),
@@ -102,7 +104,6 @@ dev.off()
 
 setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/")
 write.table(rs,"./figure/hit_hospot_ratio_kmer_count.txt",row.names = F, col.names = T,quote =F,sep="\t")
-write.table(seq_count,"./figure/hit_hospot_ratio_kmer.txt",row.names = F, col.names = T,quote =F,sep="\t")
 
 hotspot_kmer_need_test <-filter(seq_count,ratio >0.5)
 # hotspot_kmer_need_test <-hotspot_kmer_need_test

@@ -33,9 +33,6 @@ ProcessBedGz<-function(i=NULL){
     return(seq_count_in)
 }
 
-# all_s_h <-mclapply(c(1:100), ProcessBedGz, mc.cores = 20)
-# all_s_h <-mclapply(c(1:1000), ProcessBedGz, mc.cores = 20)
-# all_6kmers <-do.call(rbind,all_s_h)
 a <-lapply(c(1:100), ProcessBedGz)
 all_random_kmer_need_test_value <-do.call(rbind,a)
 all_random_kmer_need_test_ratio <-all_random_kmer_need_test_value

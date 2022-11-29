@@ -13,8 +13,9 @@ library(mclust)
 library(umap)
 library(uwot)
 library(kernlab)
+library(data.table)
 setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/script/prediction/output/")
-org<-read.csv("01_all_negative_6mers_uc_us_no_log.csv.gz",header = T,sep = ",") %>% as.data.frame()
+org<-fread("01_all_negative_6mers_uc_us_no_log.csv.gz",header = T,sep = ",") %>% as.data.frame()
 load("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/output/06_permutation_test_1000_sig_kmer.Rdata")
 sigK <-fdat0
 
@@ -44,7 +45,7 @@ nega_signal<-function(marker= NULL){
 
 tmp2 <-lapply(markers,nega_signal)
 rs2<-do.call(rbind,tmp2)
-nega_S <-dcast(rs2[,c("Chr","start","end","marker","mean_signalvalue")], Chr+start+end~marker)
+nega_S <-reshape2::dcast(rs2[,c("Chr","start","end","marker","mean_signalvalue")], Chr+start+end~marker)
 nega_S$hotspot <-paste0(nega_S$Chr,":",nega_S$start,"-",nega_S$end)
 # nega_S[is.na(nega_S)] <-0
 nega <-left_join(nega,nega_S[,c(4:14)],by="hotspot")
@@ -75,7 +76,7 @@ hotspot_signal<-function(marker= NULL){
 }
 tmp2 <-lapply(markers,hotspot_signal)
 rs2<-do.call(rbind,tmp2)
-posi_S <-dcast(rs2[,c("Chr","start","end","marker","mean_signalvalue")], Chr+start+end~marker)
+posi_S <-reshape2::dcast(rs2[,c("Chr","start","end","marker","mean_signalvalue")], Chr+start+end~marker)
 posi_S$hotspot <-paste0(posi_S$Chr,":",posi_S$start,"-",posi_S$end)
 posi <-left_join(posi,posi_S[,c(4:14)],by="hotspot")
 posi[is.na(posi)] <-0
