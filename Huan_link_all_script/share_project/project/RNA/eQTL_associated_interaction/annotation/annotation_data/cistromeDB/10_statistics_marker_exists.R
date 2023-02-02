@@ -1,0 +1,22 @@
+library(dplyr)
+library(Rcpp)
+library(readxl)
+library(stringr)
+library(gcookbook)
+library(gridExtra)
+library(ggpubr)
+library(tibble)
+library(R.utils)
+setwd("/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/annotation/annotation_data/cistromeDB/cancer_cell/")
+
+histone <- read.table("TCGA_mark.txt",header = F,sep = "\t") %>% as.data.frame()
+colnames(histone) <-c("TCGA","marker")
+ca <- read.table("ca_tf_TCGA_sample.txt",header = T,sep = "\t") %>% as.data.frame()
+
+all <- bind_rows(ca[,1:2],histone[,c(2,1)])
+all$marker <- gsub("Human_FACTOR","TFBS",all$marker)
+all$marker <- gsub("Human_CHROMATIN_Accessibility","CHROMATIN_Accessibility",all$marker)
+all <-unique(all)
+all$exists <-"YES"
+fdat <- reshape2::dcast(all[,c("TCGA","marker","exists")],TCGA~marker)
+write.table(fdat,"10_adjust_TCGA_marker.txt",row.names = F, col.names = T,quote =F,sep="\t")

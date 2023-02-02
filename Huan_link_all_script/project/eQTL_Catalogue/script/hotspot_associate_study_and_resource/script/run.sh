@@ -1,0 +1,11 @@
+cp "/home/huanhuan/project/eQTL_Catalogue/output/need_study_for_hotspot_download_tabix_ftp_paths.tsv" ../output/
+awk -v FS="\t" -v OFS="\t" '{print $1,$2,$3,$4,$5,$10,$6,$7,$8,$9}' "/home/huanhuan/project/eQTL_Catalogue/output/need_study_for_hotspot_download_tabix_ftp_paths.tsv" > ../output/adjust_tissue_need_study_for_hotspot.tsv
+#对../output/adjust_tissue_need_study_for_hotspot.tsv 填充 roadmap，cistromeDB等 得../output/adjust_tissue_need_study_for_hotspot_annotation.tsv
+Rscript 01_sort_annotation_by_ori_file.R # ../output/01_adjust_tissue_need_study_for_hotspot_annotation.tsv
+cat "/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/annotation/annotation_data/cistromeDB/normal_cell/051_normal_chrom_marker_info_refine_unique_cell.txt" |cut -f2-3 |sort -u >../output/unique_cistromeDB_cell_type_tissue_type.txt
+
+#../output/unique_cistromeDB_cell_type_tissue_type.txt 对../output/01_adjust_tissue_need_study_for_hotspot_annotation.tsv 得 ../output/01_adjust_tissue_need_study_for_hotspot_annotation_cistromeDB.tsv
+perl 02_hotspots_tissue_type_annotation_info.pl ###为"../output/01_adjust_tissue_need_study_for_hotspot_annotation_cistromeDB.tsv"的roadmap和cistromedb提取信息分别得"../output/02_hotspots_tissue_type_annotation_roadmap_info.tsv"，"../output/02_hotspots_tissue_type_annotation_cistromeDB_info.tsv",并得去掉引号的文件"../output/02_adjust_tissue_need_study_for_hotspot_annotation_cistromeDB_refine.tsv"
+perl 021_filter_cistromeDB_narrowpeak.pl #根据"/share/Projects/huanhuan/project/RNA/eQTL_associated_interaction/annotation/annotation_data/cistromeDB/normal_cell/052_normal_hotspot_narrowpeak_id.txt" 过滤 "../output/02_hotspots_tissue_type_annotation_cistromeDB_info.tsv",得"../output/021_hotspots_tissue_type_annotation_cistromeDB_info_filter_narrowpeak.tsv"
+perl 03_adjust_cistromedb_roadmap_format.pl # #将"../output/02_hotspots_tissue_type_annotation_roadmap_info.tsv"，"../output/02_hotspots_tissue_type_annotation_cistromeDB_info.tsv",调整合并得"../output/03_hotspots_tissue_type_annotation_roadmap_cistromeDB_refine.tsv"
+Rscript 04_merge_hotspot_and_annotation_info.R 

@@ -1,0 +1,26 @@
+library(ggplot2)
+library(Rcpp)
+library(readxl)
+library(dplyr)
+library(stringr)
+library(ggpubr)
+library(gridExtra)
+library(data.table)
+library(tidyverse)
+library(reshape2)
+library(circlize)
+
+setwd("/home/huanhuan/project/eQTL_Catalogue/script/kmer/random_permutation/sampling/neighbour/script/prediction/output/")
+org<-read.table("081_warm_region_predict_hotspot_true.bed",header = F,sep = "\t") %>% as.data.frame()
+colnames(org)<-c("CHR","Start","End")
+
+#--------------------------
+circos.clear()
+pdf("11_circos_predict_hotspot_density_10kb.pdf")
+par(mar = c(1, 1, 1, 1))
+circos.par(start.degree = 90)
+circos.initializeWithIdeogram(species= "hg38",chromosome.index = paste0("chr", 1:22))
+circos.genomicDensity(org, col = c("#1E77B4"), track.height = 0.4,ylim.force=T,window.size = 1e4)
+dev.off()
+print("finish")
+#========================
